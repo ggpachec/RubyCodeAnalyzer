@@ -1,4 +1,6 @@
 import ply.lex as lex
+import os
+from datetime import datetime
 
 reserved = {
     'if' : 'IF',
@@ -46,7 +48,6 @@ tokens = (
 
 
     # Genesis Pacheco
-    'MODULE',
     'ASSIGN',
     # Genesis Pacheco
 
@@ -76,6 +77,11 @@ tokens = (
     'COMMA',
     'COLON',
     # Genesis Pacheco
+    # Joel Orrala
+    'RANGE_INCL',
+    'RANGE_EXCL'
+    # Joel Orrala
+
 )+tuple(reserved.values())
 
 
@@ -111,6 +117,11 @@ t_RBRACE = r'\}'
 t_SEMICOLON = r';'
 # Luis Luna - Fin de aporte de nuevas expresiones regulares para tokens simples
 
+# Joel Orrala
+t_RANGE_INCL = r'\.\.'
+t_RANGE_EXCL = r'\.\.\.'
+# Joel Orrala
+
 
 def t_FLOAT(t):
     r'\d+\.\d+'
@@ -123,10 +134,12 @@ def t_INTEGER(t):
     t.value = int(t.value)
     return t
 
+# Joel Orrala - Corrección del token STRING para aceptar comillas simples o dobles
 def t_STRING(t):
-    r'¨[^¨]*¨'
-    t.value = str(t.value)
-    return t
+  r'(\"([^\\\"]|\\.)*\")|(\'([^\\\']|\\.)*\')'
+  t.value = t.value[1:-1]  # remover comillas
+  return t
+# Joel Orrala
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -139,6 +152,11 @@ def t_COMMENT(t):
     return t
 # Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
 
+# Joel Orrala - Comentario multilínea (=begin ... =end)
+def t_MULTILINE_COMMENT(t):
+  r'=begin(.|\n)*?=end'
+  pass  # se ignora
+# Joel Orrala
 
 # Define a rule so we can track line numbers
 def t_newline(t):
@@ -158,35 +176,33 @@ lexer = lex.lex()
 
 
 
-# Test it out
-data = '''
-3 + 4 * 10
-def aaa * 5
-def ¨D¨ DD
-def ¨¨
-  + -20 *2
-  10.5
-  5
-  10,6
-  %
-  [
-  ]
-  &&
-  ||
-  AND
-  and
-  nil
-  NIL
-  MODULE
-  
-'''
+# Joel Orrala - Inicio de bloque de generación de logs
 
-# Give the lexer some input
-lexer.input(data)
+nombre_usuario = "joelorrala"  # cambiar por cada usuario Git
+archivo_prueba = "algoritmos/algoritmo_joel.txt"  # cambiar por el archivo de cada uno
 
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break      # No more input
-    print(tok)
+
+os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
+
+
+with open(archivo_prueba, "r") as f:
+   data = f.read()
+
+
+now = datetime.now()
+fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
+log_filename = f"logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
+
+# Procesar análisis léxico y guardar log
+with open(log_filename, "w") as log_file:
+   lexer.input(data)
+   while True:
+       tok = lexer.token()
+       if not tok:
+           break
+       print(tok)
+       log_file.write(str(tok) + '\n')
+
+
+print(f"\n Tokens de {nombre_usuario} guardados en: {log_filename}")
+# Joel Orrala - Fin de bloque de generación de logs
