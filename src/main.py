@@ -13,6 +13,7 @@ reserved = {
     'return' : 'RETURN',
     'true' : 'TRUE',
     'false' : 'FALSE',
+    'puts' : 'PUTS',
     # Luis Luna - Inicio de aporte de palabras reservadas
     'nil': 'NIL',
     'end' : 'END',
@@ -49,7 +50,6 @@ tokens = (
 
     # Genesis Pacheco
     'ASSIGN',
-    # Genesis Pacheco
 
     ## OPERADORES LOGICOS Y DE COMPARACION
     'AND_OP',
@@ -61,6 +61,7 @@ tokens = (
     'GREATERT',
     'LESSEQ',
     'GREATEREQ',
+    # Genesis Pacheco
 
     ## DELIMITADORES Y SIMBOLOS
     'LPAREN',
@@ -77,6 +78,7 @@ tokens = (
     # Genesis Pacheco
     'COMMA',
     'COLON',
+    'DOT',
     # Genesis Pacheco
     # Joel Orrala
     'RANGE_INCL',
@@ -105,6 +107,7 @@ t_OR_OP = r'\|\|'
 t_NOT_OP = r'!'
 t_COMMA = r','
 t_COLON = r':'
+t_DOT = r'\.'
 # Genesis Pacheco
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
@@ -180,13 +183,13 @@ lexer = lex.lex()
 # Joel Orrala - Inicio de bloque de generación de logs
 
 nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
-archivo_prueba = r"\src\algoritmos\algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
+archivo_prueba = r"..\src\algoritmos\algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
 
 
 os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
 
 
-with open(archivo_prueba, "r") as f:
+with open(archivo_prueba, "r", encoding="utf-8") as f:
    data = f.read()
 
 
@@ -195,7 +198,7 @@ fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
 log_filename = f"logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
 
 # Procesar análisis léxico y guardar log
-with open(log_filename, "w") as log_file:
+with open(log_filename, "w", encoding="utf-8") as log_file:
    lexer.input(data)
    while True:
        tok = lexer.token()
@@ -205,5 +208,5 @@ with open(log_filename, "w") as log_file:
        log_file.write(str(tok) + '\n')
 
 
-print(f"\n Tokens de {nombre_usuario} guardados en: {log_filename}")
+print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}")
 # Joel Orrala - Fin de bloque de generación de logs
