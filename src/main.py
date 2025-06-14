@@ -27,25 +27,56 @@ reserved = {
 
 # List of token names.   This is always required
 tokens = (
+    ## TIPOS DE DATOS
     'INTEGER',
     'FLOAT',
+    # Genesis Pacheco
+    'STRING',
+    'BOOLEAN',
+    'NIL',
+    'ID',
+    # Genesis Pacheco
+
+    ## OPERADORES ARITMETICOS Y DE ASIGNACION
     'PLUS',
     'MINUS',
     'TIMES',
     'DIVIDE',
+    #LUIS! EXPONENT
+
+
+    # Genesis Pacheco
+    'MODULE',
+    'ASSIGN',
+    # Genesis Pacheco
+
+    ## OPERADORES LOGICOS Y DE COMPARACION
+    'AND',
+    'OR',
+    'NOT',
+    'EQUALS',
+    'NEQUALS',
+    'LESST',
+    'GREATERT',
+    'LESSEQ',
+    'GREATEREQ',
+
+    ## DELIMITADORES Y SIMBOLOS
     'LPAREN',
     'RPAREN',
-    'MODULE',
     'LCORCH',
     'RCORCH',
-    'ID',
-    'STRING',
     # Luis Luna - Inicio de aporte de nuevos tokens
     'EXPONENT',
     'LBRACE',
     'RBRACE',
     'SEMICOLON',
     # Luis Luna - Fin de aporte de nuevos tokens
+    # Genesis Pacheco
+    'COMMA',
+    'COLON',
+    'DOT',
+    # Genesis Pacheco
 )+tuple(reserved.values())
 
 
@@ -55,6 +86,21 @@ t_PLUS    = r'\+'
 t_MINUS   = r'-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
+# Genesis Pacheco
+t_ASSIGN = r'='
+t_EQUALS = r'=='
+t_NEQUALS = r'!='
+t_LESST = r'<'
+t_GREATERT = r'>'
+t_LESSEQ = r'<='
+t_GREATEREQ = r'>='
+t_AND = r'&'
+t_OR = r'\|'
+t_NOT = r'!'
+t_COMMA = r','
+t_COLON = r':'
+t_DOT = r'\.'
+# Genesis Pacheco
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_MODULE = r'%'
