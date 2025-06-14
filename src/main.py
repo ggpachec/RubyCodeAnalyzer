@@ -33,7 +33,7 @@ tokens = (
     # Genesis Pacheco
     'STRING',
     'BOOLEAN',
-    'NIL',
+    #'NIL',
     'ID',
     # Genesis Pacheco
 
@@ -51,9 +51,9 @@ tokens = (
     # Genesis Pacheco
 
     ## OPERADORES LOGICOS Y DE COMPARACION
-    'AND',
-    'OR',
-    'NOT',
+    'AND_OP',
+    'OR_OP',
+    'NOT_OP',
     'EQUALS',
     'NEQUALS',
     'LESST',
@@ -75,7 +75,6 @@ tokens = (
     # Genesis Pacheco
     'COMMA',
     'COLON',
-    'DOT',
     # Genesis Pacheco
 )+tuple(reserved.values())
 
@@ -94,12 +93,11 @@ t_LESST = r'<'
 t_GREATERT = r'>'
 t_LESSEQ = r'<='
 t_GREATEREQ = r'>='
-t_AND = r'&'
-t_OR = r'\|'
-t_NOT = r'!'
+t_AND_OP = r'&&'
+t_OR_OP = r'\|\|'
+t_NOT_OP = r'!'
 t_COMMA = r','
 t_COLON = r':'
-t_DOT = r'\.'
 # Genesis Pacheco
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
@@ -115,7 +113,7 @@ t_SEMICOLON = r';'
 
 
 def t_FLOAT(t):
-    r'd+\.\d+'
+    r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
@@ -137,7 +135,7 @@ def t_ID(t):
 
 # Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
 def t_COMMENT(t):
-    r'#.*'
+    r'\#.*'
     return t
 # Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
 
@@ -164,7 +162,7 @@ lexer = lex.lex()
 data = '''
 3 + 4 * 10
 def aaa * 5
-def ¨D¨ DD¨
+def ¨D¨ DD
 def ¨¨
   + -20 *2
   10.5
@@ -173,6 +171,14 @@ def ¨¨
   %
   [
   ]
+  &&
+  ||
+  AND
+  and
+  nil
+  NIL
+  MODULE
+  
 '''
 
 # Give the lexer some input
