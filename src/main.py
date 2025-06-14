@@ -1,33 +1,51 @@
 import ply.lex as lex
 
 reserved = {
-   'if' : 'IF',
-   'then' : 'THEN',
-   'else' : 'ELSE',
-   'while' : 'WHILE',
+    'if' : 'IF',
+    'then' : 'THEN',
+    'else' : 'ELSE',
+    'while' : 'WHILE',
     'for' : 'FOR',
     'def' : 'DEF',
     'class' : 'CLASS',
     'return' : 'RETURN',
     'true' : 'TRUE',
     'false' : 'FALSE',
+    # Luis Luna - Inicio de aporte de palabras reservadas
+    'nil': 'NIL',
+    'end' : 'END',
+    'and' : 'AND',
+    'or' : 'OR',
+    'not' : 'NOT',
+    'next' : 'NEXT',
+    'break' : 'BREAK',
+    'yield' : 'YIELD',
+    'module' : 'MODULE',
+    'do' : 'DO',
+    #Luis Luna - Fin de aporte de palabras reservadas
 }
 
 # List of token names.   This is always required
 tokens = (
-   'INTEGER',
-   'FLOAT',
-   'PLUS',
-   'MINUS',
-   'TIMES',
-   'DIVIDE',
-   'LPAREN',
-   'RPAREN',
+    'INTEGER',
+    'FLOAT',
+    'PLUS',
+    'MINUS',
+    'TIMES',
+    'DIVIDE',
+    'LPAREN',
+    'RPAREN',
     'MODULE',
     'LCORCH',
     'RCORCH',
     'ID',
     'STRING',
+    # Luis Luna - Inicio de aporte de nuevos tokens
+    'EXPONENT',
+    'LBRACE',
+    'RBRACE',
+    'SEMICOLON',
+    # Luis Luna - Fin de aporte de nuevos tokens
 )+tuple(reserved.values())
 
 
@@ -42,6 +60,12 @@ t_RPAREN  = r'\)'
 t_MODULE = r'%'
 t_LCORCH = r'\['
 t_RCORCH = r'\]'
+# Luis Luna - Inicio de aporte de nuevas expresiones regulares para tokens simples
+t_EXPONENT = r'\*\*'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
+t_SEMICOLON = r';'
+# Luis Luna - Fin de aporte de nuevas expresiones regulares para tokens simples
 
 
 def t_FLOAT(t):
@@ -64,6 +88,13 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
+
+# Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
+def t_COMMENT(t):
+    r'#.*'
+    return t
+# Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
+
 
 # Define a rule so we can track line numbers
 def t_newline(t):
