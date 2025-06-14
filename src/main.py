@@ -179,8 +179,8 @@ lexer = lex.lex()
 
 # Joel Orrala - Inicio de bloque de generación de logs
 
-nombre_usuario = "luisluna2307"  # cambiar por cada usuario Git
-archivo_prueba = r"\src\algoritmos\algoritmo_luis.rb"  # cambiar por el archivo de cada uno
+nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
+archivo_prueba = r"\src\algoritmos\algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
 
 
 os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
