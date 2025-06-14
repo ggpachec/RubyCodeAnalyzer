@@ -176,20 +176,25 @@ def t_newline(t):
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
 
-# Error handling rule
+# Joel Orrala - Errores personalizados
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    if t.value[0].isdigit():
+        print(f"[LEXICAL ERROR] Identificador no puede comenzar con número: '{t.value}' en línea {t.lineno}")
+    elif t.value[0] in ['"', "'"]:
+        print(f"[LEXICAL ERROR] String no cerrado correctamente o comillas desbalanceadas en línea {t.lineno}")
+    else:
+        print(f"[LEXICAL ERROR] Carácter ilegal '{t.value[0]}' en línea {t.lineno}")
     t.lexer.skip(1)
+# Joel Orrala 
 
 # Build the lexer
 lexer = lex.lex()
 
 
-
 # Joel Orrala - Inicio de bloque de generación de logs
 
-nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
-archivo_prueba = r"..\src\algoritmos\algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
+nombre_usuario = "joelorrala"  # cambiar por cada usuario Git
+archivo_prueba = "../src/algoritmos/algoritmo_joel.rb" # cambiar por el archivo de cada uno
 
 
 os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
