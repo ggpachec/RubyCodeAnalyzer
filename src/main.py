@@ -36,8 +36,8 @@ tokens = (
     # Genesis Pacheco
     'STRING',
     'BOOLEAN',
-    #'NIL',
     'ID',
+    'VAR_INST',
     # Genesis Pacheco
 
     ## OPERADORES ARITMETICOS Y DE ASIGNACION
@@ -149,6 +149,12 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
+
+# Genesis Pacheco
+def t_VAR_INST(t):
+    r'\@[a-zA-Z_][a-zA-Z_0-9]*'
+    return t
+# Genesis Pacheco
 
 # Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
 def t_COMMENT(t):
