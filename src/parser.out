@@ -1,0 +1,139 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    AND_OP
+    ASSIGN
+    BOOLEAN
+    BREAK
+    CLASS
+    COLON
+    COMMA
+    DO
+    DOT
+    ELSE
+    END
+    EXPONENT
+    FALSE
+    FOR
+    GREATEREQ
+    GREATERT
+    IF
+    LBRACE
+    LCORCH
+    LESSEQ
+    LESST
+    MODULE
+    NEQUALS
+    NEXT
+    NIL
+    NOT
+    NOT_OP
+    OR
+    OR_OP
+    RANGE_EXCL
+    RANGE_INCL
+    RBRACE
+    RCORCH
+    RETURN
+    SEMICOLON
+    THEN
+    TRUE
+    VAR_INST
+    WHILE
+    YIELD
+
+Grammar
+
+Rule 0     S' -> function
+Rule 1     function -> DEF ID LPAREN RPAREN
+Rule 2     function -> DEF ID LPAREN body RPAREN
+Rule 3     body -> sentence
+Rule 4     body -> sentence body
+Rule 5     print -> PUTS factor_expression
+Rule 6     sentence -> assignment
+Rule 7     sentence -> expression
+Rule 8     sentence -> print
+Rule 9     assignment -> ID EQUALS factor
+Rule 10    expression -> expression PLUS term
+Rule 11    expression -> expression MINUS term
+Rule 12    expression -> term
+Rule 13    term -> term TIMES factor
+Rule 14    term -> term DIVIDE factor
+Rule 15    term -> factor
+Rule 16    factor -> INTEGER
+Rule 17    factor -> FLOAT
+Rule 18    factor -> ID
+Rule 19    factor -> STRING
+
+Terminals, with rules where they appear
+
+AND                  : 
+AND_OP               : 
+ASSIGN               : 
+BOOLEAN              : 
+BREAK                : 
+CLASS                : 
+COLON                : 
+COMMA                : 
+DEF                  : 1 2
+DIVIDE               : 14
+DO                   : 
+DOT                  : 
+ELSE                 : 
+END                  : 
+EQUALS               : 9
+EXPONENT             : 
+FALSE                : 
+FLOAT                : 17
+FOR                  : 
+GREATEREQ            : 
+GREATERT             : 
+ID                   : 1 2 9 18
+IF                   : 
+INTEGER              : 16
+LBRACE               : 
+LCORCH               : 
+LESSEQ               : 
+LESST                : 
+LPAREN               : 1 2
+MINUS                : 11
+MODULE               : 
+NEQUALS              : 
+NEXT                 : 
+NIL                  : 
+NOT                  : 
+NOT_OP               : 
+OR                   : 
+OR_OP                : 
+PLUS                 : 10
+PUTS                 : 5
+RANGE_EXCL           : 
+RANGE_INCL           : 
+RBRACE               : 
+RCORCH               : 
+RETURN               : 
+RPAREN               : 1 2
+SEMICOLON            : 
+STRING               : 19
+THEN                 : 
+TIMES                : 13
+TRUE                 : 
+VAR_INST             : 
+WHILE                : 
+YIELD                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 6
+body                 : 2 4
+expression           : 7 10 11
+factor               : 9 13 14 15
+factor_expression    : 5
+function             : 0
+print                : 8
+sentence             : 3 4
+term                 : 10 11 12 13 14
+
