@@ -73,7 +73,6 @@ tokens = (
     'LBRACE',
     'RBRACE',
     'SEMICOLON',
-    'COMMENT',
     # Luis Luna - Fin de aporte de nuevos tokens
     # Genesis Pacheco
     'COMMA',
@@ -159,7 +158,7 @@ def t_VAR_INST(t):
 # Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
 def t_COMMENT(t):
     r'\#.*'
-    return t
+    pass
 # Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
 
 # Joel Orrala - Comentario multilínea (=begin ... =end)
