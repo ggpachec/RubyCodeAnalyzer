@@ -5,6 +5,10 @@ from datetime import datetime
 # Get the token map from the lexer.  This is required.
 from main import tokens
 
+# Joel Orrala: Regla inicial del parser
+def p_start(p):
+    'start : sentence'
+    
 #Joel Orrala y Genesis Pacheco - Funciones con y sin parámetros
 def p_function(p):
     '''function : DEF ID body END
@@ -27,6 +31,11 @@ def p_body(p):
 def p_print(p):
     'print : PUTS  factor'
 
+#Joel Orrala
+def p_class_def(p):
+    '''class_def : CLASS ID body END'''
+#Joel Orrala
+
 def p_sentence(p):
     '''sentence : assignment
         | expression
@@ -39,11 +48,18 @@ def p_sentence(p):
         | range_incl
         | range_excl
         | hash
-        | function'''
+        | function
+        | class_def'''
+
+def p_return(p):
+    'sentence : RETURN factor'
+    
+def p_break(p):
+    'sentence : BREAK'
 
 #Genesis Pacheco
 def p_assignment (p):
-    'assignment : ID ASSIGN factor'
+    'assignment : ID ASSIGN expression'
 
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
 def p_input(p):
@@ -84,12 +100,45 @@ def p_term_factor(p):
     'term : factor'
     #p[0] = p[1]
 
+#Joel Orrala
 def p_factor_valor(p):
     '''factor : INTEGER
-                | FLOAT
-                | STRING
-                | BOOLEAN
-                | ID'''
+              | FLOAT
+              | STRING
+              | BOOLEAN
+              | ID
+              | VAR_INST
+              | TRUE
+              | FALSE
+              | NIL'''
+#Joel Orrala           
+
+
+# Joel Orrala - Para permitir expresiones agrupadas con paréntesis
+def p_factor_group(p):
+    'factor : LPAREN expression RPAREN'
+    p[0] = p[2]
+
+# Joel Orrala - Para permitir expresiones lógicas como parte de un factor
+def p_factor_logic_expression(p):
+    'factor : logic_expression'
+    p[0] = p[1]
+
+# Joel Orrala - Asignación a variables de instancia (como @nombre)
+def p_assignment_var_inst(p):
+    'assignment : VAR_INST ASSIGN expression'
+    p[0] = ('assign_var_inst', p[1], p[3])
+
+# Joel Orrala - Llamada a función sin argumentos
+def p_function_call_empty(p):
+    'sentence : ID LPAREN RPAREN'
+    p[0] = ('func_call', p[1], [])
+
+# Joel Orrala - Llamada a función con argumentos
+def p_function_call_args(p):
+    'sentence : ID LPAREN args RPAREN'
+    p[0] = ('func_call', p[1], p[3])
+
 
 # Luis Luna - Inicio de la regla sintáctica para estructura de datos array
 def p_array(p):
@@ -181,15 +230,21 @@ def p_logic_connector(p):
 #             log.write(mensaje)
 #
 # # Build the parser
-# parser = yacc.yacc()
+# parser = yacc.yacc(start='start')
 # parser.parse(data)
 # print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {log_filename}")
 # # Joel Orrala - Fin de bloque de generación de logs sintácticos
 
+#ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO
+def p_error(p):
+    if p:
+        print(f"yacc: Syntax error at line {p.lineno}, token={p.type}")
+    else:
+        print("yacc: Parse error in input. EOF")
 
 
 # Build the parser
-parser = yacc.yacc()
+parser = yacc.yacc(start='start')
 
 while True:
    try:

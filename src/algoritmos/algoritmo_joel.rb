@@ -16,7 +16,7 @@ nulo = nil
 
 # Array, Hash y Range
 numeros = [1, 2, 3, 4]
-persona = { "nombre" => "Ana", "edad" => 25 }
+persona = { "nombre": "Ana", "edad": 25 }
 rango = (1..5)
 
 # Operaciones aritméticas y lógicas
