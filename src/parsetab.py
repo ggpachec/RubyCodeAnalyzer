@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND AND_OP ASSIGN BOOLEAN BREAK CLASS COLON COMMA DEF DIVIDE DO DOT ELSE END EQUALS EXPONENT FALSE FLOAT FOR GREATEREQ GREATERT ID IF INTEGER LBRACE LCORCH LESSEQ LESST LPAREN MINUS MODULE NEQUALS NEXT NIL NOT NOT_OP OR OR_OP PLUS PUTS RANGE_EXCL RANGE_INCL RBRACE RCORCH RETURN RPAREN SEMICOLON STRING THEN TIMES TRUE VAR_INST WHILE YIELDfunction : DEF ID LPAREN RPAREN\n| DEF ID LPAREN body RPARENbody : sentence\n| sentence bodyprint : PUTS  factorsentence : assignment\n| expression\n| printassignment : ID EQUALS factorexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGER\n| FLOAT\n| IDfactor : STRING'
+_lr_signature = 'AND AND_OP ASSIGN BOOLEAN BREAK CLASS COLON COMMA DEF DIVIDE DO DOT ELSE END EQUALS EXPONENT FALSE FLOAT FOR GETS GREATEREQ GREATERT ID IF IN INTEGER LBRACE LCORCH LESSEQ LESST LPAREN MINUS MODULE NEQUALS NEXT NIL NOT NOT_OP OR OR_OP PLUS PUTS RANGE_EXCL RANGE_INCL RBRACE RCORCH RETURN RPAREN SEMICOLON STRING THEN TIMES TRUE VAR_INST WHILE YIELDfunction : DEF ID body END\n| DEF ID LPAREN args_multiple RPAREN body END\n| DEF ID LPAREN args RPAREN body ENDargs_multiple : ID COMMA argsargs : IDbody : sentence\n| sentence bodyprint : PUTS  factorsentence : assignment\n| expression\n| print\n| input\n| condition\n| while_loop\n| for_loop\n| array\n| range_incl\n| range_excl\n| hash\n| functionassignment : ID ASSIGN factorinput : PUTS STRING\n| ID ASSIGN GETS DOT IDexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGER\n| FLOAT\n| STRING\n| BOOLEAN\n| IDarray : ID ASSIGN LCORCH elements RCORCHelements : factor\n| factor COMMA elementsfor_loop : FOR ID IN range_incl body ENDhash : ID ASSIGN LBRACE hash_pairs RBRACEhash_pairs : STRING COLON factor\n| STRING COLON factor COMMA hash_pairswhile_loop : WHILE logic_expression body ENDrange_incl : LPAREN INTEGER RANGE_INCL INTEGER RPARENrange_excl : LPAREN INTEGER RANGE_EXCL INTEGER RPARENcondition : IF logic_expression body END\n| IF logic_expression body ELSE body ENDlogic_expression : factor logic_op factor\n| factor logic_op factor logic_connector logic_expressionlogic_op : EQUALS\n| NEQUALS\n| GREATEREQ\n| LESSEQ\n| GREATERT\n| LESSTlogic_connector : AND\n| OR'
     
-_lr_action_items = {'DEF':([0,],[2,]),'$end':([1,6,19,],[0,-1,-2,]),'ID':([2,4,5,8,9,10,11,12,13,14,15,16,17,18,21,22,23,24,25,26,27,28,29,30,31,],[3,5,-18,5,-6,-7,-8,-15,-12,26,-16,-17,-19,26,26,26,26,26,-5,-18,-9,-10,-11,-13,-14,]),'LPAREN':([3,],[4,]),'RPAREN':([4,5,7,8,9,10,11,12,13,15,16,17,20,25,26,27,28,29,30,31,],[6,-18,19,-3,-6,-7,-8,-15,-12,-16,-17,-19,-4,-5,-18,-9,-10,-11,-13,-14,]),'PUTS':([4,5,8,9,10,11,12,13,15,16,17,25,26,27,28,29,30,31,],[14,-18,14,-6,-7,-8,-15,-12,-16,-17,-19,-5,-18,-9,-10,-11,-13,-14,]),'INTEGER':([4,5,8,9,10,11,12,13,14,15,16,17,18,21,22,23,24,25,26,27,28,29,30,31,],[15,-18,15,-6,-7,-8,-15,-12,15,-16,-17,-19,15,15,15,15,15,-5,-18,-9,-10,-11,-13,-14,]),'FLOAT':([4,5,8,9,10,11,12,13,14,15,16,17,18,21,22,23,24,25,26,27,28,29,30,31,],[16,-18,16,-6,-7,-8,-15,-12,16,-16,-17,-19,16,16,16,16,16,-5,-18,-9,-10,-11,-13,-14,]),'STRING':([4,5,8,9,10,11,12,13,14,15,16,17,18,21,22,23,24,25,26,27,28,29,30,31,],[17,-18,17,-6,-7,-8,-15,-12,17,-16,-17,-19,17,17,17,17,17,-5,-18,-9,-10,-11,-13,-14,]),'EQUALS':([5,],[18,]),'TIMES':([5,12,13,15,16,17,26,28,29,30,31,],[-18,-15,23,-16,-17,-19,-18,23,23,-13,-14,]),'DIVIDE':([5,12,13,15,16,17,26,28,29,30,31,],[-18,-15,24,-16,-17,-19,-18,24,24,-13,-14,]),'PLUS':([5,10,12,13,15,16,17,26,28,29,30,31,],[-18,21,-15,-12,-16,-17,-19,-18,-10,-11,-13,-14,]),'MINUS':([5,10,12,13,15,16,17,26,28,29,30,31,],[-18,22,-15,-12,-16,-17,-19,-18,-10,-11,-13,-14,]),}
+_lr_action_items = {'DEF':([0,3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[2,2,-34,2,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,2,2,-21,2,2,-24,-25,-27,-28,-45,2,-47,-42,2,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'$end':([1,31,94,95,],[0,-1,-2,-3,]),'ID':([2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,38,39,40,41,42,43,44,45,47,49,51,53,54,55,58,59,60,61,63,64,65,66,67,68,69,72,83,84,85,86,87,89,90,91,92,93,94,95,96,97,99,100,101,106,107,108,],[3,4,-34,32,4,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,44,-32,44,44,48,-30,-31,-33,44,-1,44,44,44,44,-8,-22,-34,4,4,-21,44,77,4,4,-24,-25,-27,-28,44,-49,-50,-51,-52,-53,-54,89,-45,4,-47,-42,4,-23,-35,44,-39,44,-2,-3,-43,-44,44,-55,-56,-46,-48,-38,]),'LPAREN':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,71,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[6,-34,37,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,37,37,-21,37,37,-24,-25,-27,-28,88,-45,37,-47,-42,37,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'PUTS':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[22,-34,22,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,22,22,-21,22,22,-24,-25,-27,-28,-45,22,-47,-42,22,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'IF':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[24,-34,24,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,24,24,-21,24,24,-24,-25,-27,-28,-45,24,-47,-42,24,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'WHILE':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[25,-34,25,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,25,25,-21,25,25,-24,-25,-27,-28,-45,25,-47,-42,25,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'FOR':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,42,43,44,45,47,49,54,55,58,59,60,61,83,84,85,86,87,89,90,92,94,95,96,97,106,107,108,],[26,-34,26,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-8,-22,-34,26,26,-21,26,26,-24,-25,-27,-28,-45,26,-47,-42,26,-23,-35,-39,-2,-3,-43,-44,-46,-48,-38,]),'INTEGER':([3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,37,38,39,40,41,42,43,44,45,47,49,51,54,55,56,57,58,59,60,61,63,64,65,66,67,68,69,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,99,100,101,106,107,108,],[27,-34,35,27,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,27,-32,27,27,-30,-31,-33,27,-1,35,27,27,27,27,-8,-22,-34,27,27,-21,27,27,27,81,82,-24,-25,-27,-28,27,-49,-50,-51,-52,-53,-54,-45,27,-47,-42,27,103,-23,-35,27,-39,27,-2,-3,-43,-44,27,-55,-56,-46,-48,-38,]),'FLOAT':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,38,39,40,41,42,43,44,45,47,49,51,54,55,58,59,60,61,63,64,65,66,67,68,69,83,84,85,86,87,89,90,91,92,93,94,95,96,97,99,100,101,106,107,108,],[28,-34,28,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,28,-32,28,28,-30,-31,-33,28,-1,28,28,28,28,-8,-22,-34,28,28,-21,28,28,28,-24,-25,-27,-28,28,-49,-50,-51,-52,-53,-54,-45,28,-47,-42,28,-23,-35,28,-39,28,-2,-3,-43,-44,28,-55,-56,-46,-48,-38,]),'STRING':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,38,39,40,41,42,43,44,45,47,49,51,52,54,55,58,59,60,61,63,64,65,66,67,68,69,83,84,85,86,87,89,90,91,92,93,94,95,96,97,99,100,101,106,107,108,109,],[23,-34,23,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,43,-32,23,23,-30,-31,-33,23,-1,23,23,23,23,-8,-22,-34,23,23,-21,23,76,23,23,-24,-25,-27,-28,23,-49,-50,-51,-52,-53,-54,-45,23,-47,-42,23,-23,-35,23,-39,23,-2,-3,-43,-44,23,-55,-56,-46,-48,-38,76,]),'BOOLEAN':([3,4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,38,39,40,41,42,43,44,45,47,49,51,54,55,58,59,60,61,63,64,65,66,67,68,69,83,84,85,86,87,89,90,91,92,93,94,95,96,97,99,100,101,106,107,108,],[29,-34,29,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,29,-32,29,29,-30,-31,-33,29,-1,29,29,29,29,-8,-22,-34,29,29,-21,29,29,29,-24,-25,-27,-28,29,-49,-50,-51,-52,-53,-54,-45,29,-47,-42,29,-23,-35,29,-39,29,-2,-3,-43,-44,29,-55,-56,-46,-48,-38,]),'ASSIGN':([4,],[30,]),'TIMES':([4,20,21,23,27,28,29,44,58,59,60,61,],[-34,-29,40,-32,-30,-31,-33,-34,40,40,-27,-28,]),'DIVIDE':([4,20,21,23,27,28,29,44,58,59,60,61,],[-34,-29,41,-32,-30,-31,-33,-34,41,41,-27,-28,]),'PLUS':([4,9,20,21,23,27,28,29,44,58,59,60,61,],[-34,38,-29,-26,-32,-30,-31,-33,-34,-24,-25,-27,-28,]),'MINUS':([4,9,20,21,23,27,28,29,44,58,59,60,61,],[-34,39,-29,-26,-32,-30,-31,-33,-34,-24,-25,-27,-28,]),'END':([4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,36,42,43,44,49,58,59,60,61,62,70,79,80,83,86,89,90,92,94,95,96,97,98,102,106,108,],[-34,31,-6,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-7,-8,-22,-34,-21,-24,-25,-27,-28,83,86,94,95,-45,-42,-23,-35,-39,-2,-3,-43,-44,106,108,-46,-38,]),'ELSE':([4,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,27,28,29,31,36,42,43,44,49,58,59,60,61,62,83,86,89,90,92,94,95,96,97,106,108,],[-34,-6,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-29,-26,-32,-30,-31,-33,-1,-7,-8,-22,-34,-21,-24,-25,-27,-28,84,-45,-42,-23,-35,-39,-2,-3,-43,-44,-46,-38,]),'EQUALS':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,64,]),'NEQUALS':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,65,]),'GREATEREQ':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,66,]),'LESSEQ':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,67,]),'GREATERT':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,68,]),'LESST':([23,27,28,29,44,46,],[-32,-30,-31,-33,-34,69,]),'COMMA':([23,27,28,29,32,44,74,105,],[-32,-30,-31,-33,53,-34,91,109,]),'RCORCH':([23,27,28,29,44,73,74,104,],[-32,-30,-31,-33,-34,90,-36,-37,]),'AND':([23,27,28,29,44,85,],[-32,-30,-31,-33,-34,100,]),'OR':([23,27,28,29,44,85,],[-32,-30,-31,-33,-34,101,]),'RBRACE':([23,27,28,29,44,75,105,110,],[-32,-30,-31,-33,-34,92,-40,-41,]),'GETS':([30,],[50,]),'LCORCH':([30,],[51,]),'LBRACE':([30,],[52,]),'RPAREN':([32,33,34,77,78,81,82,],[-5,54,55,-5,-4,96,97,]),'RANGE_INCL':([35,103,],[56,56,]),'RANGE_EXCL':([35,],[57,]),'IN':([48,],[71,]),'DOT':([50,],[72,]),'COLON':([76,],[93,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'function':([0,],[1,]),'body':([4,8,],[7,20,]),'sentence':([4,8,],[8,8,]),'assignment':([4,8,],[9,9,]),'expression':([4,8,],[10,10,]),'print':([4,8,],[11,11,]),'factor':([4,8,14,18,21,22,23,24,],[12,12,25,27,12,12,30,31,]),'term':([4,8,21,22,],[13,13,28,29,]),}
+_lr_goto_items = {'function':([0,3,7,45,47,54,55,84,87,],[1,19,19,19,19,19,19,19,19,]),'body':([3,7,45,47,54,55,84,87,],[5,36,62,70,79,80,98,102,]),'sentence':([3,7,45,47,54,55,84,87,],[7,7,7,7,7,7,7,7,]),'assignment':([3,7,45,47,54,55,84,87,],[8,8,8,8,8,8,8,8,]),'expression':([3,7,45,47,54,55,84,87,],[9,9,9,9,9,9,9,9,]),'print':([3,7,45,47,54,55,84,87,],[10,10,10,10,10,10,10,10,]),'input':([3,7,45,47,54,55,84,87,],[11,11,11,11,11,11,11,11,]),'condition':([3,7,45,47,54,55,84,87,],[12,12,12,12,12,12,12,12,]),'while_loop':([3,7,45,47,54,55,84,87,],[13,13,13,13,13,13,13,13,]),'for_loop':([3,7,45,47,54,55,84,87,],[14,14,14,14,14,14,14,14,]),'array':([3,7,45,47,54,55,84,87,],[15,15,15,15,15,15,15,15,]),'range_incl':([3,7,45,47,54,55,71,84,87,],[16,16,16,16,16,16,87,16,16,]),'range_excl':([3,7,45,47,54,55,84,87,],[17,17,17,17,17,17,17,17,]),'hash':([3,7,45,47,54,55,84,87,],[18,18,18,18,18,18,18,18,]),'factor':([3,7,22,24,25,30,38,39,40,41,45,47,51,54,55,63,84,87,91,93,99,],[20,20,42,46,46,49,20,20,60,61,20,20,74,20,20,85,20,20,74,105,46,]),'term':([3,7,38,39,45,47,54,55,84,87,],[21,21,58,59,21,21,21,21,21,21,]),'args_multiple':([6,],[33,]),'args':([6,53,],[34,78,]),'logic_expression':([24,25,99,],[45,47,107,]),'logic_op':([46,],[63,]),'elements':([51,91,],[73,104,]),'hash_pairs':([52,109,],[75,110,]),'logic_connector':([85,],[99,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,23 +27,60 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> function","S'",1,None,None,None),
-  ('function -> DEF ID LPAREN RPAREN','function',4,'p_function','yacc.py',9),
-  ('function -> DEF ID LPAREN body RPAREN','function',5,'p_function','yacc.py',10),
-  ('body -> sentence','body',1,'p_body','yacc.py',13),
-  ('body -> sentence body','body',2,'p_body','yacc.py',14),
-  ('print -> PUTS factor','print',2,'p_print','yacc.py',17),
-  ('sentence -> assignment','sentence',1,'p_sentence','yacc.py',20),
-  ('sentence -> expression','sentence',1,'p_sentence','yacc.py',21),
-  ('sentence -> print','sentence',1,'p_sentence','yacc.py',22),
-  ('assignment -> ID EQUALS factor','assignment',3,'p_assignment','yacc.py',26),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','yacc.py',30),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','yacc.py',34),
-  ('expression -> term','expression',1,'p_expression_term','yacc.py',38),
-  ('term -> term TIMES factor','term',3,'p_term_times','yacc.py',42),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','yacc.py',46),
-  ('term -> factor','term',1,'p_term_factor','yacc.py',50),
-  ('factor -> INTEGER','factor',1,'p_factor_valor','yacc.py',63),
-  ('factor -> FLOAT','factor',1,'p_factor_valor','yacc.py',64),
-  ('factor -> ID','factor',1,'p_factor_valor','yacc.py',65),
-  ('factor -> STRING','factor',1,'p_factor_expr','yacc.py',70),
+  ('function -> DEF ID body END','function',4,'p_function','yacc.py',10),
+  ('function -> DEF ID LPAREN args_multiple RPAREN body END','function',7,'p_function','yacc.py',11),
+  ('function -> DEF ID LPAREN args RPAREN body END','function',7,'p_function','yacc.py',12),
+  ('args_multiple -> ID COMMA args','args_multiple',3,'p_args_multiple','yacc.py',15),
+  ('args -> ID','args',1,'p_args','yacc.py',21),
+  ('body -> sentence','body',1,'p_body','yacc.py',24),
+  ('body -> sentence body','body',2,'p_body','yacc.py',25),
+  ('print -> PUTS factor','print',2,'p_print','yacc.py',28),
+  ('sentence -> assignment','sentence',1,'p_sentence','yacc.py',31),
+  ('sentence -> expression','sentence',1,'p_sentence','yacc.py',32),
+  ('sentence -> print','sentence',1,'p_sentence','yacc.py',33),
+  ('sentence -> input','sentence',1,'p_sentence','yacc.py',34),
+  ('sentence -> condition','sentence',1,'p_sentence','yacc.py',35),
+  ('sentence -> while_loop','sentence',1,'p_sentence','yacc.py',36),
+  ('sentence -> for_loop','sentence',1,'p_sentence','yacc.py',37),
+  ('sentence -> array','sentence',1,'p_sentence','yacc.py',38),
+  ('sentence -> range_incl','sentence',1,'p_sentence','yacc.py',39),
+  ('sentence -> range_excl','sentence',1,'p_sentence','yacc.py',40),
+  ('sentence -> hash','sentence',1,'p_sentence','yacc.py',41),
+  ('sentence -> function','sentence',1,'p_sentence','yacc.py',42),
+  ('assignment -> ID ASSIGN factor','assignment',3,'p_assignment','yacc.py',46),
+  ('input -> PUTS STRING','input',2,'p_input','yacc.py',50),
+  ('input -> ID ASSIGN GETS DOT ID','input',5,'p_input','yacc.py',51),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','yacc.py',56),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','yacc.py',60),
+  ('expression -> term','expression',1,'p_expression_term','yacc.py',64),
+  ('term -> term TIMES factor','term',3,'p_term_times','yacc.py',68),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','yacc.py',72),
+  ('term -> factor','term',1,'p_term_factor','yacc.py',77),
+  ('factor -> INTEGER','factor',1,'p_factor_valor','yacc.py',90),
+  ('factor -> FLOAT','factor',1,'p_factor_valor','yacc.py',91),
+  ('factor -> STRING','factor',1,'p_factor_valor','yacc.py',92),
+  ('factor -> BOOLEAN','factor',1,'p_factor_valor','yacc.py',93),
+  ('factor -> ID','factor',1,'p_factor_valor','yacc.py',94),
+  ('array -> ID ASSIGN LCORCH elements RCORCH','array',5,'p_array','yacc.py',98),
+  ('elements -> factor','elements',1,'p_elements','yacc.py',101),
+  ('elements -> factor COMMA elements','elements',3,'p_elements','yacc.py',102),
+  ('for_loop -> FOR ID IN range_incl body END','for_loop',6,'p_for_loop','yacc.py',106),
+  ('hash -> ID ASSIGN LBRACE hash_pairs RBRACE','hash',5,'p_hash','yacc.py',118),
+  ('hash_pairs -> STRING COLON factor','hash_pairs',3,'p_hash_pairs','yacc.py',121),
+  ('hash_pairs -> STRING COLON factor COMMA hash_pairs','hash_pairs',5,'p_hash_pairs','yacc.py',122),
+  ('while_loop -> WHILE logic_expression body END','while_loop',4,'p_while_loop','yacc.py',127),
+  ('range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN','range_incl',5,'p_range_incl','yacc.py',132),
+  ('range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN','range_excl',5,'p_range_excl','yacc.py',135),
+  ('condition -> IF logic_expression body END','condition',4,'p_condition','yacc.py',141),
+  ('condition -> IF logic_expression body ELSE body END','condition',6,'p_condition','yacc.py',142),
+  ('logic_expression -> factor logic_op factor','logic_expression',3,'p_logic_expression','yacc.py',145),
+  ('logic_expression -> factor logic_op factor logic_connector logic_expression','logic_expression',5,'p_logic_expression','yacc.py',146),
+  ('logic_op -> EQUALS','logic_op',1,'p_logic_op','yacc.py',149),
+  ('logic_op -> NEQUALS','logic_op',1,'p_logic_op','yacc.py',150),
+  ('logic_op -> GREATEREQ','logic_op',1,'p_logic_op','yacc.py',151),
+  ('logic_op -> LESSEQ','logic_op',1,'p_logic_op','yacc.py',152),
+  ('logic_op -> GREATERT','logic_op',1,'p_logic_op','yacc.py',153),
+  ('logic_op -> LESST','logic_op',1,'p_logic_op','yacc.py',154),
+  ('logic_connector -> AND','logic_connector',1,'p_logic_connector','yacc.py',157),
+  ('logic_connector -> OR','logic_connector',1,'p_logic_connector','yacc.py',158),
 ]

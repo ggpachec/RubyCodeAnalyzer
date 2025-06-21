@@ -14,23 +14,21 @@ Unused terminals:
     NOT
     NOT_OP
     OR_OP
-    RANGE_EXCL
     RETURN
     SEMICOLON
     THEN
     TRUE
     VAR_INST
-    WHILE
     YIELD
 
 Grammar
 
 Rule 0     S' -> function
-Rule 1     function -> DEF ID LPAREN RPAREN body END
-Rule 2     function -> DEF ID LPAREN args RPAREN body END
-Rule 3     args -> ID
-Rule 4     args -> ID COMMA args
-Rule 5     args -> empty
+Rule 1     function -> DEF ID body END
+Rule 2     function -> DEF ID LPAREN args_multiple RPAREN body END
+Rule 3     function -> DEF ID LPAREN args RPAREN body END
+Rule 4     args_multiple -> ID COMMA args
+Rule 5     args -> ID
 Rule 6     body -> sentence
 Rule 7     body -> sentence body
 Rule 8     print -> PUTS factor
@@ -42,12 +40,12 @@ Rule 13    sentence -> condition
 Rule 14    sentence -> while_loop
 Rule 15    sentence -> for_loop
 Rule 16    sentence -> array
-Rule 17    sentence -> range
-Rule 18    sentence -> hash
-Rule 19    sentence -> function
-Rule 20    sentence -> class_def
-Rule 21    assignment -> ID EQUALS factor
-Rule 22    input -> PRINT STRING
+Rule 17    sentence -> range_incl
+Rule 18    sentence -> range_excl
+Rule 19    sentence -> hash
+Rule 20    sentence -> function
+Rule 21    assignment -> ID ASSIGN factor
+Rule 22    input -> PUTS STRING
 Rule 23    input -> ID ASSIGN GETS DOT ID
 Rule 24    expression -> expression PLUS term
 Rule 25    expression -> expression MINUS term
@@ -63,109 +61,2313 @@ Rule 34    factor -> ID
 Rule 35    array -> ID ASSIGN LCORCH elements RCORCH
 Rule 36    elements -> factor
 Rule 37    elements -> factor COMMA elements
-Rule 38    for_loop -> FOR ID IN range body END
-Rule 39    range -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-Rule 40    empty -> <empty>
-Rule 41    hash -> ID ASSIGN LBRACE hash_pairs RBRACE
-Rule 42    hash_pairs -> STRING COLON factor
-Rule 43    hash_pairs -> STRING COLON factor COMMA hash_pairs
-Rule 44    condition -> IF logic_expression body END
-Rule 45    condition -> IF logic_expression body ELSE body END
-Rule 46    logic_expression -> factor logic_op factor
-Rule 47    logic_expression -> factor logic_op factor logic_connector logic_expression
-Rule 48    logic_op -> EQUALS
-Rule 49    logic_op -> NEQUALS
-Rule 50    logic_op -> GREATEREQ
-Rule 51    logic_op -> LESSEQ
-Rule 52    logic_op -> GREATERT
-Rule 53    logic_op -> LESST
-Rule 54    logic_connector -> AND
-Rule 55    logic_connector -> OR
+Rule 38    for_loop -> FOR ID IN range_incl body END
+Rule 39    hash -> ID ASSIGN LBRACE hash_pairs RBRACE
+Rule 40    hash_pairs -> STRING COLON factor
+Rule 41    hash_pairs -> STRING COLON factor COMMA hash_pairs
+Rule 42    while_loop -> WHILE logic_expression body END
+Rule 43    range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+Rule 44    range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+Rule 45    condition -> IF logic_expression body END
+Rule 46    condition -> IF logic_expression body ELSE body END
+Rule 47    logic_expression -> factor logic_op factor
+Rule 48    logic_expression -> factor logic_op factor logic_connector logic_expression
+Rule 49    logic_op -> EQUALS
+Rule 50    logic_op -> NEQUALS
+Rule 51    logic_op -> GREATEREQ
+Rule 52    logic_op -> LESSEQ
+Rule 53    logic_op -> GREATERT
+Rule 54    logic_op -> LESST
+Rule 55    logic_connector -> AND
+Rule 56    logic_connector -> OR
 
 Terminals, with rules where they appear
 
-AND                  : 54
+AND                  : 55
 AND_OP               : 
-ASSIGN               : 23 35 41
+ASSIGN               : 21 23 35 39
 BOOLEAN              : 33
 BREAK                : 
 CLASS                : 
-COLON                : 42 43
-COMMA                : 4 37 43
-DEF                  : 1 2
+COLON                : 40 41
+COMMA                : 4 37 41
+DEF                  : 1 2 3
 DIVIDE               : 28
 DO                   : 
 DOT                  : 23
-ELSE                 : 45
-END                  : 1 2 38 44 45
-EQUALS               : 21 48
+ELSE                 : 46
+END                  : 1 2 3 38 42 45 46
+EQUALS               : 49
 EXPONENT             : 
 FALSE                : 
 FLOAT                : 31
 FOR                  : 38
-GREATEREQ            : 50
-GREATERT             : 52
-ID                   : 1 2 3 4 21 23 23 34 35 38 41
-IF                   : 44 45
-INTEGER              : 30 39 39
-LBRACE               : 41
+GETS                 : 23
+GREATEREQ            : 51
+GREATERT             : 53
+ID                   : 1 2 3 4 5 21 23 23 34 35 38 39
+IF                   : 45 46
+IN                   : 38
+INTEGER              : 30 43 43 44 44
+LBRACE               : 39
 LCORCH               : 35
-LESSEQ               : 51
-LESST                : 53
-LPAREN               : 1 2 39
+LESSEQ               : 52
+LESST                : 54
+LPAREN               : 2 3 43 44
 MINUS                : 25
 MODULE               : 
-NEQUALS              : 49
+NEQUALS              : 50
 NEXT                 : 
 NIL                  : 
 NOT                  : 
 NOT_OP               : 
-OR                   : 55
+OR                   : 56
 OR_OP                : 
 PLUS                 : 24
-PUTS                 : 8
-RANGE_EXCL           : 
-RANGE_INCL           : 39
-RBRACE               : 41
+PUTS                 : 8 22
+RANGE_EXCL           : 44
+RANGE_INCL           : 43
+RBRACE               : 39
 RCORCH               : 35
 RETURN               : 
-RPAREN               : 1 2 39
+RPAREN               : 2 3 43 44
 SEMICOLON            : 
-STRING               : 22 32 42 43
+STRING               : 22 32 40 41
 THEN                 : 
 TIMES                : 27
 TRUE                 : 
 VAR_INST             : 
-WHILE                : 
+WHILE                : 42
 YIELD                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-GETS                 : 23
-IN                   : 38
-PRINT                : 22
-args                 : 2 4
+args                 : 3 4
+args_multiple        : 2
 array                : 16
 assignment           : 9
-body                 : 1 2 7 38 44 45 45
-class_def            : 20
+body                 : 1 2 3 7 38 42 45 46 46
 condition            : 13
 elements             : 35 37
-empty                : 5
 expression           : 10 24 25
-factor               : 8 21 27 28 29 36 37 42 43 46 46 47 47
+factor               : 8 21 27 28 29 36 37 40 41 47 47 48 48
 for_loop             : 15
-function             : 19 0
-hash                 : 18
-hash_pairs           : 41 43
+function             : 20 0
+hash                 : 19
+hash_pairs           : 39 41
 input                : 12
-logic_connector      : 47
-logic_expression     : 44 45 47
-logic_op             : 46 47
+logic_connector      : 48
+logic_expression     : 42 45 46 48
+logic_op             : 47 48
 print                : 11
-range                : 17 38
+range_excl           : 18
+range_incl           : 17 38
 sentence             : 6 7
 term                 : 24 25 26 27 28
 while_loop           : 14
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . function
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+
+    DEF             shift and go to state 2
+
+    function                       shift and go to state 1
+
+state 1
+
+    (0) S' -> function .
+
+
+
+state 2
+
+    (1) function -> DEF . ID body END
+    (2) function -> DEF . ID LPAREN args_multiple RPAREN body END
+    (3) function -> DEF . ID LPAREN args RPAREN body END
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) function -> DEF ID . body END
+    (2) function -> DEF ID . LPAREN args_multiple RPAREN body END
+    (3) function -> DEF ID . LPAREN args RPAREN body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    LPAREN          shift and go to state 6
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 5
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 4
+
+    (21) assignment -> ID . ASSIGN factor
+    (23) input -> ID . ASSIGN GETS DOT ID
+    (35) array -> ID . ASSIGN LCORCH elements RCORCH
+    (39) hash -> ID . ASSIGN LBRACE hash_pairs RBRACE
+    (34) factor -> ID .
+
+    ASSIGN          shift and go to state 30
+    TIMES           reduce using rule 34 (factor -> ID .)
+    DIVIDE          reduce using rule 34 (factor -> ID .)
+    PLUS            reduce using rule 34 (factor -> ID .)
+    MINUS           reduce using rule 34 (factor -> ID .)
+    ID              reduce using rule 34 (factor -> ID .)
+    PUTS            reduce using rule 34 (factor -> ID .)
+    IF              reduce using rule 34 (factor -> ID .)
+    WHILE           reduce using rule 34 (factor -> ID .)
+    FOR             reduce using rule 34 (factor -> ID .)
+    LPAREN          reduce using rule 34 (factor -> ID .)
+    DEF             reduce using rule 34 (factor -> ID .)
+    INTEGER         reduce using rule 34 (factor -> ID .)
+    FLOAT           reduce using rule 34 (factor -> ID .)
+    STRING          reduce using rule 34 (factor -> ID .)
+    BOOLEAN         reduce using rule 34 (factor -> ID .)
+    END             reduce using rule 34 (factor -> ID .)
+    ELSE            reduce using rule 34 (factor -> ID .)
+
+
+state 5
+
+    (1) function -> DEF ID body . END
+
+    END             shift and go to state 31
+
+
+state 6
+
+    (2) function -> DEF ID LPAREN . args_multiple RPAREN body END
+    (3) function -> DEF ID LPAREN . args RPAREN body END
+    (43) range_incl -> LPAREN . INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> LPAREN . INTEGER RANGE_EXCL INTEGER RPAREN
+    (4) args_multiple -> . ID COMMA args
+    (5) args -> . ID
+
+    INTEGER         shift and go to state 35
+    ID              shift and go to state 32
+
+    args_multiple                  shift and go to state 33
+    args                           shift and go to state 34
+
+state 7
+
+    (6) body -> sentence .
+    (7) body -> sentence . body
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    END             reduce using rule 6 (body -> sentence .)
+    ELSE            reduce using rule 6 (body -> sentence .)
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    sentence                       shift and go to state 7
+    body                           shift and go to state 36
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 8
+
+    (9) sentence -> assignment .
+
+    ID              reduce using rule 9 (sentence -> assignment .)
+    PUTS            reduce using rule 9 (sentence -> assignment .)
+    IF              reduce using rule 9 (sentence -> assignment .)
+    WHILE           reduce using rule 9 (sentence -> assignment .)
+    FOR             reduce using rule 9 (sentence -> assignment .)
+    LPAREN          reduce using rule 9 (sentence -> assignment .)
+    DEF             reduce using rule 9 (sentence -> assignment .)
+    INTEGER         reduce using rule 9 (sentence -> assignment .)
+    FLOAT           reduce using rule 9 (sentence -> assignment .)
+    STRING          reduce using rule 9 (sentence -> assignment .)
+    BOOLEAN         reduce using rule 9 (sentence -> assignment .)
+    END             reduce using rule 9 (sentence -> assignment .)
+    ELSE            reduce using rule 9 (sentence -> assignment .)
+
+
+state 9
+
+    (10) sentence -> expression .
+    (24) expression -> expression . PLUS term
+    (25) expression -> expression . MINUS term
+
+    ID              reduce using rule 10 (sentence -> expression .)
+    PUTS            reduce using rule 10 (sentence -> expression .)
+    IF              reduce using rule 10 (sentence -> expression .)
+    WHILE           reduce using rule 10 (sentence -> expression .)
+    FOR             reduce using rule 10 (sentence -> expression .)
+    LPAREN          reduce using rule 10 (sentence -> expression .)
+    DEF             reduce using rule 10 (sentence -> expression .)
+    INTEGER         reduce using rule 10 (sentence -> expression .)
+    FLOAT           reduce using rule 10 (sentence -> expression .)
+    STRING          reduce using rule 10 (sentence -> expression .)
+    BOOLEAN         reduce using rule 10 (sentence -> expression .)
+    END             reduce using rule 10 (sentence -> expression .)
+    ELSE            reduce using rule 10 (sentence -> expression .)
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+
+
+state 10
+
+    (11) sentence -> print .
+
+    ID              reduce using rule 11 (sentence -> print .)
+    PUTS            reduce using rule 11 (sentence -> print .)
+    IF              reduce using rule 11 (sentence -> print .)
+    WHILE           reduce using rule 11 (sentence -> print .)
+    FOR             reduce using rule 11 (sentence -> print .)
+    LPAREN          reduce using rule 11 (sentence -> print .)
+    DEF             reduce using rule 11 (sentence -> print .)
+    INTEGER         reduce using rule 11 (sentence -> print .)
+    FLOAT           reduce using rule 11 (sentence -> print .)
+    STRING          reduce using rule 11 (sentence -> print .)
+    BOOLEAN         reduce using rule 11 (sentence -> print .)
+    END             reduce using rule 11 (sentence -> print .)
+    ELSE            reduce using rule 11 (sentence -> print .)
+
+
+state 11
+
+    (12) sentence -> input .
+
+    ID              reduce using rule 12 (sentence -> input .)
+    PUTS            reduce using rule 12 (sentence -> input .)
+    IF              reduce using rule 12 (sentence -> input .)
+    WHILE           reduce using rule 12 (sentence -> input .)
+    FOR             reduce using rule 12 (sentence -> input .)
+    LPAREN          reduce using rule 12 (sentence -> input .)
+    DEF             reduce using rule 12 (sentence -> input .)
+    INTEGER         reduce using rule 12 (sentence -> input .)
+    FLOAT           reduce using rule 12 (sentence -> input .)
+    STRING          reduce using rule 12 (sentence -> input .)
+    BOOLEAN         reduce using rule 12 (sentence -> input .)
+    END             reduce using rule 12 (sentence -> input .)
+    ELSE            reduce using rule 12 (sentence -> input .)
+
+
+state 12
+
+    (13) sentence -> condition .
+
+    ID              reduce using rule 13 (sentence -> condition .)
+    PUTS            reduce using rule 13 (sentence -> condition .)
+    IF              reduce using rule 13 (sentence -> condition .)
+    WHILE           reduce using rule 13 (sentence -> condition .)
+    FOR             reduce using rule 13 (sentence -> condition .)
+    LPAREN          reduce using rule 13 (sentence -> condition .)
+    DEF             reduce using rule 13 (sentence -> condition .)
+    INTEGER         reduce using rule 13 (sentence -> condition .)
+    FLOAT           reduce using rule 13 (sentence -> condition .)
+    STRING          reduce using rule 13 (sentence -> condition .)
+    BOOLEAN         reduce using rule 13 (sentence -> condition .)
+    END             reduce using rule 13 (sentence -> condition .)
+    ELSE            reduce using rule 13 (sentence -> condition .)
+
+
+state 13
+
+    (14) sentence -> while_loop .
+
+    ID              reduce using rule 14 (sentence -> while_loop .)
+    PUTS            reduce using rule 14 (sentence -> while_loop .)
+    IF              reduce using rule 14 (sentence -> while_loop .)
+    WHILE           reduce using rule 14 (sentence -> while_loop .)
+    FOR             reduce using rule 14 (sentence -> while_loop .)
+    LPAREN          reduce using rule 14 (sentence -> while_loop .)
+    DEF             reduce using rule 14 (sentence -> while_loop .)
+    INTEGER         reduce using rule 14 (sentence -> while_loop .)
+    FLOAT           reduce using rule 14 (sentence -> while_loop .)
+    STRING          reduce using rule 14 (sentence -> while_loop .)
+    BOOLEAN         reduce using rule 14 (sentence -> while_loop .)
+    END             reduce using rule 14 (sentence -> while_loop .)
+    ELSE            reduce using rule 14 (sentence -> while_loop .)
+
+
+state 14
+
+    (15) sentence -> for_loop .
+
+    ID              reduce using rule 15 (sentence -> for_loop .)
+    PUTS            reduce using rule 15 (sentence -> for_loop .)
+    IF              reduce using rule 15 (sentence -> for_loop .)
+    WHILE           reduce using rule 15 (sentence -> for_loop .)
+    FOR             reduce using rule 15 (sentence -> for_loop .)
+    LPAREN          reduce using rule 15 (sentence -> for_loop .)
+    DEF             reduce using rule 15 (sentence -> for_loop .)
+    INTEGER         reduce using rule 15 (sentence -> for_loop .)
+    FLOAT           reduce using rule 15 (sentence -> for_loop .)
+    STRING          reduce using rule 15 (sentence -> for_loop .)
+    BOOLEAN         reduce using rule 15 (sentence -> for_loop .)
+    END             reduce using rule 15 (sentence -> for_loop .)
+    ELSE            reduce using rule 15 (sentence -> for_loop .)
+
+
+state 15
+
+    (16) sentence -> array .
+
+    ID              reduce using rule 16 (sentence -> array .)
+    PUTS            reduce using rule 16 (sentence -> array .)
+    IF              reduce using rule 16 (sentence -> array .)
+    WHILE           reduce using rule 16 (sentence -> array .)
+    FOR             reduce using rule 16 (sentence -> array .)
+    LPAREN          reduce using rule 16 (sentence -> array .)
+    DEF             reduce using rule 16 (sentence -> array .)
+    INTEGER         reduce using rule 16 (sentence -> array .)
+    FLOAT           reduce using rule 16 (sentence -> array .)
+    STRING          reduce using rule 16 (sentence -> array .)
+    BOOLEAN         reduce using rule 16 (sentence -> array .)
+    END             reduce using rule 16 (sentence -> array .)
+    ELSE            reduce using rule 16 (sentence -> array .)
+
+
+state 16
+
+    (17) sentence -> range_incl .
+
+    ID              reduce using rule 17 (sentence -> range_incl .)
+    PUTS            reduce using rule 17 (sentence -> range_incl .)
+    IF              reduce using rule 17 (sentence -> range_incl .)
+    WHILE           reduce using rule 17 (sentence -> range_incl .)
+    FOR             reduce using rule 17 (sentence -> range_incl .)
+    LPAREN          reduce using rule 17 (sentence -> range_incl .)
+    DEF             reduce using rule 17 (sentence -> range_incl .)
+    INTEGER         reduce using rule 17 (sentence -> range_incl .)
+    FLOAT           reduce using rule 17 (sentence -> range_incl .)
+    STRING          reduce using rule 17 (sentence -> range_incl .)
+    BOOLEAN         reduce using rule 17 (sentence -> range_incl .)
+    END             reduce using rule 17 (sentence -> range_incl .)
+    ELSE            reduce using rule 17 (sentence -> range_incl .)
+
+
+state 17
+
+    (18) sentence -> range_excl .
+
+    ID              reduce using rule 18 (sentence -> range_excl .)
+    PUTS            reduce using rule 18 (sentence -> range_excl .)
+    IF              reduce using rule 18 (sentence -> range_excl .)
+    WHILE           reduce using rule 18 (sentence -> range_excl .)
+    FOR             reduce using rule 18 (sentence -> range_excl .)
+    LPAREN          reduce using rule 18 (sentence -> range_excl .)
+    DEF             reduce using rule 18 (sentence -> range_excl .)
+    INTEGER         reduce using rule 18 (sentence -> range_excl .)
+    FLOAT           reduce using rule 18 (sentence -> range_excl .)
+    STRING          reduce using rule 18 (sentence -> range_excl .)
+    BOOLEAN         reduce using rule 18 (sentence -> range_excl .)
+    END             reduce using rule 18 (sentence -> range_excl .)
+    ELSE            reduce using rule 18 (sentence -> range_excl .)
+
+
+state 18
+
+    (19) sentence -> hash .
+
+    ID              reduce using rule 19 (sentence -> hash .)
+    PUTS            reduce using rule 19 (sentence -> hash .)
+    IF              reduce using rule 19 (sentence -> hash .)
+    WHILE           reduce using rule 19 (sentence -> hash .)
+    FOR             reduce using rule 19 (sentence -> hash .)
+    LPAREN          reduce using rule 19 (sentence -> hash .)
+    DEF             reduce using rule 19 (sentence -> hash .)
+    INTEGER         reduce using rule 19 (sentence -> hash .)
+    FLOAT           reduce using rule 19 (sentence -> hash .)
+    STRING          reduce using rule 19 (sentence -> hash .)
+    BOOLEAN         reduce using rule 19 (sentence -> hash .)
+    END             reduce using rule 19 (sentence -> hash .)
+    ELSE            reduce using rule 19 (sentence -> hash .)
+
+
+state 19
+
+    (20) sentence -> function .
+
+    ID              reduce using rule 20 (sentence -> function .)
+    PUTS            reduce using rule 20 (sentence -> function .)
+    IF              reduce using rule 20 (sentence -> function .)
+    WHILE           reduce using rule 20 (sentence -> function .)
+    FOR             reduce using rule 20 (sentence -> function .)
+    LPAREN          reduce using rule 20 (sentence -> function .)
+    DEF             reduce using rule 20 (sentence -> function .)
+    INTEGER         reduce using rule 20 (sentence -> function .)
+    FLOAT           reduce using rule 20 (sentence -> function .)
+    STRING          reduce using rule 20 (sentence -> function .)
+    BOOLEAN         reduce using rule 20 (sentence -> function .)
+    END             reduce using rule 20 (sentence -> function .)
+    ELSE            reduce using rule 20 (sentence -> function .)
+
+
+state 20
+
+    (29) term -> factor .
+
+    TIMES           reduce using rule 29 (term -> factor .)
+    DIVIDE          reduce using rule 29 (term -> factor .)
+    PLUS            reduce using rule 29 (term -> factor .)
+    MINUS           reduce using rule 29 (term -> factor .)
+    ID              reduce using rule 29 (term -> factor .)
+    PUTS            reduce using rule 29 (term -> factor .)
+    IF              reduce using rule 29 (term -> factor .)
+    WHILE           reduce using rule 29 (term -> factor .)
+    FOR             reduce using rule 29 (term -> factor .)
+    LPAREN          reduce using rule 29 (term -> factor .)
+    DEF             reduce using rule 29 (term -> factor .)
+    INTEGER         reduce using rule 29 (term -> factor .)
+    FLOAT           reduce using rule 29 (term -> factor .)
+    STRING          reduce using rule 29 (term -> factor .)
+    BOOLEAN         reduce using rule 29 (term -> factor .)
+    END             reduce using rule 29 (term -> factor .)
+    ELSE            reduce using rule 29 (term -> factor .)
+
+
+state 21
+
+    (26) expression -> term .
+    (27) term -> term . TIMES factor
+    (28) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 26 (expression -> term .)
+    MINUS           reduce using rule 26 (expression -> term .)
+    ID              reduce using rule 26 (expression -> term .)
+    PUTS            reduce using rule 26 (expression -> term .)
+    IF              reduce using rule 26 (expression -> term .)
+    WHILE           reduce using rule 26 (expression -> term .)
+    FOR             reduce using rule 26 (expression -> term .)
+    LPAREN          reduce using rule 26 (expression -> term .)
+    DEF             reduce using rule 26 (expression -> term .)
+    INTEGER         reduce using rule 26 (expression -> term .)
+    FLOAT           reduce using rule 26 (expression -> term .)
+    STRING          reduce using rule 26 (expression -> term .)
+    BOOLEAN         reduce using rule 26 (expression -> term .)
+    END             reduce using rule 26 (expression -> term .)
+    ELSE            reduce using rule 26 (expression -> term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 22
+
+    (8) print -> PUTS . factor
+    (22) input -> PUTS . STRING
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    STRING          shift and go to state 43
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 42
+
+state 23
+
+    (32) factor -> STRING .
+
+    TIMES           reduce using rule 32 (factor -> STRING .)
+    DIVIDE          reduce using rule 32 (factor -> STRING .)
+    PLUS            reduce using rule 32 (factor -> STRING .)
+    MINUS           reduce using rule 32 (factor -> STRING .)
+    ID              reduce using rule 32 (factor -> STRING .)
+    PUTS            reduce using rule 32 (factor -> STRING .)
+    IF              reduce using rule 32 (factor -> STRING .)
+    WHILE           reduce using rule 32 (factor -> STRING .)
+    FOR             reduce using rule 32 (factor -> STRING .)
+    LPAREN          reduce using rule 32 (factor -> STRING .)
+    DEF             reduce using rule 32 (factor -> STRING .)
+    INTEGER         reduce using rule 32 (factor -> STRING .)
+    FLOAT           reduce using rule 32 (factor -> STRING .)
+    STRING          reduce using rule 32 (factor -> STRING .)
+    BOOLEAN         reduce using rule 32 (factor -> STRING .)
+    END             reduce using rule 32 (factor -> STRING .)
+    ELSE            reduce using rule 32 (factor -> STRING .)
+    EQUALS          reduce using rule 32 (factor -> STRING .)
+    NEQUALS         reduce using rule 32 (factor -> STRING .)
+    GREATEREQ       reduce using rule 32 (factor -> STRING .)
+    LESSEQ          reduce using rule 32 (factor -> STRING .)
+    GREATERT        reduce using rule 32 (factor -> STRING .)
+    LESST           reduce using rule 32 (factor -> STRING .)
+    COMMA           reduce using rule 32 (factor -> STRING .)
+    RCORCH          reduce using rule 32 (factor -> STRING .)
+    AND             reduce using rule 32 (factor -> STRING .)
+    OR              reduce using rule 32 (factor -> STRING .)
+    RBRACE          reduce using rule 32 (factor -> STRING .)
+
+
+state 24
+
+    (45) condition -> IF . logic_expression body END
+    (46) condition -> IF . logic_expression body ELSE body END
+    (47) logic_expression -> . factor logic_op factor
+    (48) logic_expression -> . factor logic_op factor logic_connector logic_expression
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    logic_expression               shift and go to state 45
+    factor                         shift and go to state 46
+
+state 25
+
+    (42) while_loop -> WHILE . logic_expression body END
+    (47) logic_expression -> . factor logic_op factor
+    (48) logic_expression -> . factor logic_op factor logic_connector logic_expression
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    logic_expression               shift and go to state 47
+    factor                         shift and go to state 46
+
+state 26
+
+    (38) for_loop -> FOR . ID IN range_incl body END
+
+    ID              shift and go to state 48
+
+
+state 27
+
+    (30) factor -> INTEGER .
+
+    TIMES           reduce using rule 30 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 30 (factor -> INTEGER .)
+    PLUS            reduce using rule 30 (factor -> INTEGER .)
+    MINUS           reduce using rule 30 (factor -> INTEGER .)
+    ID              reduce using rule 30 (factor -> INTEGER .)
+    PUTS            reduce using rule 30 (factor -> INTEGER .)
+    IF              reduce using rule 30 (factor -> INTEGER .)
+    WHILE           reduce using rule 30 (factor -> INTEGER .)
+    FOR             reduce using rule 30 (factor -> INTEGER .)
+    LPAREN          reduce using rule 30 (factor -> INTEGER .)
+    DEF             reduce using rule 30 (factor -> INTEGER .)
+    INTEGER         reduce using rule 30 (factor -> INTEGER .)
+    FLOAT           reduce using rule 30 (factor -> INTEGER .)
+    STRING          reduce using rule 30 (factor -> INTEGER .)
+    BOOLEAN         reduce using rule 30 (factor -> INTEGER .)
+    END             reduce using rule 30 (factor -> INTEGER .)
+    ELSE            reduce using rule 30 (factor -> INTEGER .)
+    EQUALS          reduce using rule 30 (factor -> INTEGER .)
+    NEQUALS         reduce using rule 30 (factor -> INTEGER .)
+    GREATEREQ       reduce using rule 30 (factor -> INTEGER .)
+    LESSEQ          reduce using rule 30 (factor -> INTEGER .)
+    GREATERT        reduce using rule 30 (factor -> INTEGER .)
+    LESST           reduce using rule 30 (factor -> INTEGER .)
+    COMMA           reduce using rule 30 (factor -> INTEGER .)
+    RCORCH          reduce using rule 30 (factor -> INTEGER .)
+    AND             reduce using rule 30 (factor -> INTEGER .)
+    OR              reduce using rule 30 (factor -> INTEGER .)
+    RBRACE          reduce using rule 30 (factor -> INTEGER .)
+
+
+state 28
+
+    (31) factor -> FLOAT .
+
+    TIMES           reduce using rule 31 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 31 (factor -> FLOAT .)
+    PLUS            reduce using rule 31 (factor -> FLOAT .)
+    MINUS           reduce using rule 31 (factor -> FLOAT .)
+    ID              reduce using rule 31 (factor -> FLOAT .)
+    PUTS            reduce using rule 31 (factor -> FLOAT .)
+    IF              reduce using rule 31 (factor -> FLOAT .)
+    WHILE           reduce using rule 31 (factor -> FLOAT .)
+    FOR             reduce using rule 31 (factor -> FLOAT .)
+    LPAREN          reduce using rule 31 (factor -> FLOAT .)
+    DEF             reduce using rule 31 (factor -> FLOAT .)
+    INTEGER         reduce using rule 31 (factor -> FLOAT .)
+    FLOAT           reduce using rule 31 (factor -> FLOAT .)
+    STRING          reduce using rule 31 (factor -> FLOAT .)
+    BOOLEAN         reduce using rule 31 (factor -> FLOAT .)
+    END             reduce using rule 31 (factor -> FLOAT .)
+    ELSE            reduce using rule 31 (factor -> FLOAT .)
+    EQUALS          reduce using rule 31 (factor -> FLOAT .)
+    NEQUALS         reduce using rule 31 (factor -> FLOAT .)
+    GREATEREQ       reduce using rule 31 (factor -> FLOAT .)
+    LESSEQ          reduce using rule 31 (factor -> FLOAT .)
+    GREATERT        reduce using rule 31 (factor -> FLOAT .)
+    LESST           reduce using rule 31 (factor -> FLOAT .)
+    COMMA           reduce using rule 31 (factor -> FLOAT .)
+    RCORCH          reduce using rule 31 (factor -> FLOAT .)
+    AND             reduce using rule 31 (factor -> FLOAT .)
+    OR              reduce using rule 31 (factor -> FLOAT .)
+    RBRACE          reduce using rule 31 (factor -> FLOAT .)
+
+
+state 29
+
+    (33) factor -> BOOLEAN .
+
+    TIMES           reduce using rule 33 (factor -> BOOLEAN .)
+    DIVIDE          reduce using rule 33 (factor -> BOOLEAN .)
+    PLUS            reduce using rule 33 (factor -> BOOLEAN .)
+    MINUS           reduce using rule 33 (factor -> BOOLEAN .)
+    ID              reduce using rule 33 (factor -> BOOLEAN .)
+    PUTS            reduce using rule 33 (factor -> BOOLEAN .)
+    IF              reduce using rule 33 (factor -> BOOLEAN .)
+    WHILE           reduce using rule 33 (factor -> BOOLEAN .)
+    FOR             reduce using rule 33 (factor -> BOOLEAN .)
+    LPAREN          reduce using rule 33 (factor -> BOOLEAN .)
+    DEF             reduce using rule 33 (factor -> BOOLEAN .)
+    INTEGER         reduce using rule 33 (factor -> BOOLEAN .)
+    FLOAT           reduce using rule 33 (factor -> BOOLEAN .)
+    STRING          reduce using rule 33 (factor -> BOOLEAN .)
+    BOOLEAN         reduce using rule 33 (factor -> BOOLEAN .)
+    END             reduce using rule 33 (factor -> BOOLEAN .)
+    ELSE            reduce using rule 33 (factor -> BOOLEAN .)
+    EQUALS          reduce using rule 33 (factor -> BOOLEAN .)
+    NEQUALS         reduce using rule 33 (factor -> BOOLEAN .)
+    GREATEREQ       reduce using rule 33 (factor -> BOOLEAN .)
+    LESSEQ          reduce using rule 33 (factor -> BOOLEAN .)
+    GREATERT        reduce using rule 33 (factor -> BOOLEAN .)
+    LESST           reduce using rule 33 (factor -> BOOLEAN .)
+    COMMA           reduce using rule 33 (factor -> BOOLEAN .)
+    RCORCH          reduce using rule 33 (factor -> BOOLEAN .)
+    AND             reduce using rule 33 (factor -> BOOLEAN .)
+    OR              reduce using rule 33 (factor -> BOOLEAN .)
+    RBRACE          reduce using rule 33 (factor -> BOOLEAN .)
+
+
+state 30
+
+    (21) assignment -> ID ASSIGN . factor
+    (23) input -> ID ASSIGN . GETS DOT ID
+    (35) array -> ID ASSIGN . LCORCH elements RCORCH
+    (39) hash -> ID ASSIGN . LBRACE hash_pairs RBRACE
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    GETS            shift and go to state 50
+    LCORCH          shift and go to state 51
+    LBRACE          shift and go to state 52
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 49
+
+state 31
+
+    (1) function -> DEF ID body END .
+
+    $end            reduce using rule 1 (function -> DEF ID body END .)
+    ID              reduce using rule 1 (function -> DEF ID body END .)
+    PUTS            reduce using rule 1 (function -> DEF ID body END .)
+    IF              reduce using rule 1 (function -> DEF ID body END .)
+    WHILE           reduce using rule 1 (function -> DEF ID body END .)
+    FOR             reduce using rule 1 (function -> DEF ID body END .)
+    LPAREN          reduce using rule 1 (function -> DEF ID body END .)
+    DEF             reduce using rule 1 (function -> DEF ID body END .)
+    INTEGER         reduce using rule 1 (function -> DEF ID body END .)
+    FLOAT           reduce using rule 1 (function -> DEF ID body END .)
+    STRING          reduce using rule 1 (function -> DEF ID body END .)
+    BOOLEAN         reduce using rule 1 (function -> DEF ID body END .)
+    END             reduce using rule 1 (function -> DEF ID body END .)
+    ELSE            reduce using rule 1 (function -> DEF ID body END .)
+
+
+state 32
+
+    (4) args_multiple -> ID . COMMA args
+    (5) args -> ID .
+
+    COMMA           shift and go to state 53
+    RPAREN          reduce using rule 5 (args -> ID .)
+
+
+state 33
+
+    (2) function -> DEF ID LPAREN args_multiple . RPAREN body END
+
+    RPAREN          shift and go to state 54
+
+
+state 34
+
+    (3) function -> DEF ID LPAREN args . RPAREN body END
+
+    RPAREN          shift and go to state 55
+
+
+state 35
+
+    (43) range_incl -> LPAREN INTEGER . RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> LPAREN INTEGER . RANGE_EXCL INTEGER RPAREN
+
+    RANGE_INCL      shift and go to state 56
+    RANGE_EXCL      shift and go to state 57
+
+
+state 36
+
+    (7) body -> sentence body .
+
+    END             reduce using rule 7 (body -> sentence body .)
+    ELSE            reduce using rule 7 (body -> sentence body .)
+
+
+state 37
+
+    (43) range_incl -> LPAREN . INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> LPAREN . INTEGER RANGE_EXCL INTEGER RPAREN
+
+    INTEGER         shift and go to state 35
+
+
+state 38
+
+    (24) expression -> expression PLUS . term
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    term                           shift and go to state 58
+    factor                         shift and go to state 20
+
+state 39
+
+    (25) expression -> expression MINUS . term
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    term                           shift and go to state 59
+    factor                         shift and go to state 20
+
+state 40
+
+    (27) term -> term TIMES . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 60
+
+state 41
+
+    (28) term -> term DIVIDE . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 61
+
+state 42
+
+    (8) print -> PUTS factor .
+
+    ID              reduce using rule 8 (print -> PUTS factor .)
+    PUTS            reduce using rule 8 (print -> PUTS factor .)
+    IF              reduce using rule 8 (print -> PUTS factor .)
+    WHILE           reduce using rule 8 (print -> PUTS factor .)
+    FOR             reduce using rule 8 (print -> PUTS factor .)
+    LPAREN          reduce using rule 8 (print -> PUTS factor .)
+    DEF             reduce using rule 8 (print -> PUTS factor .)
+    INTEGER         reduce using rule 8 (print -> PUTS factor .)
+    FLOAT           reduce using rule 8 (print -> PUTS factor .)
+    STRING          reduce using rule 8 (print -> PUTS factor .)
+    BOOLEAN         reduce using rule 8 (print -> PUTS factor .)
+    END             reduce using rule 8 (print -> PUTS factor .)
+    ELSE            reduce using rule 8 (print -> PUTS factor .)
+
+
+state 43
+
+    (22) input -> PUTS STRING .
+    (32) factor -> STRING .
+
+  ! reduce/reduce conflict for ID resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for PUTS resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for IF resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for WHILE resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for FOR resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for LPAREN resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for DEF resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for INTEGER resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for FLOAT resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for STRING resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for BOOLEAN resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for END resolved using rule 22 (input -> PUTS STRING .)
+  ! reduce/reduce conflict for ELSE resolved using rule 22 (input -> PUTS STRING .)
+    ID              reduce using rule 22 (input -> PUTS STRING .)
+    PUTS            reduce using rule 22 (input -> PUTS STRING .)
+    IF              reduce using rule 22 (input -> PUTS STRING .)
+    WHILE           reduce using rule 22 (input -> PUTS STRING .)
+    FOR             reduce using rule 22 (input -> PUTS STRING .)
+    LPAREN          reduce using rule 22 (input -> PUTS STRING .)
+    DEF             reduce using rule 22 (input -> PUTS STRING .)
+    INTEGER         reduce using rule 22 (input -> PUTS STRING .)
+    FLOAT           reduce using rule 22 (input -> PUTS STRING .)
+    STRING          reduce using rule 22 (input -> PUTS STRING .)
+    BOOLEAN         reduce using rule 22 (input -> PUTS STRING .)
+    END             reduce using rule 22 (input -> PUTS STRING .)
+    ELSE            reduce using rule 22 (input -> PUTS STRING .)
+
+  ! ID              [ reduce using rule 32 (factor -> STRING .) ]
+  ! PUTS            [ reduce using rule 32 (factor -> STRING .) ]
+  ! IF              [ reduce using rule 32 (factor -> STRING .) ]
+  ! WHILE           [ reduce using rule 32 (factor -> STRING .) ]
+  ! FOR             [ reduce using rule 32 (factor -> STRING .) ]
+  ! LPAREN          [ reduce using rule 32 (factor -> STRING .) ]
+  ! DEF             [ reduce using rule 32 (factor -> STRING .) ]
+  ! INTEGER         [ reduce using rule 32 (factor -> STRING .) ]
+  ! FLOAT           [ reduce using rule 32 (factor -> STRING .) ]
+  ! STRING          [ reduce using rule 32 (factor -> STRING .) ]
+  ! BOOLEAN         [ reduce using rule 32 (factor -> STRING .) ]
+  ! END             [ reduce using rule 32 (factor -> STRING .) ]
+  ! ELSE            [ reduce using rule 32 (factor -> STRING .) ]
+
+
+state 44
+
+    (34) factor -> ID .
+
+    ID              reduce using rule 34 (factor -> ID .)
+    PUTS            reduce using rule 34 (factor -> ID .)
+    IF              reduce using rule 34 (factor -> ID .)
+    WHILE           reduce using rule 34 (factor -> ID .)
+    FOR             reduce using rule 34 (factor -> ID .)
+    LPAREN          reduce using rule 34 (factor -> ID .)
+    DEF             reduce using rule 34 (factor -> ID .)
+    INTEGER         reduce using rule 34 (factor -> ID .)
+    FLOAT           reduce using rule 34 (factor -> ID .)
+    STRING          reduce using rule 34 (factor -> ID .)
+    BOOLEAN         reduce using rule 34 (factor -> ID .)
+    END             reduce using rule 34 (factor -> ID .)
+    ELSE            reduce using rule 34 (factor -> ID .)
+    EQUALS          reduce using rule 34 (factor -> ID .)
+    NEQUALS         reduce using rule 34 (factor -> ID .)
+    GREATEREQ       reduce using rule 34 (factor -> ID .)
+    LESSEQ          reduce using rule 34 (factor -> ID .)
+    GREATERT        reduce using rule 34 (factor -> ID .)
+    LESST           reduce using rule 34 (factor -> ID .)
+    TIMES           reduce using rule 34 (factor -> ID .)
+    DIVIDE          reduce using rule 34 (factor -> ID .)
+    PLUS            reduce using rule 34 (factor -> ID .)
+    MINUS           reduce using rule 34 (factor -> ID .)
+    COMMA           reduce using rule 34 (factor -> ID .)
+    RCORCH          reduce using rule 34 (factor -> ID .)
+    AND             reduce using rule 34 (factor -> ID .)
+    OR              reduce using rule 34 (factor -> ID .)
+    RBRACE          reduce using rule 34 (factor -> ID .)
+
+
+state 45
+
+    (45) condition -> IF logic_expression . body END
+    (46) condition -> IF logic_expression . body ELSE body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 62
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 46
+
+    (47) logic_expression -> factor . logic_op factor
+    (48) logic_expression -> factor . logic_op factor logic_connector logic_expression
+    (49) logic_op -> . EQUALS
+    (50) logic_op -> . NEQUALS
+    (51) logic_op -> . GREATEREQ
+    (52) logic_op -> . LESSEQ
+    (53) logic_op -> . GREATERT
+    (54) logic_op -> . LESST
+
+    EQUALS          shift and go to state 64
+    NEQUALS         shift and go to state 65
+    GREATEREQ       shift and go to state 66
+    LESSEQ          shift and go to state 67
+    GREATERT        shift and go to state 68
+    LESST           shift and go to state 69
+
+    logic_op                       shift and go to state 63
+
+state 47
+
+    (42) while_loop -> WHILE logic_expression . body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 70
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 48
+
+    (38) for_loop -> FOR ID . IN range_incl body END
+
+    IN              shift and go to state 71
+
+
+state 49
+
+    (21) assignment -> ID ASSIGN factor .
+
+    ID              reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    PUTS            reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    IF              reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    WHILE           reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    FOR             reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    LPAREN          reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    DEF             reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    INTEGER         reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    FLOAT           reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    STRING          reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    BOOLEAN         reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    END             reduce using rule 21 (assignment -> ID ASSIGN factor .)
+    ELSE            reduce using rule 21 (assignment -> ID ASSIGN factor .)
+
+
+state 50
+
+    (23) input -> ID ASSIGN GETS . DOT ID
+
+    DOT             shift and go to state 72
+
+
+state 51
+
+    (35) array -> ID ASSIGN LCORCH . elements RCORCH
+    (36) elements -> . factor
+    (37) elements -> . factor COMMA elements
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    elements                       shift and go to state 73
+    factor                         shift and go to state 74
+
+state 52
+
+    (39) hash -> ID ASSIGN LBRACE . hash_pairs RBRACE
+    (40) hash_pairs -> . STRING COLON factor
+    (41) hash_pairs -> . STRING COLON factor COMMA hash_pairs
+
+    STRING          shift and go to state 76
+
+    hash_pairs                     shift and go to state 75
+
+state 53
+
+    (4) args_multiple -> ID COMMA . args
+    (5) args -> . ID
+
+    ID              shift and go to state 77
+
+    args                           shift and go to state 78
+
+state 54
+
+    (2) function -> DEF ID LPAREN args_multiple RPAREN . body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 79
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 55
+
+    (3) function -> DEF ID LPAREN args RPAREN . body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 80
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 56
+
+    (43) range_incl -> LPAREN INTEGER RANGE_INCL . INTEGER RPAREN
+
+    INTEGER         shift and go to state 81
+
+
+state 57
+
+    (44) range_excl -> LPAREN INTEGER RANGE_EXCL . INTEGER RPAREN
+
+    INTEGER         shift and go to state 82
+
+
+state 58
+
+    (24) expression -> expression PLUS term .
+    (27) term -> term . TIMES factor
+    (28) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 24 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 24 (expression -> expression PLUS term .)
+    ID              reduce using rule 24 (expression -> expression PLUS term .)
+    PUTS            reduce using rule 24 (expression -> expression PLUS term .)
+    IF              reduce using rule 24 (expression -> expression PLUS term .)
+    WHILE           reduce using rule 24 (expression -> expression PLUS term .)
+    FOR             reduce using rule 24 (expression -> expression PLUS term .)
+    LPAREN          reduce using rule 24 (expression -> expression PLUS term .)
+    DEF             reduce using rule 24 (expression -> expression PLUS term .)
+    INTEGER         reduce using rule 24 (expression -> expression PLUS term .)
+    FLOAT           reduce using rule 24 (expression -> expression PLUS term .)
+    STRING          reduce using rule 24 (expression -> expression PLUS term .)
+    BOOLEAN         reduce using rule 24 (expression -> expression PLUS term .)
+    END             reduce using rule 24 (expression -> expression PLUS term .)
+    ELSE            reduce using rule 24 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 59
+
+    (25) expression -> expression MINUS term .
+    (27) term -> term . TIMES factor
+    (28) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 25 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 25 (expression -> expression MINUS term .)
+    ID              reduce using rule 25 (expression -> expression MINUS term .)
+    PUTS            reduce using rule 25 (expression -> expression MINUS term .)
+    IF              reduce using rule 25 (expression -> expression MINUS term .)
+    WHILE           reduce using rule 25 (expression -> expression MINUS term .)
+    FOR             reduce using rule 25 (expression -> expression MINUS term .)
+    LPAREN          reduce using rule 25 (expression -> expression MINUS term .)
+    DEF             reduce using rule 25 (expression -> expression MINUS term .)
+    INTEGER         reduce using rule 25 (expression -> expression MINUS term .)
+    FLOAT           reduce using rule 25 (expression -> expression MINUS term .)
+    STRING          reduce using rule 25 (expression -> expression MINUS term .)
+    BOOLEAN         reduce using rule 25 (expression -> expression MINUS term .)
+    END             reduce using rule 25 (expression -> expression MINUS term .)
+    ELSE            reduce using rule 25 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 60
+
+    (27) term -> term TIMES factor .
+
+    TIMES           reduce using rule 27 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 27 (term -> term TIMES factor .)
+    PLUS            reduce using rule 27 (term -> term TIMES factor .)
+    MINUS           reduce using rule 27 (term -> term TIMES factor .)
+    ID              reduce using rule 27 (term -> term TIMES factor .)
+    PUTS            reduce using rule 27 (term -> term TIMES factor .)
+    IF              reduce using rule 27 (term -> term TIMES factor .)
+    WHILE           reduce using rule 27 (term -> term TIMES factor .)
+    FOR             reduce using rule 27 (term -> term TIMES factor .)
+    LPAREN          reduce using rule 27 (term -> term TIMES factor .)
+    DEF             reduce using rule 27 (term -> term TIMES factor .)
+    INTEGER         reduce using rule 27 (term -> term TIMES factor .)
+    FLOAT           reduce using rule 27 (term -> term TIMES factor .)
+    STRING          reduce using rule 27 (term -> term TIMES factor .)
+    BOOLEAN         reduce using rule 27 (term -> term TIMES factor .)
+    END             reduce using rule 27 (term -> term TIMES factor .)
+    ELSE            reduce using rule 27 (term -> term TIMES factor .)
+
+
+state 61
+
+    (28) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 28 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 28 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 28 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 28 (term -> term DIVIDE factor .)
+    ID              reduce using rule 28 (term -> term DIVIDE factor .)
+    PUTS            reduce using rule 28 (term -> term DIVIDE factor .)
+    IF              reduce using rule 28 (term -> term DIVIDE factor .)
+    WHILE           reduce using rule 28 (term -> term DIVIDE factor .)
+    FOR             reduce using rule 28 (term -> term DIVIDE factor .)
+    LPAREN          reduce using rule 28 (term -> term DIVIDE factor .)
+    DEF             reduce using rule 28 (term -> term DIVIDE factor .)
+    INTEGER         reduce using rule 28 (term -> term DIVIDE factor .)
+    FLOAT           reduce using rule 28 (term -> term DIVIDE factor .)
+    STRING          reduce using rule 28 (term -> term DIVIDE factor .)
+    BOOLEAN         reduce using rule 28 (term -> term DIVIDE factor .)
+    END             reduce using rule 28 (term -> term DIVIDE factor .)
+    ELSE            reduce using rule 28 (term -> term DIVIDE factor .)
+
+
+state 62
+
+    (45) condition -> IF logic_expression body . END
+    (46) condition -> IF logic_expression body . ELSE body END
+
+    END             shift and go to state 83
+    ELSE            shift and go to state 84
+
+
+state 63
+
+    (47) logic_expression -> factor logic_op . factor
+    (48) logic_expression -> factor logic_op . factor logic_connector logic_expression
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 85
+
+state 64
+
+    (49) logic_op -> EQUALS .
+
+    INTEGER         reduce using rule 49 (logic_op -> EQUALS .)
+    FLOAT           reduce using rule 49 (logic_op -> EQUALS .)
+    STRING          reduce using rule 49 (logic_op -> EQUALS .)
+    BOOLEAN         reduce using rule 49 (logic_op -> EQUALS .)
+    ID              reduce using rule 49 (logic_op -> EQUALS .)
+
+
+state 65
+
+    (50) logic_op -> NEQUALS .
+
+    INTEGER         reduce using rule 50 (logic_op -> NEQUALS .)
+    FLOAT           reduce using rule 50 (logic_op -> NEQUALS .)
+    STRING          reduce using rule 50 (logic_op -> NEQUALS .)
+    BOOLEAN         reduce using rule 50 (logic_op -> NEQUALS .)
+    ID              reduce using rule 50 (logic_op -> NEQUALS .)
+
+
+state 66
+
+    (51) logic_op -> GREATEREQ .
+
+    INTEGER         reduce using rule 51 (logic_op -> GREATEREQ .)
+    FLOAT           reduce using rule 51 (logic_op -> GREATEREQ .)
+    STRING          reduce using rule 51 (logic_op -> GREATEREQ .)
+    BOOLEAN         reduce using rule 51 (logic_op -> GREATEREQ .)
+    ID              reduce using rule 51 (logic_op -> GREATEREQ .)
+
+
+state 67
+
+    (52) logic_op -> LESSEQ .
+
+    INTEGER         reduce using rule 52 (logic_op -> LESSEQ .)
+    FLOAT           reduce using rule 52 (logic_op -> LESSEQ .)
+    STRING          reduce using rule 52 (logic_op -> LESSEQ .)
+    BOOLEAN         reduce using rule 52 (logic_op -> LESSEQ .)
+    ID              reduce using rule 52 (logic_op -> LESSEQ .)
+
+
+state 68
+
+    (53) logic_op -> GREATERT .
+
+    INTEGER         reduce using rule 53 (logic_op -> GREATERT .)
+    FLOAT           reduce using rule 53 (logic_op -> GREATERT .)
+    STRING          reduce using rule 53 (logic_op -> GREATERT .)
+    BOOLEAN         reduce using rule 53 (logic_op -> GREATERT .)
+    ID              reduce using rule 53 (logic_op -> GREATERT .)
+
+
+state 69
+
+    (54) logic_op -> LESST .
+
+    INTEGER         reduce using rule 54 (logic_op -> LESST .)
+    FLOAT           reduce using rule 54 (logic_op -> LESST .)
+    STRING          reduce using rule 54 (logic_op -> LESST .)
+    BOOLEAN         reduce using rule 54 (logic_op -> LESST .)
+    ID              reduce using rule 54 (logic_op -> LESST .)
+
+
+state 70
+
+    (42) while_loop -> WHILE logic_expression body . END
+
+    END             shift and go to state 86
+
+
+state 71
+
+    (38) for_loop -> FOR ID IN . range_incl body END
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+
+    LPAREN          shift and go to state 88
+
+    range_incl                     shift and go to state 87
+
+state 72
+
+    (23) input -> ID ASSIGN GETS DOT . ID
+
+    ID              shift and go to state 89
+
+
+state 73
+
+    (35) array -> ID ASSIGN LCORCH elements . RCORCH
+
+    RCORCH          shift and go to state 90
+
+
+state 74
+
+    (36) elements -> factor .
+    (37) elements -> factor . COMMA elements
+
+    RCORCH          reduce using rule 36 (elements -> factor .)
+    COMMA           shift and go to state 91
+
+
+state 75
+
+    (39) hash -> ID ASSIGN LBRACE hash_pairs . RBRACE
+
+    RBRACE          shift and go to state 92
+
+
+state 76
+
+    (40) hash_pairs -> STRING . COLON factor
+    (41) hash_pairs -> STRING . COLON factor COMMA hash_pairs
+
+    COLON           shift and go to state 93
+
+
+state 77
+
+    (5) args -> ID .
+
+    RPAREN          reduce using rule 5 (args -> ID .)
+
+
+state 78
+
+    (4) args_multiple -> ID COMMA args .
+
+    RPAREN          reduce using rule 4 (args_multiple -> ID COMMA args .)
+
+
+state 79
+
+    (2) function -> DEF ID LPAREN args_multiple RPAREN body . END
+
+    END             shift and go to state 94
+
+
+state 80
+
+    (3) function -> DEF ID LPAREN args RPAREN body . END
+
+    END             shift and go to state 95
+
+
+state 81
+
+    (43) range_incl -> LPAREN INTEGER RANGE_INCL INTEGER . RPAREN
+
+    RPAREN          shift and go to state 96
+
+
+state 82
+
+    (44) range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER . RPAREN
+
+    RPAREN          shift and go to state 97
+
+
+state 83
+
+    (45) condition -> IF logic_expression body END .
+
+    ID              reduce using rule 45 (condition -> IF logic_expression body END .)
+    PUTS            reduce using rule 45 (condition -> IF logic_expression body END .)
+    IF              reduce using rule 45 (condition -> IF logic_expression body END .)
+    WHILE           reduce using rule 45 (condition -> IF logic_expression body END .)
+    FOR             reduce using rule 45 (condition -> IF logic_expression body END .)
+    LPAREN          reduce using rule 45 (condition -> IF logic_expression body END .)
+    DEF             reduce using rule 45 (condition -> IF logic_expression body END .)
+    INTEGER         reduce using rule 45 (condition -> IF logic_expression body END .)
+    FLOAT           reduce using rule 45 (condition -> IF logic_expression body END .)
+    STRING          reduce using rule 45 (condition -> IF logic_expression body END .)
+    BOOLEAN         reduce using rule 45 (condition -> IF logic_expression body END .)
+    END             reduce using rule 45 (condition -> IF logic_expression body END .)
+    ELSE            reduce using rule 45 (condition -> IF logic_expression body END .)
+
+
+state 84
+
+    (46) condition -> IF logic_expression body ELSE . body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    body                           shift and go to state 98
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_incl                     shift and go to state 16
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 85
+
+    (47) logic_expression -> factor logic_op factor .
+    (48) logic_expression -> factor logic_op factor . logic_connector logic_expression
+    (55) logic_connector -> . AND
+    (56) logic_connector -> . OR
+
+    ID              reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    PUTS            reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    IF              reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    WHILE           reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    FOR             reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    LPAREN          reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    DEF             reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    INTEGER         reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    FLOAT           reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    STRING          reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    BOOLEAN         reduce using rule 47 (logic_expression -> factor logic_op factor .)
+    AND             shift and go to state 100
+    OR              shift and go to state 101
+
+    logic_connector                shift and go to state 99
+
+state 86
+
+    (42) while_loop -> WHILE logic_expression body END .
+
+    ID              reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    PUTS            reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    IF              reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    WHILE           reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    FOR             reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    LPAREN          reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    DEF             reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    INTEGER         reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    FLOAT           reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    STRING          reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    BOOLEAN         reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    END             reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+    ELSE            reduce using rule 42 (while_loop -> WHILE logic_expression body END .)
+
+
+state 87
+
+    (38) for_loop -> FOR ID IN range_incl . body END
+    (6) body -> . sentence
+    (7) body -> . sentence body
+    (9) sentence -> . assignment
+    (10) sentence -> . expression
+    (11) sentence -> . print
+    (12) sentence -> . input
+    (13) sentence -> . condition
+    (14) sentence -> . while_loop
+    (15) sentence -> . for_loop
+    (16) sentence -> . array
+    (17) sentence -> . range_incl
+    (18) sentence -> . range_excl
+    (19) sentence -> . hash
+    (20) sentence -> . function
+    (21) assignment -> . ID ASSIGN factor
+    (24) expression -> . expression PLUS term
+    (25) expression -> . expression MINUS term
+    (26) expression -> . term
+    (8) print -> . PUTS factor
+    (22) input -> . PUTS STRING
+    (23) input -> . ID ASSIGN GETS DOT ID
+    (45) condition -> . IF logic_expression body END
+    (46) condition -> . IF logic_expression body ELSE body END
+    (42) while_loop -> . WHILE logic_expression body END
+    (38) for_loop -> . FOR ID IN range_incl body END
+    (35) array -> . ID ASSIGN LCORCH elements RCORCH
+    (43) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+    (44) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+    (39) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
+    (1) function -> . DEF ID body END
+    (2) function -> . DEF ID LPAREN args_multiple RPAREN body END
+    (3) function -> . DEF ID LPAREN args RPAREN body END
+    (27) term -> . term TIMES factor
+    (28) term -> . term DIVIDE factor
+    (29) term -> . factor
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    ID              shift and go to state 4
+    PUTS            shift and go to state 22
+    IF              shift and go to state 24
+    WHILE           shift and go to state 25
+    FOR             shift and go to state 26
+    LPAREN          shift and go to state 37
+    DEF             shift and go to state 2
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+
+    range_incl                     shift and go to state 16
+    body                           shift and go to state 102
+    sentence                       shift and go to state 7
+    assignment                     shift and go to state 8
+    expression                     shift and go to state 9
+    print                          shift and go to state 10
+    input                          shift and go to state 11
+    condition                      shift and go to state 12
+    while_loop                     shift and go to state 13
+    for_loop                       shift and go to state 14
+    array                          shift and go to state 15
+    range_excl                     shift and go to state 17
+    hash                           shift and go to state 18
+    function                       shift and go to state 19
+    factor                         shift and go to state 20
+    term                           shift and go to state 21
+
+state 88
+
+    (43) range_incl -> LPAREN . INTEGER RANGE_INCL INTEGER RPAREN
+
+    INTEGER         shift and go to state 103
+
+
+state 89
+
+    (23) input -> ID ASSIGN GETS DOT ID .
+
+    ID              reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    PUTS            reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    IF              reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    WHILE           reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    FOR             reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    LPAREN          reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    DEF             reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    INTEGER         reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    FLOAT           reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    STRING          reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    BOOLEAN         reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    END             reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+    ELSE            reduce using rule 23 (input -> ID ASSIGN GETS DOT ID .)
+
+
+state 90
+
+    (35) array -> ID ASSIGN LCORCH elements RCORCH .
+
+    ID              reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    PUTS            reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    IF              reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    WHILE           reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    FOR             reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    LPAREN          reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    DEF             reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    INTEGER         reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    FLOAT           reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    STRING          reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    BOOLEAN         reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    END             reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+    ELSE            reduce using rule 35 (array -> ID ASSIGN LCORCH elements RCORCH .)
+
+
+state 91
+
+    (37) elements -> factor COMMA . elements
+    (36) elements -> . factor
+    (37) elements -> . factor COMMA elements
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 74
+    elements                       shift and go to state 104
+
+state 92
+
+    (39) hash -> ID ASSIGN LBRACE hash_pairs RBRACE .
+
+    ID              reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    PUTS            reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    IF              reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    WHILE           reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    FOR             reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    LPAREN          reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    DEF             reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    INTEGER         reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    FLOAT           reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    STRING          reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    BOOLEAN         reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    END             reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+    ELSE            reduce using rule 39 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
+
+
+state 93
+
+    (40) hash_pairs -> STRING COLON . factor
+    (41) hash_pairs -> STRING COLON . factor COMMA hash_pairs
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 105
+
+state 94
+
+    (2) function -> DEF ID LPAREN args_multiple RPAREN body END .
+
+    $end            reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    ID              reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    PUTS            reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    IF              reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    WHILE           reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    FOR             reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    LPAREN          reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    DEF             reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    INTEGER         reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    FLOAT           reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    STRING          reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    BOOLEAN         reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    END             reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+    ELSE            reduce using rule 2 (function -> DEF ID LPAREN args_multiple RPAREN body END .)
+
+
+state 95
+
+    (3) function -> DEF ID LPAREN args RPAREN body END .
+
+    $end            reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    ID              reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    PUTS            reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    IF              reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    WHILE           reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    FOR             reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    LPAREN          reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    DEF             reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    INTEGER         reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    FLOAT           reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    STRING          reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    BOOLEAN         reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    END             reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+    ELSE            reduce using rule 3 (function -> DEF ID LPAREN args RPAREN body END .)
+
+
+state 96
+
+    (43) range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .
+
+    ID              reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    PUTS            reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    IF              reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    WHILE           reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    FOR             reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    LPAREN          reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    DEF             reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    INTEGER         reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    FLOAT           reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    STRING          reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    BOOLEAN         reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    END             reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+    ELSE            reduce using rule 43 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
+
+
+state 97
+
+    (44) range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .
+
+    ID              reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    PUTS            reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    IF              reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    WHILE           reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    FOR             reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    LPAREN          reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    DEF             reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    INTEGER         reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    FLOAT           reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    STRING          reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    BOOLEAN         reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    END             reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+    ELSE            reduce using rule 44 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
+
+
+state 98
+
+    (46) condition -> IF logic_expression body ELSE body . END
+
+    END             shift and go to state 106
+
+
+state 99
+
+    (48) logic_expression -> factor logic_op factor logic_connector . logic_expression
+    (47) logic_expression -> . factor logic_op factor
+    (48) logic_expression -> . factor logic_op factor logic_connector logic_expression
+    (30) factor -> . INTEGER
+    (31) factor -> . FLOAT
+    (32) factor -> . STRING
+    (33) factor -> . BOOLEAN
+    (34) factor -> . ID
+
+    INTEGER         shift and go to state 27
+    FLOAT           shift and go to state 28
+    STRING          shift and go to state 23
+    BOOLEAN         shift and go to state 29
+    ID              shift and go to state 44
+
+    factor                         shift and go to state 46
+    logic_expression               shift and go to state 107
+
+state 100
+
+    (55) logic_connector -> AND .
+
+    INTEGER         reduce using rule 55 (logic_connector -> AND .)
+    FLOAT           reduce using rule 55 (logic_connector -> AND .)
+    STRING          reduce using rule 55 (logic_connector -> AND .)
+    BOOLEAN         reduce using rule 55 (logic_connector -> AND .)
+    ID              reduce using rule 55 (logic_connector -> AND .)
+
+
+state 101
+
+    (56) logic_connector -> OR .
+
+    INTEGER         reduce using rule 56 (logic_connector -> OR .)
+    FLOAT           reduce using rule 56 (logic_connector -> OR .)
+    STRING          reduce using rule 56 (logic_connector -> OR .)
+    BOOLEAN         reduce using rule 56 (logic_connector -> OR .)
+    ID              reduce using rule 56 (logic_connector -> OR .)
+
+
+state 102
+
+    (38) for_loop -> FOR ID IN range_incl body . END
+
+    END             shift and go to state 108
+
+
+state 103
+
+    (43) range_incl -> LPAREN INTEGER . RANGE_INCL INTEGER RPAREN
+
+    RANGE_INCL      shift and go to state 56
+
+
+state 104
+
+    (37) elements -> factor COMMA elements .
+
+    RCORCH          reduce using rule 37 (elements -> factor COMMA elements .)
+
+
+state 105
+
+    (40) hash_pairs -> STRING COLON factor .
+    (41) hash_pairs -> STRING COLON factor . COMMA hash_pairs
+
+    RBRACE          reduce using rule 40 (hash_pairs -> STRING COLON factor .)
+    COMMA           shift and go to state 109
+
+
+state 106
+
+    (46) condition -> IF logic_expression body ELSE body END .
+
+    ID              reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    PUTS            reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    IF              reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    WHILE           reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    FOR             reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    LPAREN          reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    DEF             reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    INTEGER         reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    FLOAT           reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    STRING          reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    BOOLEAN         reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    END             reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+    ELSE            reduce using rule 46 (condition -> IF logic_expression body ELSE body END .)
+
+
+state 107
+
+    (48) logic_expression -> factor logic_op factor logic_connector logic_expression .
+
+    ID              reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    PUTS            reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    IF              reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    WHILE           reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    FOR             reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    LPAREN          reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    DEF             reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    INTEGER         reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    FLOAT           reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    STRING          reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+    BOOLEAN         reduce using rule 48 (logic_expression -> factor logic_op factor logic_connector logic_expression .)
+
+
+state 108
+
+    (38) for_loop -> FOR ID IN range_incl body END .
+
+    ID              reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    PUTS            reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    IF              reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    WHILE           reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    FOR             reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    LPAREN          reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    DEF             reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    INTEGER         reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    FLOAT           reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    STRING          reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    BOOLEAN         reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    END             reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+    ELSE            reduce using rule 38 (for_loop -> FOR ID IN range_incl body END .)
+
+
+state 109
+
+    (41) hash_pairs -> STRING COLON factor COMMA . hash_pairs
+    (40) hash_pairs -> . STRING COLON factor
+    (41) hash_pairs -> . STRING COLON factor COMMA hash_pairs
+
+    STRING          shift and go to state 76
+
+    hash_pairs                     shift and go to state 110
+
+state 110
+
+    (41) hash_pairs -> STRING COLON factor COMMA hash_pairs .
+
+    RBRACE          reduce using rule 41 (hash_pairs -> STRING COLON factor COMMA hash_pairs .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 43 resolved using rule (input -> PUTS STRING)
+WARNING: rejected rule (factor -> STRING) in state 43

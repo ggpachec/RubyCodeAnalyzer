@@ -14,6 +14,8 @@ reserved = {
     'true' : 'TRUE',
     'false' : 'FALSE',
     'puts' : 'PUTS',
+    'in' : 'IN',
+    'gets' : 'GETS',
     # Luis Luna - Inicio de aporte de palabras reservadas
     'nil': 'NIL',
     'end' : 'END',
@@ -191,8 +193,8 @@ lexer = lex.lex()
 
 # Joel Orrala - Inicio de bloque de generación de logs
 
-nombre_usuario = "joelorrala"  # cambiar por cada usuario Git
-archivo_prueba = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # cambiar por el archivo de cada uno
+nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
+archivo_prueba = r"..\src\algoritmos\algoritmo_genesis.rb" # cambiar por el archivo de cada uno
 
 
 os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
