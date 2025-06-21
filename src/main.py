@@ -13,6 +13,7 @@ reserved = {
     'return' : 'RETURN',
     'true' : 'TRUE',
     'false' : 'FALSE',
+    'puts' : 'PUTS',
     # Luis Luna - Inicio de aporte de palabras reservadas
     'nil': 'NIL',
     'end' : 'END',
@@ -35,8 +36,8 @@ tokens = (
     # Genesis Pacheco
     'STRING',
     'BOOLEAN',
-    #'NIL',
     'ID',
+    'VAR_INST',
     # Genesis Pacheco
 
     ## OPERADORES ARITMETICOS Y DE ASIGNACION
@@ -44,12 +45,11 @@ tokens = (
     'MINUS',
     'TIMES',
     'DIVIDE',
-    #LUIS! EXPONENT
+    'EXPONENT',
 
 
     # Genesis Pacheco
     'ASSIGN',
-    # Genesis Pacheco
 
     ## OPERADORES LOGICOS Y DE COMPARACION
     'AND_OP',
@@ -61,6 +61,7 @@ tokens = (
     'GREATERT',
     'LESSEQ',
     'GREATEREQ',
+    # Genesis Pacheco
 
     ## DELIMITADORES Y SIMBOLOS
     'LPAREN',
@@ -68,15 +69,14 @@ tokens = (
     'LCORCH',
     'RCORCH',
     # Luis Luna - Inicio de aporte de nuevos tokens
-    'EXPONENT',
     'LBRACE',
     'RBRACE',
     'SEMICOLON',
-    'COMMENT',
     # Luis Luna - Fin de aporte de nuevos tokens
     # Genesis Pacheco
     'COMMA',
     'COLON',
+    'DOT',
     # Genesis Pacheco
     # Joel Orrala
     'RANGE_INCL',
@@ -105,6 +105,7 @@ t_OR_OP = r'\|\|'
 t_NOT_OP = r'!'
 t_COMMA = r','
 t_COLON = r':'
+t_DOT = r'\.'
 # Genesis Pacheco
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
@@ -147,10 +148,16 @@ def t_ID(t):
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
 
+# Genesis Pacheco
+def t_VAR_INST(t):
+    r'\@[a-zA-Z_][a-zA-Z_0-9]*'
+    return t
+# Genesis Pacheco
+
 # Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
 def t_COMMENT(t):
     r'\#.*'
-    return t
+    pass
 # Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
 
 # Joel Orrala - Comentario multilínea (=begin ... =end)
@@ -167,26 +174,31 @@ def t_newline(t):
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
 
-# Error handling rule
+# Joel Orrala - Errores personalizados
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    if t.value[0].isdigit():
+        print(f"[LEXICAL ERROR] Identificador no puede comenzar con número: '{t.value}' en línea {t.lineno}")
+    elif t.value[0] in ['"', "'"]:
+        print(f"[LEXICAL ERROR] String no cerrado correctamente o comillas desbalanceadas en línea {t.lineno}")
+    else:
+        print(f"[LEXICAL ERROR] Carácter ilegal '{t.value[0]}' en línea {t.lineno}")
     t.lexer.skip(1)
+# Joel Orrala 
 
 # Build the lexer
 lexer = lex.lex()
 
 
-
 # Joel Orrala - Inicio de bloque de generación de logs
 
 nombre_usuario = "luisluna2307"  # cambiar por cada usuario Git
-archivo_prueba = r"\src\algoritmos\algoritmo_luis.rb"  # cambiar por el archivo de cada uno
+archivo_prueba = r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # cambiar por el archivo de cada uno
 
 
 os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
 
 
-with open(archivo_prueba, "r") as f:
+with open(archivo_prueba, "r", encoding="utf-8") as f:
    data = f.read()
 
 
@@ -195,7 +207,7 @@ fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
 log_filename = f"logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
 
 # Procesar análisis léxico y guardar log
-with open(log_filename, "w") as log_file:
+with open(log_filename, "w", encoding="utf-8") as log_file:
    lexer.input(data)
    while True:
        tok = lexer.token()
@@ -205,5 +217,5 @@ with open(log_filename, "w") as log_file:
        log_file.write(str(tok) + '\n')
 
 
-print(f"\n Tokens de {nombre_usuario} guardados en: {log_filename}")
+print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}")
 # Joel Orrala - Fin de bloque de generación de logs
