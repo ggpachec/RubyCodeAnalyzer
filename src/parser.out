@@ -2,40 +2,19 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AND
     AND_OP
-    ASSIGN
-    BOOLEAN
     BREAK
     CLASS
-    COLON
-    COMMA
     DO
-    DOT
-    ELSE
-    END
     EXPONENT
     FALSE
-    FOR
-    GREATEREQ
-    GREATERT
-    IF
-    LBRACE
-    LCORCH
-    LESSEQ
-    LESST
     MODULE
-    NEQUALS
     NEXT
     NIL
     NOT
     NOT_OP
-    OR
     OR_OP
     RANGE_EXCL
-    RANGE_INCL
-    RBRACE
-    RCORCH
     RETURN
     SEMICOLON
     THEN
@@ -47,78 +26,114 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> function
-Rule 1     function -> DEF ID LPAREN RPAREN
-Rule 2     function -> DEF ID LPAREN body RPAREN
-Rule 3     body -> sentence
-Rule 4     body -> sentence body
-Rule 5     print -> PUTS factor_expression
-Rule 6     sentence -> assignment
-Rule 7     sentence -> expression
-Rule 8     sentence -> print
-Rule 9     assignment -> ID EQUALS factor
-Rule 10    expression -> expression PLUS term
-Rule 11    expression -> expression MINUS term
-Rule 12    expression -> term
-Rule 13    term -> term TIMES factor
-Rule 14    term -> term DIVIDE factor
-Rule 15    term -> factor
-Rule 16    factor -> INTEGER
-Rule 17    factor -> FLOAT
-Rule 18    factor -> ID
-Rule 19    factor -> STRING
+Rule 1     function -> DEF ID LPAREN RPAREN body END
+Rule 2     function -> DEF ID LPAREN args RPAREN body END
+Rule 3     args -> ID
+Rule 4     args -> ID COMMA args
+Rule 5     args -> empty
+Rule 6     body -> sentence
+Rule 7     body -> sentence body
+Rule 8     print -> PUTS factor
+Rule 9     sentence -> assignment
+Rule 10    sentence -> expression
+Rule 11    sentence -> print
+Rule 12    sentence -> input
+Rule 13    sentence -> condition
+Rule 14    sentence -> while_loop
+Rule 15    sentence -> for_loop
+Rule 16    sentence -> array
+Rule 17    sentence -> range
+Rule 18    sentence -> hash
+Rule 19    sentence -> function
+Rule 20    sentence -> class_def
+Rule 21    assignment -> ID EQUALS factor
+Rule 22    input -> PRINT STRING
+Rule 23    input -> ID ASSIGN GETS DOT ID
+Rule 24    expression -> expression PLUS term
+Rule 25    expression -> expression MINUS term
+Rule 26    expression -> term
+Rule 27    term -> term TIMES factor
+Rule 28    term -> term DIVIDE factor
+Rule 29    term -> factor
+Rule 30    factor -> INTEGER
+Rule 31    factor -> FLOAT
+Rule 32    factor -> STRING
+Rule 33    factor -> BOOLEAN
+Rule 34    factor -> ID
+Rule 35    array -> ID ASSIGN LCORCH elements RCORCH
+Rule 36    elements -> factor
+Rule 37    elements -> factor COMMA elements
+Rule 38    for_loop -> FOR ID IN range body END
+Rule 39    range -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+Rule 40    empty -> <empty>
+Rule 41    hash -> ID ASSIGN LBRACE hash_pairs RBRACE
+Rule 42    hash_pairs -> STRING COLON factor
+Rule 43    hash_pairs -> STRING COLON factor COMMA hash_pairs
+Rule 44    condition -> IF logic_expression body END
+Rule 45    condition -> IF logic_expression body ELSE body END
+Rule 46    logic_expression -> factor logic_op factor
+Rule 47    logic_expression -> factor logic_op factor logic_connector logic_expression
+Rule 48    logic_op -> EQUALS
+Rule 49    logic_op -> NEQUALS
+Rule 50    logic_op -> GREATEREQ
+Rule 51    logic_op -> LESSEQ
+Rule 52    logic_op -> GREATERT
+Rule 53    logic_op -> LESST
+Rule 54    logic_connector -> AND
+Rule 55    logic_connector -> OR
 
 Terminals, with rules where they appear
 
-AND                  : 
+AND                  : 54
 AND_OP               : 
-ASSIGN               : 
-BOOLEAN              : 
+ASSIGN               : 23 35 41
+BOOLEAN              : 33
 BREAK                : 
 CLASS                : 
-COLON                : 
-COMMA                : 
+COLON                : 42 43
+COMMA                : 4 37 43
 DEF                  : 1 2
-DIVIDE               : 14
+DIVIDE               : 28
 DO                   : 
-DOT                  : 
-ELSE                 : 
-END                  : 
-EQUALS               : 9
+DOT                  : 23
+ELSE                 : 45
+END                  : 1 2 38 44 45
+EQUALS               : 21 48
 EXPONENT             : 
 FALSE                : 
-FLOAT                : 17
-FOR                  : 
-GREATEREQ            : 
-GREATERT             : 
-ID                   : 1 2 9 18
-IF                   : 
-INTEGER              : 16
-LBRACE               : 
-LCORCH               : 
-LESSEQ               : 
-LESST                : 
-LPAREN               : 1 2
-MINUS                : 11
+FLOAT                : 31
+FOR                  : 38
+GREATEREQ            : 50
+GREATERT             : 52
+ID                   : 1 2 3 4 21 23 23 34 35 38 41
+IF                   : 44 45
+INTEGER              : 30 39 39
+LBRACE               : 41
+LCORCH               : 35
+LESSEQ               : 51
+LESST                : 53
+LPAREN               : 1 2 39
+MINUS                : 25
 MODULE               : 
-NEQUALS              : 
+NEQUALS              : 49
 NEXT                 : 
 NIL                  : 
 NOT                  : 
 NOT_OP               : 
-OR                   : 
+OR                   : 55
 OR_OP                : 
-PLUS                 : 10
-PUTS                 : 5
+PLUS                 : 24
+PUTS                 : 8
 RANGE_EXCL           : 
-RANGE_INCL           : 
-RBRACE               : 
-RCORCH               : 
+RANGE_INCL           : 39
+RBRACE               : 41
+RCORCH               : 35
 RETURN               : 
-RPAREN               : 1 2
+RPAREN               : 1 2 39
 SEMICOLON            : 
-STRING               : 19
+STRING               : 22 32 42 43
 THEN                 : 
-TIMES                : 13
+TIMES                : 27
 TRUE                 : 
 VAR_INST             : 
 WHILE                : 
@@ -127,13 +142,30 @@ error                :
 
 Nonterminals, with rules where they appear
 
-assignment           : 6
-body                 : 2 4
-expression           : 7 10 11
-factor               : 9 13 14 15
-factor_expression    : 5
-function             : 0
-print                : 8
-sentence             : 3 4
-term                 : 10 11 12 13 14
+GETS                 : 23
+IN                   : 38
+PRINT                : 22
+args                 : 2 4
+array                : 16
+assignment           : 9
+body                 : 1 2 7 38 44 45 45
+class_def            : 20
+condition            : 13
+elements             : 35 37
+empty                : 5
+expression           : 10 24 25
+factor               : 8 21 27 28 29 36 37 42 43 46 46 47 47
+for_loop             : 15
+function             : 19 0
+hash                 : 18
+hash_pairs           : 41 43
+input                : 12
+logic_connector      : 47
+logic_expression     : 44 45 47
+logic_op             : 46 47
+print                : 11
+range                : 17 38
+sentence             : 6 7
+term                 : 24 25 26 27 28
+while_loop           : 14
 
