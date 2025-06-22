@@ -7,7 +7,12 @@ from main import tokens
 
 # Joel Orrala: Regla inicial del parser
 def p_start(p):
-    'start : sentence'
+    'start : sentences'
+
+def p_sentences(p):
+    '''sentences : sentence
+                 | sentence sentences'''
+# Joel Orrala
     
 #Joel Orrala y Genesis Pacheco - Funciones con y sin parámetros
 def p_function(p):
@@ -201,52 +206,51 @@ def p_logic_connector(p):
                        | OR'''
 #Joel Orrala
 
-# # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-# nombre_usuario = "ggpachec"  # Cambiar por el nombre de cada usuario Git
-# archivo_prueba = r"..\src\algoritmos\algoritmo_genesis.rb" # Cambiar al archivo Ruby de prueba
-#
-# os.makedirs("logs", exist_ok=True)
-#
-# with open(archivo_prueba, "r", encoding="utf-8") as f:
-#     data = f.read()
-#
-# now = datetime.now()
-# fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-# log_filename = f"src/logs/sintactico-{nombre_usuario}-{fecha_hora}.txt"
-#
-# def p_error(p):
-#     with open(log_filename, "w", encoding="utf-8") as log:
-#         if p:
-#             mensaje = f"Syntax error at token '{p.value}' (type {p.type}) at line {p.lineno}\n"
-#             print(mensaje.strip())
-#             log.write(mensaje)
-#         else:
-#             mensaje = "Syntax error at EOF\n"
-#             print(mensaje.strip())
-#             log.write(mensaje)
-#
-# # Build the parser
-# parser = yacc.yacc(start='start')
-# parser.parse(data)
-# print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {log_filename}")
-# # Joel Orrala - Fin de bloque de generación de logs sintácticos
+# Joel Orrala - Inicio de bloque de generación de logs sintácticos
+nombre_usuario = "joelorrala"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # Cambiar al archivo Ruby de prueba
 
-#ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO
+os.makedirs("logs", exist_ok=True)
+
+with open(archivo_prueba, "r", encoding="utf-8") as f:
+    data = f.read()
+now = datetime.now()
+fecha_hora = now.strftime("%d%m%Y-%Hh%M")
+log_filename = f"src/logs/sintactico-{nombre_usuario}-{fecha_hora}.txt"
+
 def p_error(p):
-    if p:
-        print(f"yacc: Syntax error at line {p.lineno}, token={p.type}")
-    else:
-        print("yacc: Parse error in input. EOF")
-
+    with open(log_filename, "w", encoding="utf-8") as log:
+        if p:
+            mensaje = f"Syntax error at token '{p.value}' (type {p.type}) at line {p.lineno}\n"
+            print(mensaje.strip())
+            log.write(mensaje)
+        else:
+            mensaje = "Syntax error at EOF\n"
+            print(mensaje.strip())
+            log.write(mensaje)
 
 # Build the parser
 parser = yacc.yacc(start='start')
+parser.parse(data)
+print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {log_filename}")
+# Joel Orrala - Fin de bloque de generación de logs sintácticos
 
-while True:
-   try:
-       s = input('calc > ')
-   except EOFError:
-       break
-   if not s: continue
-   result = parser.parse(s)
-   print(result)
+#ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO
+#def p_error(p):
+#    if p:
+#        print(f"yacc: Syntax error at line {p.lineno}, token={p.type}")
+#    else:
+#        print("yacc: Parse error in input. EOF")
+
+
+# Build the parser
+#parser = yacc.yacc(start='start')
+#
+#while True:
+#   try:
+#       s = input('calc > ')
+#   except EOFError:
+#       break
+#   if not s: continue
+#   result = parser.parse(s)
+#   print(result)
