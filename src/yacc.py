@@ -46,23 +46,21 @@ def p_sentence(p):
                 | hash
                 | function
                 | class_def
-                | return
+                | return_stmt
                 | break_stmt
                 | function_call_empty
                 | function_call_args'''
 
-def p_return(p):
-    # Agregar la palabra return en lugar de 'sentence'
-    'sentence : RETURN factor'
+def p_return_stmt(p):
+    'return_stmt : RETURN factor'
     
-def p_break(p):
-    # Agregar la palabra break_stmt en lugar de 'sentence'
-    'sentence : BREAK'
+def p_break_stmt(p):
+    'break_stmt : BREAK'
 
 #Genesis Pacheco
-def p_assignment (p):
-    #Agregar como otra opcion 'VAR_INST ASSIGN expression'
-    'assignment : ID ASSIGN expression'
+def p_assignment(p):
+    '''assignment : ID ASSIGN expression
+                  | VAR_INST ASSIGN expression'''
 
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
 def p_input(p):
@@ -127,21 +125,14 @@ def p_factor_logic_expression(p):
     'factor : logic_expression'
     #p[0] = p[1]
 
-# Joel Orrala - Asignación a variables de instancia (como @nombre)
-def p_assignment_var_inst(p):
-    'assignment : VAR_INST ASSIGN expression'
-    p[0] = ('assign_var_inst', p[1], p[3])
-
 # Joel Orrala - Llamada a función sin argumentos
-# Cambiar la palabra clave 'sentence' por 'function_call_empty'
 def p_function_call_empty(p):
-    'sentence : ID LPAREN RPAREN'
+    'function_call_empty : ID LPAREN RPAREN'
     #p[0] = ('func_call', p[1], [])
 
 # Joel Orrala - Llamada a función con argumentos
-# Cambiar la palabra clave 'sentence' por 'function_call_args'
 def p_function_call_args(p):
-    'sentence : ID LPAREN args RPAREN'
+    'function_call_args : ID LPAREN args RPAREN'
     #p[0] = ('func_call', p[1], p[3])
 
 
