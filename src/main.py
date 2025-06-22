@@ -193,31 +193,31 @@ lexer = lex.lex()
 
 # Joel Orrala - Inicio de bloque de generación de logs
 
-nombre_usuario = "joelorrala"  # cambiar por cada usuario Git
-archivo_prueba = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # cambiar por el archivo de cada uno
+# nombre_usuario = "joelorrala"  # cambiar por cada usuario Git
+# archivo_prueba = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # cambiar por el archivo de cada uno
 
 
-os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
+# os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
 
 
-with open(archivo_prueba, "r", encoding="utf-8") as f:
-   data = f.read()
+# with open(archivo_prueba, "r", encoding="utf-8") as f:
+#    data = f.read()
 
 
-now = datetime.now()
-fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
-log_filename = f"src/logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
+# now = datetime.now()
+# fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
+# log_filename = f"src/logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
 
-# Procesar análisis léxico y guardar log
-with open(log_filename, "w", encoding="utf-8") as log_file:
-   lexer.input(data)
-   while True:
-       tok = lexer.token()
-       if not tok:
-           break
-       print(tok)
-       log_file.write(str(tok) + '\n')
+# # Procesar análisis léxico y guardar log
+# with open(log_filename, "w", encoding="utf-8") as log_file:
+#    lexer.input(data)
+#    while True:
+#        tok = lexer.token()
+#        if not tok:
+#            break
+#        print(tok)
+#        log_file.write(str(tok) + '\n')
 
 
-print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}")
+# print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}")
 # Joel Orrala - Fin de bloque de generación de logs

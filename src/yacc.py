@@ -207,8 +207,8 @@ def p_logic_connector(p):
 #Joel Orrala
 
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "joelorrala"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # Cambiar al archivo Ruby de prueba
+nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba = r"...\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
 
 os.makedirs("logs", exist_ok=True)
 
