@@ -12,17 +12,13 @@ def p_start(p):
 #Joel Orrala y Genesis Pacheco - Funciones con y sin parámetros
 def p_function(p):
     '''function : DEF ID body END
-                | DEF ID LPAREN args_multiple RPAREN body END
                 | DEF ID LPAREN args RPAREN body END'''
-
-def p_args_multiple(p):
-    'args_multiple : ID COMMA args'
-    p[0] = [p[1]] + p[3]
 
 
 #Luis Luna
 def p_args(p):
-    'args : ID'
+    '''args : ID
+            | ID COMMA args'''
 
 def p_body(p):
     '''body : sentence
@@ -38,27 +34,34 @@ def p_class_def(p):
 
 def p_sentence(p):
     '''sentence : assignment
-        | expression
-        | print
-        | input
-        | condition
-        | while_loop
-        | for_loop
-        | array
-        | range_incl
-        | range_excl
-        | hash
-        | function
-        | class_def'''
+                | expression
+                | print
+                | input
+                | condition
+                | while_loop
+                | for_loop
+                | array
+                | range_incl
+                | range_excl
+                | hash
+                | function
+                | class_def
+                | return
+                | break_stmt
+                | function_call_empty
+                | function_call_args'''
 
 def p_return(p):
+    # Agregar la palabra return en lugar de 'sentence'
     'sentence : RETURN factor'
     
 def p_break(p):
+    # Agregar la palabra break_stmt en lugar de 'sentence'
     'sentence : BREAK'
 
 #Genesis Pacheco
 def p_assignment (p):
+    #Agregar como otra opcion 'VAR_INST ASSIGN expression'
     'assignment : ID ASSIGN expression'
 
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
@@ -103,26 +106,26 @@ def p_term_factor(p):
 #Joel Orrala
 def p_factor_valor(p):
     '''factor : INTEGER
-              | FLOAT
-              | STRING
-              | BOOLEAN
-              | ID
-              | VAR_INST
-              | TRUE
-              | FALSE
-              | NIL'''
+                | FLOAT
+                | STRING
+                | BOOLEAN
+                | ID
+                | VAR_INST
+                | TRUE
+                | FALSE
+                | NIL'''
 #Joel Orrala           
 
 
 # Joel Orrala - Para permitir expresiones agrupadas con paréntesis
 def p_factor_group(p):
     'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
+    #p[0] = p[2]
 
 # Joel Orrala - Para permitir expresiones lógicas como parte de un factor
 def p_factor_logic_expression(p):
     'factor : logic_expression'
-    p[0] = p[1]
+    #p[0] = p[1]
 
 # Joel Orrala - Asignación a variables de instancia (como @nombre)
 def p_assignment_var_inst(p):
@@ -130,14 +133,16 @@ def p_assignment_var_inst(p):
     p[0] = ('assign_var_inst', p[1], p[3])
 
 # Joel Orrala - Llamada a función sin argumentos
+# Cambiar la palabra clave 'sentence' por 'function_call_empty'
 def p_function_call_empty(p):
     'sentence : ID LPAREN RPAREN'
-    p[0] = ('func_call', p[1], [])
+    #p[0] = ('func_call', p[1], [])
 
 # Joel Orrala - Llamada a función con argumentos
+# Cambiar la palabra clave 'sentence' por 'function_call_args'
 def p_function_call_args(p):
     'sentence : ID LPAREN args RPAREN'
-    p[0] = ('func_call', p[1], p[3])
+    #p[0] = ('func_call', p[1], p[3])
 
 
 # Luis Luna - Inicio de la regla sintáctica para estructura de datos array
