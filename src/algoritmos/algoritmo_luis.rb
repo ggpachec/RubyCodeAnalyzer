@@ -1,85 +1,115 @@
-# Algoritmo de prueba para el analizador léxico en Ruby
-# Comentario de una sola línea
+# Prueba de variables y asignaciones
+edad = 28
+nombre = "Ana"
+activo = true
+temperatura = 21.7
+arreglo = [1, 2, 3, 4]
+persona = { "nombre": "Ana", "edad": 28 }
+rango_incl = (1..5)
+rango_excl = (1...5)
+@instancia = "Soy una variable de instancia"
 
-# Definición de variables
-edad = 25               # Variable de tipo Integer
-nombre = "Luis"         # Variable de tipo String
-activo = true           # Variable de tipo Boolean
-temperatura = 23.5      # Variable de tipo Float
+# Impresión y entrada de datos
+puts "Ingrese su apellido:"
+apellido = gets.chomp
 
-# Casos incorrectos
-1edad = 30              # ERROR: Variable no puede empezar con un número
-nombre = "Carlos'       # ERROR: Comillas no cerradas en el String
-activo = "verdadero"    # ERROR: Asignación de String a un Boolean
-temperatura = "veintitres"  # ERROR: Asignación de String a un Float
+# Expresiones aritméticas y booleanas
+resultado = (edad + 2) * 3 - 1
+es_adulto = edad >= 18 && activo
 
-# Estructura de control (if-else)
+# Estructura de control if-else
 if edad >= 18
-    puts "Mayor de edad"
+    puts "Es mayor de edad"
 else
-    puts "Menor de edad"
+    puts "Es menor de edad"
 end
 
-# Casos incorrectos
-if 18 >= edad            # ERROR: Operación lógica con tipos incorrectos
-    puts "Este es un error"
+# Bucle while
+contador = 0
+while contador < 3
+    puts contador
+    contador = contador + 1
 end
 
-# Operaciones aritméticas
-suma = 10 + 5
-resta = 10 - 4
-multiplicacion = 6 * 2
-division = 10 / 2
-potencia = 2 ** 3       # Exponente
-
-# Casos incorrectos
-suma = 10 + "5"         # ERROR: No se puede sumar un Integer con un String
-multiplicacion = "2" * 2  # ERROR: No se puede multiplicar un String con un Integer
-
-# Operaciones lógicas
-es_valido = true && false
-es_igual = nombre == "Luis"
-
-# Casos incorrectos
-es_valido = "true" && false  # ERROR: String no se puede combinar con Boolean
-es_igual = 10 == "Luis"      # ERROR: Comparación entre tipos incompatibles
-
-# Operaciones de comparación
-mayor = edad > 18
-igual = nombre == "Luis"
-diferente = edad != 30
-
-# Casos incorrectos
-mayor = edad > "18"          # ERROR: Comparación de tipos incompatibles
-igual = "Luis" == true       # ERROR: Comparación de String con Boolean
-
-# Estructura de control (for)
+# Bucle for con rango
 for i in 1..5
     puts i
 end
 
-# Casos incorrectos
-for i in "1..5"             # ERROR: El rango no puede ser un String
-    puts i
+# Definición de función sin parámetros
+def saludar
+    puts "Hola!"
 end
 
-# Uso de rangos (inclusive y exclusivo)
-rango_incl = (1..5)   # Rango inclusivo
-rango_excl = (1...5)  # Rango exclusivo
+# Definición de función con parámetros y return
+def sumar(a, b)
+    resultado = a + b
+    return resultado
+end
 
-# Casos incorrectos
-rango_incl = (1..5)   # ERROR: Rango no es válido si no se asigna adecuadamente
-rango_excl = [1...5]  # ERROR: El rango debería estar en un formato correcto
+# Llamada a función
+saludar()
+total = sumar(5, 3)
 
-# Comentario multilínea
+# Definición de clase con método y propiedades
+class Persona
+    def initialize(nombre, edad)
+        @nombre = nombre
+        @edad = edad
+    end
+
+    def saludar
+        puts "Hola, soy #{@nombre} y tengo #{@edad} años"
+    end
+end
+
+ana = Persona.new("Ana", 28)
+ana.saludar()
+
+# Comentarios de una línea y multilínea
+# Este es un comentario de una línea
+
 =begin
 Este es un comentario
-multilínea en Ruby.
+de varias líneas.
 =end
 
-# Casos incorrectos
-=begin
-Este es un comentario sin finalizar correctamente
-=end
+# --------------------
+# Errores SINTÁCTICOS INTENCIONALES para probar el parser:
+# 1. Bloque if sin end
+if activo
+    puts "Bloque if sin end"
+# Falta end aquí
 
-# Fin del algoritmo
+# 2. Bucle while mal cerrado
+while contador < 5
+    puts contador
+    contador += 1
+# Falta end aquí
+
+# 3. Llamada a función sin paréntesis (no permitido según tu gramática actual)
+saludar
+
+# 4. Array mal formado (falta corchete de cierre)
+numeros = [1, 2, 3
+
+# 5. Hash mal formado (falta llave de cierre)
+mascota = { "nombre": "Toby", "edad": 2
+
+# 6. Asignación sin expresión
+total =
+
+# 7. Paréntesis desbalanceados
+resultado = (5 + 2
+
+# 8. Uso incorrecto de else
+else
+    puts "Error de else sin if"
+end
+
+# 9. Llamada a función con coma de más
+sumar(4, 5,)
+
+# 10. Operador aritmético sin operando
+diferencia = 10 -
+
