@@ -26,11 +26,12 @@ def p_args(p):
             | ID COMMA args'''
 
 def p_body(p):
-    '''body : sentence
-            | sentence body'''
+    '''body : body sentence
+            | sentence'''
 
 def p_print(p):
-    'print : PUTS  factor'
+    '''print : PUTS factor
+                | PUTS STRING'''
 
 #Joel Orrala
 def p_class_def(p):
@@ -70,8 +71,12 @@ def p_assignment(p):
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
 def p_input(p):
     '''input : PUTS STRING
-            | ID ASSIGN GETS DOT ID'''
+            | ID ASSIGN GETS method_chain'''
 # Luis Luna - Fin de la regla sintáctica para Ingreso de datos por teclado
+
+def p_method_chain(p):
+    '''method_chain : DOT ID
+                    | method_chain DOT ID''' 
 
 
 def p_expression_plus(p):
@@ -130,6 +135,15 @@ def p_factor_logic_expression(p):
     'factor : logic_expression'
     #p[0] = p[1]
 
+
+    
+def p_factor_range_incl(p):
+    'factor : range_incl'
+
+def p_factor_range_excl(p):
+    'factor : range_excl'
+
+
 # Joel Orrala - Llamada a función sin argumentos
 def p_function_call_empty(p):
     'function_call_empty : ID LPAREN RPAREN'
@@ -153,14 +167,6 @@ def p_elements(p):
 def p_for_loop(p):  #Luis Luna
     'for_loop : FOR ID IN range_incl body END'
 
-# def p_empty(p):
-#     'empty :'
-#     pass
-
-#def p_factor_expr(p):
-    #'factor : STRING'
-    #p[0] = p[2]
-
 #Joel Orrala - Estructura de datos tipo Hash
 def p_hash(p):
     'hash : ID ASSIGN LBRACE hash_pairs RBRACE'
@@ -177,10 +183,12 @@ def p_while_loop(p):  #Luis Luna
 
 #Genesis Pacheco - Estructura de datos Range
 def p_range_incl(p):
-    'range_incl : LPAREN INTEGER RANGE_INCL INTEGER RPAREN'
+    '''range_incl : LPAREN INTEGER RANGE_INCL INTEGER RPAREN
+                    | INTEGER RANGE_INCL INTEGER'''
 
 def p_range_excl(p):
-    'range_excl : LPAREN INTEGER RANGE_EXCL INTEGER RPAREN'
+    '''range_excl : LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
+                | INTEGER RANGE_EXCL INTEGER'''
 
 #Genesis Pacheco - Fin Estructura de datos Range
 
@@ -192,6 +200,10 @@ def p_condition(p):
 def p_logic_expression(p):
     '''logic_expression : factor logic_op factor
                         | factor logic_op factor logic_connector logic_expression'''
+
+def p_logic_expression_expression(p):
+    'logic_expression : expression logic_op expression'
+
 
 def p_logic_op(p):
     '''logic_op : EQUALS
@@ -207,8 +219,8 @@ def p_logic_connector(p):
 #Joel Orrala
 
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "joelorrala"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba =  "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # Cambiar al archivo Ruby de prueba
+nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
 
 os.makedirs("logs", exist_ok=True)
 
