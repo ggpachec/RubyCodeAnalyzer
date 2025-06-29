@@ -7,10 +7,12 @@ from main import tokens
 
 #Agregar la tabla de simbolos
 symbol_table = {
-    "variables": {}
+    "variables": {},
+    "functions": {}
 }
 semantic_errors = []
 loop_counter = 0
+current_function = None  # Para manejo futuro de contexto de función
 
 # Joel Orrala: Regla inicial del parser
 def p_start(p):
@@ -25,7 +27,11 @@ def p_sentences(p):
 def p_function(p):
     '''function : DEF ID body END
                 | DEF ID LPAREN args RPAREN body END'''
-
+    #Joel Orrala - regla semántica de retorno de funciones
+    global current_function
+    current_function = p[2]
+    symbol_table["functions"][p[2]] = None  # Inicialmente None, luego se puede actualizar
+    current_function = None
 
 #Luis Luna
 def p_args(p):
@@ -64,8 +70,17 @@ def p_sentence(p):
                 | function_call_empty
                 | function_call_args'''
 
+  #Joel Orrala - regla semántica de retorno de funciones
 def p_return_stmt(p):
     'return_stmt : RETURN factor'
+    global current_function
+    expected = symbol_table["functions"].get(current_function)
+    if expected and expected != p[2]:
+        msg = f"Semantic error: Return type {p[2]} does not match expected {expected} in function {current_function}"
+        print(msg)
+        semantic_errors.append(msg)
+    else:
+        symbol_table["functions"][current_function] = p[2]
     
 def p_break_stmt(p):
     'break_stmt : BREAK'
@@ -93,38 +108,73 @@ def p_method_chain(p):
     '''method_chain : DOT ID
                     | method_chain DOT ID''' 
 
-
+#Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
 def p_expression_plus(p):
     'expression : expression PLUS term'
-    #p[0] = p[1] + p[3]
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "int" if p[1] == "int" and p[3] == "int" else "float"
+    else:
+        msg = f"Semantic error: Cannot apply '+' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
 
+#Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
 def p_expression_minus(p):
     'expression : expression MINUS term'
-    #p[0] = p[1] - p[3]
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "int" if p[1] == "int" and p[3] == "int" else "float"
+    else:
+        msg = f"Semantic error: Cannot apply '-' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
 
 def p_expression_term(p):
     'expression : term'
-    #p[0] = p[1]
+    p[0] = p[1]
 
+#Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
 def p_term_times(p):
     'term : term TIMES factor'
-    #p[0] = p[1] * p[3]
-    
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "int" if p[1] == "int" and p[3] == "int" else "float"
+    else:
+        msg = f"Semantic error: Cannot apply '*' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
+        
+#Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas    
 def p_term_div(p):
     'term : term DIVIDE factor'
-    #p[0] = p[1] / p[3]
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "float"
+    else:
+        msg = f"Semantic error: Cannot apply '/' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
 
 def p_term_exponent(p):     #Genesis Pacheco
     'term : term EXPONENT factor'
-    #p[0] = p[1] ** p[3]
+    #Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "float"
+    else:
+        msg = f"Semantic error: Cannot apply '**' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
 
 def p_term_module(p):       #Genesis Pacheco
     'term : term MODULE factor'
-    #p[0] = p[1] % p[3]
+    #Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "int"
+    else:
+        msg = f"Semantic error: Cannot apply '%' between {p[1]} and {p[3]}"
+        print(msg)
+        semantic_errors.append(msg)
 
 def p_term_factor(p):
     'term : factor'
-    #p[0] = p[1]
+    p[0] = p[1]
 
 #Joel Orrala
 def p_factor_valor(p):
@@ -147,18 +197,26 @@ def p_factor_valor(p):
         p[0] = "bool"
     elif p.slice[1].type == "NIL":
         p[0] = "nil"
+    else:
+        nombre = p[1]
+        if nombre not in symbol_table["variables"]:
+            msg = f"Semantic error: Variable '{nombre}' used without being defined."
+            print(msg)
+            semantic_errors.append(msg)
+        else:
+            p[0] = symbol_table["variables"][nombre]
 #Joel Orrala           
 
 
 # Joel Orrala - Para permitir expresiones agrupadas con paréntesis
 def p_factor_group(p):
     'factor : LPAREN expression RPAREN'
-    #p[0] = p[2]
+    p[0] = p[2]
 
 # Joel Orrala - Para permitir expresiones lógicas como parte de un factor
 def p_factor_logic_expression(p):
     'factor : logic_expression'
-    #p[0] = p[1]
+    p[0] = p[1]
 
 
     
