@@ -5,6 +5,13 @@ from datetime import datetime
 # Get the token map from the lexer.  This is required.
 from main import tokens
 
+#Agregar la tabla de simbolos
+symbol_table = {
+    "variables": {}
+}
+semantic_errors = []
+loop_counter = 0
+
 # Joel Orrala: Regla inicial del parser
 def p_start(p):
     'start : sentences'
@@ -62,12 +69,20 @@ def p_return_stmt(p):
     
 def p_break_stmt(p):
     'break_stmt : BREAK'
+    global loop_counter
+    if loop_counter == 0:
+        msg = f"Semantic error: 'break' used outside of a loop."
+        print(msg)
+        semantic_errors.append(msg)
 
 #Genesis Pacheco
 def p_assignment(p):
     '''assignment : ID ASSIGN expression
                   | VAR_INST ASSIGN expression'''
-
+    name = p[1]
+    value_type = p[3] 
+    if value_type is not None:
+        symbol_table["variables"][name] = value_type
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
 def p_input(p):
     '''input : PUTS STRING
@@ -122,6 +137,16 @@ def p_factor_valor(p):
                 | TRUE
                 | FALSE
                 | NIL'''
+    if type(p[1]) == int:
+        p[0] = "int"
+    elif type(p[1]) == float:
+        p[0] = "float"
+    elif isinstance(p[1], str) and p.slice[1].type == "STRING":
+        p[0] = "str"
+    elif p.slice[1].type == "TRUE" or p.slice[1].type == "FALSE":
+        p[0] = "bool"
+    elif p.slice[1].type == "NIL":
+        p[0] = "nil"
 #Joel Orrala           
 
 
@@ -166,6 +191,10 @@ def p_elements(p):
 
 def p_for_loop(p):  #Luis Luna
     'for_loop : FOR ID IN range_incl body END'
+    global loop_counter
+    loop_counter += 1
+    # The body is processed as usual
+    loop_counter -= 1
 
 #Joel Orrala - Estructura de datos tipo Hash
 def p_hash(p):
@@ -179,6 +208,10 @@ def p_hash_pairs(p):
 #Genesis Pacheco - Estructura de control While
 def p_while_loop(p):  #Luis Luna
     'while_loop : WHILE logic_expression body END'
+    global loop_counter
+    loop_counter += 1
+    # The body is processed as usual
+    loop_counter -= 1
 #Genesis Pacheco - Fin Estrctura de control While
 
 #Genesis Pacheco - Estructura de datos Range
