@@ -8,7 +8,9 @@ from main import tokens
 #Agregar la tabla de simbolos
 symbol_table = {
     "variables": {},
-    "functions": {}
+    "functions": {
+        "conversion" : ["to_i", "to_f", "to_s"]
+    }
 }
 semantic_errors = []
 loop_counter = 0
@@ -68,7 +70,38 @@ def p_sentence(p):
                 | return_stmt
                 | break_stmt
                 | function_call_empty
-                | function_call_args'''
+                | function_call_args
+                | methods'''
+
+# Genesis Pacheco - Regla semántica Conversion de Tipos
+def p_methods(p):
+    'methods : ID DOT ID'
+
+    # Validar conversión de tipos
+    name = p[1]
+    method = p[3]
+    if name not in symbol_table["variables"]:
+        msg = f"Semantic error: The variable {name} has not been defined."
+        print(msg)
+        semantic_errors.append(msg)
+    else:
+        if method in symbol_table["functions"]["conversion"]:
+            if method == "to_i":
+                p[0] = "int"
+            elif method == "to_f":
+                p[0] = "float"
+            elif method == "to_s":
+                p[0] = "str"
+            else:
+                msg = f"Semantic error: Method {method} not handled."
+                print(msg)
+                semantic_errors.append(msg)
+        else:
+            msg = f"Semantic error: Method {method} was not recognized."
+            print(msg)
+            semantic_errors.append(msg)
+
+# Genesis Pacheco - Fin Regla semantica Conversion de Tipos
 
   #Joel Orrala - regla semántica de retorno de funciones
 def p_return_stmt(p):
@@ -106,7 +139,7 @@ def p_input(p):
 
 def p_method_chain(p):
     '''method_chain : DOT ID
-                    | method_chain DOT ID''' 
+                    | method_chain DOT ID'''
 
 #Joel Orrala - regla semántica de compatibilidad en operaciones aritméticas
 def p_expression_plus(p):
@@ -290,6 +323,7 @@ def p_condition(p):
 
 def p_logic_expression(p):
     '''logic_expression : factor logic_op factor
+                        | factor logic_connector factor
                         | factor logic_op factor logic_connector logic_expression'''
 
 def p_logic_expression_expression(p):
@@ -310,8 +344,8 @@ def p_logic_connector(p):
 #Joel Orrala
 
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
+nombre_usuario = "ggpachec"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba =  r"..\src\algoritmos\algoritmo_genesis.rb" # Cambiar al archivo Ruby de prueba
 
 os.makedirs("logs", exist_ok=True)
 
@@ -319,7 +353,7 @@ with open(archivo_prueba, "r", encoding="utf-8") as f:
     data = f.read()
 now = datetime.now()
 fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-log_filename = f"src/logs/sintactico-{nombre_usuario}-{fecha_hora}.txt"
+log_filename = f"..\src\logs\sintactico-{nombre_usuario}-{fecha_hora}.txt"
 
 def p_error(p):
     with open(log_filename, "w", encoding="utf-8") as log:

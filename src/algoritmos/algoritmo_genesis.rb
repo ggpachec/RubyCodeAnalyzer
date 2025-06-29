@@ -149,3 +149,9 @@ puts carro.descripcion
 
 objeto = Vehiculo("Mazda", "CX-5")           # ❌ Error sintáctico: falta .new para crear objeto
 
+## SECCION 7: CONVERSION DE TIPO DE DATOS
+"123".to_i
+45.to_str                            # ❌ Error semántico: to_str no existe
+"55.5".to_i
+"55.5".to_f
+
