@@ -307,7 +307,7 @@ def p_while_loop(p):  #Luis Luna
     if condition_type not in ["bool", "int", "float"]:
         msg = f"Semantic error: WHILE condition must be boolean or evaluable, got '{condition_type}'"
         print(msg)
-        #semantic_errors.append(msg)
+        semantic_errors.append(msg)
     # Genesis Pacheco - Fin Regla Semantica Condiciones Logicas
     loop_counter -= 1
 #Genesis Pacheco - Fin Estrctura de control While
@@ -333,7 +333,7 @@ def p_condition(p):
     if condition_type not in ["bool", "int", "float"]:
         msg = f"Semantic error: IF condition must be boolean, got '{condition_type}'"
         print(msg)
-        #semantic_errors.append(msg)
+        semantic_errors.append(msg)
 
 
 # def p_logic_expression(p):
@@ -353,7 +353,7 @@ def p_logic_expression_comparison(p):
     else:
         msg = f"Semantic error: Cannot compare {left} with {right}"
         print(msg)
-        #semantic_errors.append(msg)
+        semantic_errors.append(msg)
         p[0] = "error"
 
 def p_logic_expression_connector(p):
@@ -364,7 +364,7 @@ def p_logic_expression_connector(p):
     else:
         msg = f"Semantic error: Logical connector requires boolean operands. Got '{p[1]}' and '{p[3]}'"
         print(msg)
-        #semantic_errors.append(msg)
+        semantic_errors.append(msg)
         p[0] = "error"
 
 
@@ -376,7 +376,7 @@ def p_logic_expression_expression(p):
     else:
         msg = f"Semantic error: Invalid comparison between {p[1]} and {p[3]}"
         print(msg)
-        #semantic_errors.append(msg)
+        semantic_errors.append(msg)
         p[0] = "error"
 # Genesis Pacheco - Fin Regla Semantica Condiciones Logicas
 
@@ -397,17 +397,21 @@ def p_logic_connector(p):
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
 nombre_usuario = "ggpachec"  # Cambiar por el nombre de cada usuario Git
 archivo_prueba =  r"..\src\algoritmos\algoritmo_genesis.rb" # Cambiar al archivo Ruby de prueba
-
-os.makedirs("logs", exist_ok=True)
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
 
 with open(archivo_prueba, "r", encoding="utf-8") as f:
     data = f.read()
 now = datetime.now()
 fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-log_filename = f"..\src\logs\sintactico-{nombre_usuario}-{fecha_hora}.txt"
+#log_filename = f"..\src\logs\sintactico-{nombre_usuario}-{fecha_hora}.txt"
+# Nombres de los archivos
+sintactico_log = os.path.join(log_dir, f"sintactico-{nombre_usuario}-{fecha_hora}.txt")
+semantico_log = os.path.join(log_dir, f"semantico-{nombre_usuario}-{fecha_hora}.txt")
 
+# Guardar errores sintácticos
 def p_error(p):
-    with open(log_filename, "w", encoding="utf-8") as log:
+    with open(sintactico_log, "a", encoding="utf-8") as log:
         if p:
             mensaje = f"Syntax error at token '{p.value}' (type {p.type}) at line {p.lineno}\n"
             print(mensaje.strip())
@@ -416,13 +420,28 @@ def p_error(p):
             mensaje = "Syntax error at EOF\n"
             print(mensaje.strip())
             log.write(mensaje)
+    print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {sintactico_log}")
 
 # Build the parser
 parser = yacc.yacc(start='start')
 parser.parse(data)
-print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {log_filename}")
-print(symbol_table)
+
+# Genesis Pacheco - Guardar errores semánticos
+with open(semantico_log, "a", encoding="utf-8") as log:
+    if len(semantic_errors) == 0:
+        log.write("No semantic errors found.\n")
+    else:
+        for error in semantic_errors:
+            log.write(error + "\n")
+        print(f"\nErrores semánticos de {nombre_usuario} guardados en: {semantico_log}")
+
 # Joel Orrala - Fin de bloque de generación de logs sintácticos
+
+# Impresiones de validacion
+print(len(semantic_errors))
+print(semantic_errors)
+print(symbol_table)
+
 
 #ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO
 #def p_error(p):
