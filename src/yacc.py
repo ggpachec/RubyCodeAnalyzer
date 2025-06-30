@@ -28,7 +28,7 @@ def p_sentences(p):
 #Joel Orrala y Genesis Pacheco - Funciones con y sin parámetros
 def p_function(p):
     '''function : DEF ID body END
-                | DEF ID LPAREN args RPAREN body END'''
+                | DEF ID LPAREN args_opt RPAREN body END'''
     #Joel Orrala - regla semántica de retorno de funciones
     global current_function
     current_function = p[2]
@@ -36,9 +36,25 @@ def p_function(p):
     current_function = None
 
 #Luis Luna
+def p_arg(p):
+    '''arg : ID
+           | ID ASSIGN expression
+           | STRING
+           | INTEGER
+           | FLOAT
+           | BOOLEAN
+           | TRUE
+           | FALSE
+           | NIL'''
+
 def p_args(p):
-    '''args : ID
-            | ID COMMA args'''
+    '''args : arg
+            | arg COMMA args'''
+
+    
+def p_args_opt(p):
+    '''args_opt : args
+                | empty'''
 
 def p_body(p):
     '''body : body sentence
@@ -131,6 +147,21 @@ def p_assignment(p):
     value_type = p[3] 
     if value_type is not None:
         symbol_table["variables"][name] = value_type
+
+def p_assignment_compound(p):
+    '''assignment : ID PLUS ASSIGN expression
+                  | ID MINUS ASSIGN expression
+                  | ID TIMES ASSIGN expression
+                  | ID DIVIDE ASSIGN expression'''
+
+    if p[4] in ["int", "float"]:
+        p[0] = p[4]
+        symbol_table["variables"][p[1]] = p[4]
+    else:
+        msg = f"Semantic error: Cannot apply assignment with {p[4]}"
+        print(msg)
+        semantic_errors.append(msg)
+
 # Luis Luna - Inicio de la regla sintáctica para Ingreso de datos por teclado
 def p_input(p):
     '''input : PUTS STRING
@@ -270,6 +301,9 @@ def p_function_call_args(p):
     'function_call_args : ID LPAREN args RPAREN'
     #p[0] = ('func_call', p[1], p[3])
 
+# Joel Orrala - Llamada a función con punto
+def p_method_call_with_dot(p):
+    'expression : ID DOT ID LPAREN args_opt RPAREN'
 
 # Luis Luna - Inicio de la regla sintáctica para estructura de datos array
 def p_array(p):
@@ -391,13 +425,20 @@ def p_logic_op(p):
 
 def p_logic_connector(p):
     '''logic_connector : AND
-                       | OR'''
+                       | OR
+                       | AND_OP
+                       | OR_OP'''
+    
+def p_empty(p):
+    'empty :'
+    pass
+
 #Joel Orrala
 
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "ggpachec"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba =  r"..\src\algoritmos\algoritmo_genesis.rb" # Cambiar al archivo Ruby de prueba
-log_dir = "logs"
+nombre_usuario = "joelorrala"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba =  "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # Cambiar al archivo Ruby de prueba
+log_dir = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/logs"
 os.makedirs(log_dir, exist_ok=True)
 
 with open(archivo_prueba, "r", encoding="utf-8") as f:
