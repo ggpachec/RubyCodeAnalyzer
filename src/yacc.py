@@ -301,7 +301,14 @@ def p_while_loop(p):  #Luis Luna
     'while_loop : WHILE logic_expression body END'
     global loop_counter
     loop_counter += 1
-    # The body is processed as usual
+
+    # Genesis Pacheco - Regla Semantica Condiciones lógicas
+    condition_type = p[2]
+    if condition_type not in ["bool", "int", "float"]:
+        msg = f"Semantic error: WHILE condition must be boolean or evaluable, got '{condition_type}'"
+        print(msg)
+        #semantic_errors.append(msg)
+    # Genesis Pacheco - Fin Regla Semantica Condiciones Logicas
     loop_counter -= 1
 #Genesis Pacheco - Fin Estrctura de control While
 
@@ -321,13 +328,57 @@ def p_condition(p):
     '''condition : IF logic_expression body END
                  | IF logic_expression body ELSE body END'''
 
-def p_logic_expression(p):
-    '''logic_expression : factor logic_op factor
-                        | factor logic_connector factor
-                        | factor logic_op factor logic_connector logic_expression'''
+# Genesis Pacheco - Regla Semantica Condiciones Logicas
+    condition_type = p[2]
+    if condition_type not in ["bool", "int", "float"]:
+        msg = f"Semantic error: IF condition must be boolean, got '{condition_type}'"
+        print(msg)
+        #semantic_errors.append(msg)
+
+
+# def p_logic_expression(p):
+#     '''logic_expression : factor logic_op factor
+#                         | factor logic_connector factor
+#                         | factor logic_op factor logic_connector logic_expression'''
+
+def p_logic_expression_comparison(p):
+    'logic_expression : factor logic_op factor'
+    # Comparaciones simples (a > b, a == b)
+    left = p[1]
+    right = p[3]
+    if left in ["int", "float"] and right in ["int", "float"]:
+        p[0] = "bool"
+    elif left == right:
+        p[0] = "bool"
+    else:
+        msg = f"Semantic error: Cannot compare {left} with {right}"
+        print(msg)
+        #semantic_errors.append(msg)
+        p[0] = "error"
+
+def p_logic_expression_connector(p):
+    'logic_expression : factor logic_connector factor'
+    # A and B, A or B
+    if p[1] == "bool" and p[3] == "bool":
+        p[0] = "bool"
+    else:
+        msg = f"Semantic error: Logical connector requires boolean operands. Got '{p[1]}' and '{p[3]}'"
+        print(msg)
+        #semantic_errors.append(msg)
+        p[0] = "error"
+
 
 def p_logic_expression_expression(p):
     'logic_expression : expression logic_op expression'
+
+    if p[1] in ["int", "float"] and p[3] in ["int", "float"]:
+        p[0] = "bool"
+    else:
+        msg = f"Semantic error: Invalid comparison between {p[1]} and {p[3]}"
+        print(msg)
+        #semantic_errors.append(msg)
+        p[0] = "error"
+# Genesis Pacheco - Fin Regla Semantica Condiciones Logicas
 
 
 def p_logic_op(p):
@@ -370,6 +421,7 @@ def p_error(p):
 parser = yacc.yacc(start='start')
 parser.parse(data)
 print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {log_filename}")
+print(symbol_table)
 # Joel Orrala - Fin de bloque de generación de logs sintácticos
 
 #ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO

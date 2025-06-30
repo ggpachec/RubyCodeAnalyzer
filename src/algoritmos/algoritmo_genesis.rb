@@ -12,7 +12,7 @@ nombre = "María"                 # ✅ Simple
 edad_correcta = 10               # ✅ Numérica
 resultado = edad_correcta + 5    # ✅ Con expresión
 Edad = 10                        # ❌ Error léxico: nombre de variable con mayúscula (se interpreta como constante)
-edad = "diez"                    # ❌ Error semántico: String asignado a una variable usada como número
+edad = "10"+5                    # ❌ Error semántico: String asignado a una variable usada como número
 2variable = "dato"               # ❌ Error léxico: no puede empezar con número
 _1nombres = "Inválido"           # ❌ Error léxico: comienza con guion bajo y número
 
@@ -88,13 +88,14 @@ end
 
 
 #if-else
-if IMC >= 25                         # ✅ Estructura de control correctamente definida
+imc = 20
+if imc >= 25                         # ✅ Estructura de control correctamente definida
   puts "Indice de Masa Corporal Alto. Sobrepeso - Obesidad"
 else
   puts "Indice de Masa Corporal Normal - Bajo."
 end
 
-if "activo"                          # ❌ Error semántico: la condición no es booleana
+if "hola"                          # ❌ Error semántico: la condición no es booleana
   puts "Activo"
 end
 
@@ -111,7 +112,7 @@ saludo("Genesis")
 
 
 # Función sin parámetros que retorna un String
-def obtener_nombre()                 # ✅ Función correctamente declarada
+def obtener_nombre                # ✅ Función correctamente declarada
   return "Genesis"
 end
 puts "El nombre es #{obtener_nombre()}"
@@ -152,6 +153,8 @@ objeto = Vehiculo("Mazda", "CX-5")           # ❌ Error sintáctico: falta .new
 ## SECCION 7: CONVERSION DE TIPO DE DATOS
 "123".to_i
 45.to_str                            # ❌ Error semántico: to_str no existe
+45.to_s
 "55.5".to_i
 "55.5".to_f
+
 

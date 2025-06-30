@@ -16,6 +16,10 @@ reserved = {
     'puts' : 'PUTS',
     'in' : 'IN',
     'gets' : 'GETS',
+    "to_i" : "TO_I",
+    "to_i" : "TO_I",
+    "to_f" : "TO_F",
+    "to_s" : "TO_S",
     # Luis Luna - Inicio de aporte de palabras reservadas
     'nil': 'NIL',
     'end' : 'END',

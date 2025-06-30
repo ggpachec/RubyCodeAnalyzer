@@ -10,6 +10,9 @@ Unused terminals:
     OR_OP
     SEMICOLON
     THEN
+    TO_F
+    TO_I
+    TO_S
     YIELD
 
 Grammar
@@ -93,20 +96,19 @@ Rule 75    condition -> IF logic_expression body END
 Rule 76    condition -> IF logic_expression body ELSE body END
 Rule 77    logic_expression -> factor logic_op factor
 Rule 78    logic_expression -> factor logic_connector factor
-Rule 79    logic_expression -> factor logic_op factor logic_connector logic_expression
-Rule 80    logic_expression -> expression logic_op expression
-Rule 81    logic_op -> EQUALS
-Rule 82    logic_op -> NEQUALS
-Rule 83    logic_op -> GREATEREQ
-Rule 84    logic_op -> LESSEQ
-Rule 85    logic_op -> GREATERT
-Rule 86    logic_op -> LESST
-Rule 87    logic_connector -> AND
-Rule 88    logic_connector -> OR
+Rule 79    logic_expression -> expression logic_op expression
+Rule 80    logic_op -> EQUALS
+Rule 81    logic_op -> NEQUALS
+Rule 82    logic_op -> GREATEREQ
+Rule 83    logic_op -> LESSEQ
+Rule 84    logic_op -> GREATERT
+Rule 85    logic_op -> LESST
+Rule 86    logic_connector -> AND
+Rule 87    logic_connector -> OR
 
 Terminals, with rules where they appear
 
-AND                  : 87
+AND                  : 86
 AND_OP               : 
 ASSIGN               : 34 35 37 63 67
 BOOLEAN              : 51
@@ -120,31 +122,31 @@ DO                   :
 DOT                  : 31 38 39
 ELSE                 : 76
 END                  : 4 5 12 66 70 75 76
-EQUALS               : 81
+EQUALS               : 80
 EXPONENT             : 45
 FALSE                : 55
 FLOAT                : 49
 FOR                  : 66
 GETS                 : 37
-GREATEREQ            : 83
-GREATERT             : 85
+GREATEREQ            : 82
+GREATERT             : 84
 ID                   : 4 5 6 7 12 31 31 34 37 38 39 52 61 62 63 66 67
 IF                   : 75 76
 IN                   : 66
 INTEGER              : 48 71 71 72 72 73 73 74 74
 LBRACE               : 67
 LCORCH               : 63
-LESSEQ               : 84
-LESST                : 86
+LESSEQ               : 83
+LESST                : 85
 LPAREN               : 5 57 61 62 71 73
 MINUS                : 41
 MODULE               : 46
-NEQUALS              : 82
+NEQUALS              : 81
 NEXT                 : 
 NIL                  : 56
 NOT                  : 
 NOT_OP               : 
-OR                   : 88
+OR                   : 87
 OR_OP                : 
 PLUS                 : 40
 PUTS                 : 10 11 36
@@ -158,6 +160,9 @@ SEMICOLON            :
 STRING               : 11 36 50 68 69
 THEN                 : 
 TIMES                : 43
+TO_F                 : 
+TO_I                 : 
+TO_S                 : 
 TRUE                 : 54
 VAR_INST             : 35 53
 WHILE                : 70
@@ -174,8 +179,8 @@ break_stmt           : 27
 class_def            : 25
 condition            : 17
 elements             : 63 65
-expression           : 14 34 35 40 41 57 80 80
-factor               : 10 32 43 44 45 46 47 64 65 68 69 77 77 78 78 79 79
+expression           : 14 34 35 40 41 57 79 79
+factor               : 10 32 43 44 45 46 47 64 65 68 69 77 77 78 78
 for_loop             : 19
 function             : 24
 function_call_args   : 29
@@ -183,9 +188,9 @@ function_call_empty  : 28
 hash                 : 23
 hash_pairs           : 67 69
 input                : 16
-logic_connector      : 78 79
-logic_expression     : 58 70 75 76 79
-logic_op             : 77 79 80
+logic_connector      : 78
+logic_expression     : 58 70 75 76
+logic_op             : 77 79
 method_chain         : 37 39
 methods              : 30
 print                : 15
@@ -271,8 +276,7 @@ state 0
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
@@ -402,8 +406,7 @@ state 3
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     $end            reduce using rule 2 (sentences -> sentence .)
     ID              shift and go to state 22
@@ -481,13 +484,13 @@ state 5
     (14) sentence -> expression .
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (80) logic_expression -> expression . logic_op expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (79) logic_expression -> expression . logic_op expression
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
     ID              reduce using rule 14 (sentence -> expression .)
     VAR_INST        reduce using rule 14 (sentence -> expression .)
@@ -1243,8 +1246,7 @@ state 25
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -1281,15 +1283,14 @@ state 26
     (47) term -> factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -1402,8 +1403,7 @@ state 28
     (76) condition -> IF . logic_expression body ELSE body END
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (48) factor -> . INTEGER
     (49) factor -> . FLOAT
     (50) factor -> . STRING
@@ -1498,8 +1498,7 @@ state 30
     (70) while_loop -> WHILE . logic_expression body END
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (48) factor -> . INTEGER
     (49) factor -> . FLOAT
     (50) factor -> . STRING
@@ -1579,8 +1578,7 @@ state 32
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -1682,8 +1680,7 @@ state 36
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -1997,8 +1994,7 @@ state 44
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2048,8 +2044,7 @@ state 45
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2078,7 +2073,7 @@ state 45
 
 state 46
 
-    (80) logic_expression -> expression logic_op . expression
+    (79) logic_expression -> expression logic_op . expression
     (40) expression -> . expression PLUS term
     (41) expression -> . expression MINUS term
     (42) expression -> . term
@@ -2102,8 +2097,7 @@ state 46
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2129,98 +2123,98 @@ state 46
 
 state 47
 
-    (81) logic_op -> EQUALS .
+    (80) logic_op -> EQUALS .
 
-    INTEGER         reduce using rule 81 (logic_op -> EQUALS .)
-    FLOAT           reduce using rule 81 (logic_op -> EQUALS .)
-    STRING          reduce using rule 81 (logic_op -> EQUALS .)
-    BOOLEAN         reduce using rule 81 (logic_op -> EQUALS .)
-    ID              reduce using rule 81 (logic_op -> EQUALS .)
-    VAR_INST        reduce using rule 81 (logic_op -> EQUALS .)
-    TRUE            reduce using rule 81 (logic_op -> EQUALS .)
-    FALSE           reduce using rule 81 (logic_op -> EQUALS .)
-    NIL             reduce using rule 81 (logic_op -> EQUALS .)
-    LPAREN          reduce using rule 81 (logic_op -> EQUALS .)
+    INTEGER         reduce using rule 80 (logic_op -> EQUALS .)
+    FLOAT           reduce using rule 80 (logic_op -> EQUALS .)
+    STRING          reduce using rule 80 (logic_op -> EQUALS .)
+    BOOLEAN         reduce using rule 80 (logic_op -> EQUALS .)
+    ID              reduce using rule 80 (logic_op -> EQUALS .)
+    VAR_INST        reduce using rule 80 (logic_op -> EQUALS .)
+    TRUE            reduce using rule 80 (logic_op -> EQUALS .)
+    FALSE           reduce using rule 80 (logic_op -> EQUALS .)
+    NIL             reduce using rule 80 (logic_op -> EQUALS .)
+    LPAREN          reduce using rule 80 (logic_op -> EQUALS .)
 
 
 state 48
 
-    (82) logic_op -> NEQUALS .
+    (81) logic_op -> NEQUALS .
 
-    INTEGER         reduce using rule 82 (logic_op -> NEQUALS .)
-    FLOAT           reduce using rule 82 (logic_op -> NEQUALS .)
-    STRING          reduce using rule 82 (logic_op -> NEQUALS .)
-    BOOLEAN         reduce using rule 82 (logic_op -> NEQUALS .)
-    ID              reduce using rule 82 (logic_op -> NEQUALS .)
-    VAR_INST        reduce using rule 82 (logic_op -> NEQUALS .)
-    TRUE            reduce using rule 82 (logic_op -> NEQUALS .)
-    FALSE           reduce using rule 82 (logic_op -> NEQUALS .)
-    NIL             reduce using rule 82 (logic_op -> NEQUALS .)
-    LPAREN          reduce using rule 82 (logic_op -> NEQUALS .)
+    INTEGER         reduce using rule 81 (logic_op -> NEQUALS .)
+    FLOAT           reduce using rule 81 (logic_op -> NEQUALS .)
+    STRING          reduce using rule 81 (logic_op -> NEQUALS .)
+    BOOLEAN         reduce using rule 81 (logic_op -> NEQUALS .)
+    ID              reduce using rule 81 (logic_op -> NEQUALS .)
+    VAR_INST        reduce using rule 81 (logic_op -> NEQUALS .)
+    TRUE            reduce using rule 81 (logic_op -> NEQUALS .)
+    FALSE           reduce using rule 81 (logic_op -> NEQUALS .)
+    NIL             reduce using rule 81 (logic_op -> NEQUALS .)
+    LPAREN          reduce using rule 81 (logic_op -> NEQUALS .)
 
 
 state 49
 
-    (83) logic_op -> GREATEREQ .
+    (82) logic_op -> GREATEREQ .
 
-    INTEGER         reduce using rule 83 (logic_op -> GREATEREQ .)
-    FLOAT           reduce using rule 83 (logic_op -> GREATEREQ .)
-    STRING          reduce using rule 83 (logic_op -> GREATEREQ .)
-    BOOLEAN         reduce using rule 83 (logic_op -> GREATEREQ .)
-    ID              reduce using rule 83 (logic_op -> GREATEREQ .)
-    VAR_INST        reduce using rule 83 (logic_op -> GREATEREQ .)
-    TRUE            reduce using rule 83 (logic_op -> GREATEREQ .)
-    FALSE           reduce using rule 83 (logic_op -> GREATEREQ .)
-    NIL             reduce using rule 83 (logic_op -> GREATEREQ .)
-    LPAREN          reduce using rule 83 (logic_op -> GREATEREQ .)
+    INTEGER         reduce using rule 82 (logic_op -> GREATEREQ .)
+    FLOAT           reduce using rule 82 (logic_op -> GREATEREQ .)
+    STRING          reduce using rule 82 (logic_op -> GREATEREQ .)
+    BOOLEAN         reduce using rule 82 (logic_op -> GREATEREQ .)
+    ID              reduce using rule 82 (logic_op -> GREATEREQ .)
+    VAR_INST        reduce using rule 82 (logic_op -> GREATEREQ .)
+    TRUE            reduce using rule 82 (logic_op -> GREATEREQ .)
+    FALSE           reduce using rule 82 (logic_op -> GREATEREQ .)
+    NIL             reduce using rule 82 (logic_op -> GREATEREQ .)
+    LPAREN          reduce using rule 82 (logic_op -> GREATEREQ .)
 
 
 state 50
 
-    (84) logic_op -> LESSEQ .
+    (83) logic_op -> LESSEQ .
 
-    INTEGER         reduce using rule 84 (logic_op -> LESSEQ .)
-    FLOAT           reduce using rule 84 (logic_op -> LESSEQ .)
-    STRING          reduce using rule 84 (logic_op -> LESSEQ .)
-    BOOLEAN         reduce using rule 84 (logic_op -> LESSEQ .)
-    ID              reduce using rule 84 (logic_op -> LESSEQ .)
-    VAR_INST        reduce using rule 84 (logic_op -> LESSEQ .)
-    TRUE            reduce using rule 84 (logic_op -> LESSEQ .)
-    FALSE           reduce using rule 84 (logic_op -> LESSEQ .)
-    NIL             reduce using rule 84 (logic_op -> LESSEQ .)
-    LPAREN          reduce using rule 84 (logic_op -> LESSEQ .)
+    INTEGER         reduce using rule 83 (logic_op -> LESSEQ .)
+    FLOAT           reduce using rule 83 (logic_op -> LESSEQ .)
+    STRING          reduce using rule 83 (logic_op -> LESSEQ .)
+    BOOLEAN         reduce using rule 83 (logic_op -> LESSEQ .)
+    ID              reduce using rule 83 (logic_op -> LESSEQ .)
+    VAR_INST        reduce using rule 83 (logic_op -> LESSEQ .)
+    TRUE            reduce using rule 83 (logic_op -> LESSEQ .)
+    FALSE           reduce using rule 83 (logic_op -> LESSEQ .)
+    NIL             reduce using rule 83 (logic_op -> LESSEQ .)
+    LPAREN          reduce using rule 83 (logic_op -> LESSEQ .)
 
 
 state 51
 
-    (85) logic_op -> GREATERT .
+    (84) logic_op -> GREATERT .
 
-    INTEGER         reduce using rule 85 (logic_op -> GREATERT .)
-    FLOAT           reduce using rule 85 (logic_op -> GREATERT .)
-    STRING          reduce using rule 85 (logic_op -> GREATERT .)
-    BOOLEAN         reduce using rule 85 (logic_op -> GREATERT .)
-    ID              reduce using rule 85 (logic_op -> GREATERT .)
-    VAR_INST        reduce using rule 85 (logic_op -> GREATERT .)
-    TRUE            reduce using rule 85 (logic_op -> GREATERT .)
-    FALSE           reduce using rule 85 (logic_op -> GREATERT .)
-    NIL             reduce using rule 85 (logic_op -> GREATERT .)
-    LPAREN          reduce using rule 85 (logic_op -> GREATERT .)
+    INTEGER         reduce using rule 84 (logic_op -> GREATERT .)
+    FLOAT           reduce using rule 84 (logic_op -> GREATERT .)
+    STRING          reduce using rule 84 (logic_op -> GREATERT .)
+    BOOLEAN         reduce using rule 84 (logic_op -> GREATERT .)
+    ID              reduce using rule 84 (logic_op -> GREATERT .)
+    VAR_INST        reduce using rule 84 (logic_op -> GREATERT .)
+    TRUE            reduce using rule 84 (logic_op -> GREATERT .)
+    FALSE           reduce using rule 84 (logic_op -> GREATERT .)
+    NIL             reduce using rule 84 (logic_op -> GREATERT .)
+    LPAREN          reduce using rule 84 (logic_op -> GREATERT .)
 
 
 state 52
 
-    (86) logic_op -> LESST .
+    (85) logic_op -> LESST .
 
-    INTEGER         reduce using rule 86 (logic_op -> LESST .)
-    FLOAT           reduce using rule 86 (logic_op -> LESST .)
-    STRING          reduce using rule 86 (logic_op -> LESST .)
-    BOOLEAN         reduce using rule 86 (logic_op -> LESST .)
-    ID              reduce using rule 86 (logic_op -> LESST .)
-    VAR_INST        reduce using rule 86 (logic_op -> LESST .)
-    TRUE            reduce using rule 86 (logic_op -> LESST .)
-    FALSE           reduce using rule 86 (logic_op -> LESST .)
-    NIL             reduce using rule 86 (logic_op -> LESST .)
-    LPAREN          reduce using rule 86 (logic_op -> LESST .)
+    INTEGER         reduce using rule 85 (logic_op -> LESST .)
+    FLOAT           reduce using rule 85 (logic_op -> LESST .)
+    STRING          reduce using rule 85 (logic_op -> LESST .)
+    BOOLEAN         reduce using rule 85 (logic_op -> LESST .)
+    ID              reduce using rule 85 (logic_op -> LESST .)
+    VAR_INST        reduce using rule 85 (logic_op -> LESST .)
+    TRUE            reduce using rule 85 (logic_op -> LESST .)
+    FALSE           reduce using rule 85 (logic_op -> LESST .)
+    NIL             reduce using rule 85 (logic_op -> LESST .)
+    LPAREN          reduce using rule 85 (logic_op -> LESST .)
 
 
 state 53
@@ -2252,8 +2246,7 @@ state 53
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2325,8 +2318,7 @@ state 56
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2368,8 +2360,7 @@ state 57
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2419,8 +2410,7 @@ state 58
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2470,8 +2460,7 @@ state 59
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2521,8 +2510,7 @@ state 60
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2559,16 +2547,15 @@ state 61
     (10) print -> PUTS factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -2917,8 +2904,7 @@ state 66
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -2944,15 +2930,15 @@ state 66
 
 state 67
 
-    (80) logic_expression -> expression . logic_op expression
+    (79) logic_expression -> expression . logic_op expression
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
@@ -3058,7 +3044,6 @@ state 69
 state 70
 
     (77) logic_expression -> factor logic_op . factor
-    (79) logic_expression -> factor logic_op . factor logic_connector logic_expression
     (48) factor -> . INTEGER
     (49) factor -> . FLOAT
     (50) factor -> . STRING
@@ -3074,8 +3059,7 @@ state 70
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -3101,8 +3085,8 @@ state 70
     LPAREN          shift and go to state 66
 
     factor                         shift and go to state 101
-    logic_expression               shift and go to state 29
     expression                     shift and go to state 67
+    logic_expression               shift and go to state 29
     range_incl                     shift and go to state 68
     range_excl                     shift and go to state 69
     term                           shift and go to state 24
@@ -3125,8 +3109,7 @@ state 71
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -3160,34 +3143,34 @@ state 71
 
 state 72
 
-    (87) logic_connector -> AND .
+    (86) logic_connector -> AND .
 
-    INTEGER         reduce using rule 87 (logic_connector -> AND .)
-    FLOAT           reduce using rule 87 (logic_connector -> AND .)
-    STRING          reduce using rule 87 (logic_connector -> AND .)
-    BOOLEAN         reduce using rule 87 (logic_connector -> AND .)
-    ID              reduce using rule 87 (logic_connector -> AND .)
-    VAR_INST        reduce using rule 87 (logic_connector -> AND .)
-    TRUE            reduce using rule 87 (logic_connector -> AND .)
-    FALSE           reduce using rule 87 (logic_connector -> AND .)
-    NIL             reduce using rule 87 (logic_connector -> AND .)
-    LPAREN          reduce using rule 87 (logic_connector -> AND .)
+    INTEGER         reduce using rule 86 (logic_connector -> AND .)
+    FLOAT           reduce using rule 86 (logic_connector -> AND .)
+    STRING          reduce using rule 86 (logic_connector -> AND .)
+    BOOLEAN         reduce using rule 86 (logic_connector -> AND .)
+    ID              reduce using rule 86 (logic_connector -> AND .)
+    VAR_INST        reduce using rule 86 (logic_connector -> AND .)
+    TRUE            reduce using rule 86 (logic_connector -> AND .)
+    FALSE           reduce using rule 86 (logic_connector -> AND .)
+    NIL             reduce using rule 86 (logic_connector -> AND .)
+    LPAREN          reduce using rule 86 (logic_connector -> AND .)
 
 
 state 73
 
-    (88) logic_connector -> OR .
+    (87) logic_connector -> OR .
 
-    INTEGER         reduce using rule 88 (logic_connector -> OR .)
-    FLOAT           reduce using rule 88 (logic_connector -> OR .)
-    STRING          reduce using rule 88 (logic_connector -> OR .)
-    BOOLEAN         reduce using rule 88 (logic_connector -> OR .)
-    ID              reduce using rule 88 (logic_connector -> OR .)
-    VAR_INST        reduce using rule 88 (logic_connector -> OR .)
-    TRUE            reduce using rule 88 (logic_connector -> OR .)
-    FALSE           reduce using rule 88 (logic_connector -> OR .)
-    NIL             reduce using rule 88 (logic_connector -> OR .)
-    LPAREN          reduce using rule 88 (logic_connector -> OR .)
+    INTEGER         reduce using rule 87 (logic_connector -> OR .)
+    FLOAT           reduce using rule 87 (logic_connector -> OR .)
+    STRING          reduce using rule 87 (logic_connector -> OR .)
+    BOOLEAN         reduce using rule 87 (logic_connector -> OR .)
+    ID              reduce using rule 87 (logic_connector -> OR .)
+    VAR_INST        reduce using rule 87 (logic_connector -> OR .)
+    TRUE            reduce using rule 87 (logic_connector -> OR .)
+    FALSE           reduce using rule 87 (logic_connector -> OR .)
+    NIL             reduce using rule 87 (logic_connector -> OR .)
+    LPAREN          reduce using rule 87 (logic_connector -> OR .)
 
 
 state 74
@@ -3262,8 +3245,7 @@ state 74
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     EQUALS          reduce using rule 58 (factor -> logic_expression .)
     NEQUALS         reduce using rule 58 (factor -> logic_expression .)
@@ -3326,16 +3308,15 @@ state 75
 
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -3439,8 +3420,7 @@ state 76
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     EQUALS          reduce using rule 58 (factor -> logic_expression .)
     NEQUALS         reduce using rule 58 (factor -> logic_expression .)
@@ -3538,13 +3518,13 @@ state 79
     (57) factor -> LPAREN expression . RPAREN
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (80) logic_expression -> expression . logic_op expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (79) logic_expression -> expression . logic_op expression
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
     RPAREN          shift and go to state 109
     PLUS            shift and go to state 44
@@ -3643,8 +3623,7 @@ state 82
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     LPAREN          shift and go to state 113
     ID              shift and go to state 22
@@ -3759,8 +3738,7 @@ state 83
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
@@ -3810,16 +3788,15 @@ state 84
     (32) return_stmt -> RETURN factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -4025,16 +4002,16 @@ state 86
 
 state 87
 
-    (80) logic_expression -> expression logic_op expression .
+    (79) logic_expression -> expression logic_op expression .
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (80) logic_expression -> expression . logic_op expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (79) logic_expression -> expression . logic_op expression
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -4044,37 +4021,37 @@ state 87
   ! shift/reduce conflict for LESSEQ resolved as shift
   ! shift/reduce conflict for GREATERT resolved as shift
   ! shift/reduce conflict for LESST resolved as shift
-    AND             reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    OR              reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    TIMES           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    DIVIDE          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    EXPONENT        reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    MODULE          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    ID              reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    VAR_INST        reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    PUTS            reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    IF              reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    WHILE           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    FOR             reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    LPAREN          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    INTEGER         reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    DEF             reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    CLASS           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    RETURN          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    BREAK           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    FLOAT           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    STRING          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    BOOLEAN         reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    TRUE            reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    FALSE           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    NIL             reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    $end            reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    END             reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    ELSE            reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    RPAREN          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    COMMA           reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    RCORCH          reduce using rule 80 (logic_expression -> expression logic_op expression .)
-    RBRACE          reduce using rule 80 (logic_expression -> expression logic_op expression .)
+    AND             reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    OR              reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    TIMES           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    DIVIDE          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    EXPONENT        reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    MODULE          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    ID              reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    VAR_INST        reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    PUTS            reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    IF              reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    WHILE           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    FOR             reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    LPAREN          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    INTEGER         reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    DEF             reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    CLASS           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    RETURN          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    BREAK           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    FLOAT           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    STRING          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    BOOLEAN         reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    TRUE            reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    FALSE           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    NIL             reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    $end            reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    END             reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    ELSE            reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    RPAREN          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    COMMA           reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    RCORCH          reduce using rule 79 (logic_expression -> expression logic_op expression .)
+    RBRACE          reduce using rule 79 (logic_expression -> expression logic_op expression .)
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     EQUALS          shift and go to state 47
@@ -4084,14 +4061,14 @@ state 87
     GREATERT        shift and go to state 51
     LESST           shift and go to state 52
 
-  ! EQUALS          [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! NEQUALS         [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! GREATEREQ       [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! LESSEQ          [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! GREATERT        [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! LESST           [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! PLUS            [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
-  ! MINUS           [ reduce using rule 80 (logic_expression -> expression logic_op expression .) ]
+  ! EQUALS          [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! NEQUALS         [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! GREATEREQ       [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! LESSEQ          [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! GREATERT        [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! LESST           [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! PLUS            [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
+  ! MINUS           [ reduce using rule 79 (logic_expression -> expression logic_op expression .) ]
 
     logic_op                       shift and go to state 46
 
@@ -4100,13 +4077,13 @@ state 88
     (34) assignment -> ID ASSIGN expression .
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (80) logic_expression -> expression . logic_op expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (79) logic_expression -> expression . logic_op expression
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
     ID              reduce using rule 34 (assignment -> ID ASSIGN expression .)
     VAR_INST        reduce using rule 34 (assignment -> ID ASSIGN expression .)
@@ -4170,8 +4147,7 @@ state 90
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -4289,13 +4265,13 @@ state 96
     (35) assignment -> VAR_INST ASSIGN expression .
     (40) expression -> expression . PLUS term
     (41) expression -> expression . MINUS term
-    (80) logic_expression -> expression . logic_op expression
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (79) logic_expression -> expression . logic_op expression
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
 
     ID              reduce using rule 35 (assignment -> VAR_INST ASSIGN expression .)
     VAR_INST        reduce using rule 35 (assignment -> VAR_INST ASSIGN expression .)
@@ -4334,16 +4310,15 @@ state 97
     (43) term -> term TIMES factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 43 (term -> term TIMES factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 43 (term -> term TIMES factor .)
@@ -4434,16 +4409,15 @@ state 98
     (44) term -> term DIVIDE factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 44 (term -> term DIVIDE factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 44 (term -> term DIVIDE factor .)
@@ -4534,16 +4508,15 @@ state 99
     (45) term -> term EXPONENT factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 45 (term -> term EXPONENT factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 45 (term -> term EXPONENT factor .)
@@ -4634,16 +4607,15 @@ state 100
     (46) term -> term MODULE factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 46 (term -> term MODULE factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 46 (term -> term MODULE factor .)
@@ -4732,19 +4704,17 @@ state 100
 state 101
 
     (77) logic_expression -> factor logic_op factor .
-    (79) logic_expression -> factor logic_op factor . logic_connector logic_expression
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 47 (term -> factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 47 (term -> factor .)
@@ -4758,14 +4728,14 @@ state 101
   ! reduce/reduce conflict for LESSEQ resolved using rule 47 (term -> factor .)
   ! reduce/reduce conflict for GREATERT resolved using rule 47 (term -> factor .)
   ! reduce/reduce conflict for LESST resolved using rule 47 (term -> factor .)
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
   ! shift/reduce conflict for GREATEREQ resolved as shift
   ! shift/reduce conflict for LESSEQ resolved as shift
   ! shift/reduce conflict for GREATERT resolved as shift
   ! shift/reduce conflict for LESST resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
     ID              reduce using rule 77 (logic_expression -> factor logic_op factor .)
     VAR_INST        reduce using rule 77 (logic_expression -> factor logic_op factor .)
     PUTS            reduce using rule 77 (logic_expression -> factor logic_op factor .)
@@ -4797,14 +4767,14 @@ state 101
     MODULE          reduce using rule 47 (term -> factor .)
     PLUS            reduce using rule 47 (term -> factor .)
     MINUS           reduce using rule 47 (term -> factor .)
-    AND             shift and go to state 72
-    OR              shift and go to state 73
     EQUALS          shift and go to state 47
     NEQUALS         shift and go to state 48
     GREATEREQ       shift and go to state 49
     LESSEQ          shift and go to state 50
     GREATERT        shift and go to state 51
     LESST           shift and go to state 52
+    AND             shift and go to state 72
+    OR              shift and go to state 73
 
   ! EQUALS          [ reduce using rule 77 (logic_expression -> factor logic_op factor .) ]
   ! NEQUALS         [ reduce using rule 77 (logic_expression -> factor logic_op factor .) ]
@@ -4828,23 +4798,22 @@ state 101
   ! LESST           [ reduce using rule 47 (term -> factor .) ]
 
     logic_op                       shift and go to state 70
-    logic_connector                shift and go to state 123
+    logic_connector                shift and go to state 71
 
 state 102
 
     (78) logic_expression -> factor logic_connector factor .
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! reduce/reduce conflict for TIMES resolved using rule 47 (term -> factor .)
   ! reduce/reduce conflict for DIVIDE resolved using rule 47 (term -> factor .)
@@ -5000,11 +4969,10 @@ state 103
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 124
-    ELSE            shift and go to state 125
+    END             shift and go to state 123
+    ELSE            shift and go to state 124
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -5025,7 +4993,7 @@ state 103
     NIL             shift and go to state 42
 
     logic_expression               shift and go to state 29
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -5142,10 +5110,9 @@ state 105
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 127
+    END             shift and go to state 126
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -5166,7 +5133,7 @@ state 105
     NIL             shift and go to state 42
 
     logic_expression               shift and go to state 29
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -5194,17 +5161,17 @@ state 106
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
 
-    LPAREN          shift and go to state 129
-    INTEGER         shift and go to state 130
+    LPAREN          shift and go to state 128
+    INTEGER         shift and go to state 129
 
-    range_incl                     shift and go to state 128
+    range_incl                     shift and go to state 127
 
 state 107
 
     (71) range_incl -> LPAREN INTEGER RANGE_INCL . INTEGER RPAREN
     (72) range_incl -> INTEGER RANGE_INCL . INTEGER
 
-    INTEGER         shift and go to state 131
+    INTEGER         shift and go to state 130
 
 
 state 108
@@ -5212,7 +5179,7 @@ state 108
     (73) range_excl -> LPAREN INTEGER RANGE_EXCL . INTEGER RPAREN
     (74) range_excl -> INTEGER RANGE_EXCL . INTEGER
 
-    INTEGER         shift and go to state 132
+    INTEGER         shift and go to state 131
 
 
 state 109
@@ -5419,10 +5386,9 @@ state 112
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 133
+    END             shift and go to state 132
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -5442,7 +5408,7 @@ state 112
     FALSE           shift and go to state 41
     NIL             shift and go to state 42
 
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -5496,15 +5462,14 @@ state 113
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
     (74) range_excl -> . INTEGER RANGE_EXCL INTEGER
 
     INTEGER         shift and go to state 78
-    ID              shift and go to state 134
+    ID              shift and go to state 133
     FLOAT           shift and go to state 38
     STRING          shift and go to state 27
     BOOLEAN         shift and go to state 39
@@ -5514,7 +5479,7 @@ state 113
     NIL             shift and go to state 42
     LPAREN          shift and go to state 66
 
-    args                           shift and go to state 135
+    args                           shift and go to state 134
     expression                     shift and go to state 79
     term                           shift and go to state 24
     factor                         shift and go to state 26
@@ -5591,10 +5556,9 @@ state 114
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 136
+    END             shift and go to state 135
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -5614,7 +5578,7 @@ state 114
     FALSE           shift and go to state 41
     NIL             shift and go to state 42
 
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -5663,21 +5627,21 @@ state 115
     $end            reduce using rule 37 (input -> ID ASSIGN GETS method_chain .)
     END             reduce using rule 37 (input -> ID ASSIGN GETS method_chain .)
     ELSE            reduce using rule 37 (input -> ID ASSIGN GETS method_chain .)
-    DOT             shift and go to state 137
+    DOT             shift and go to state 136
 
 
 state 116
 
     (38) method_chain -> DOT . ID
 
-    ID              shift and go to state 138
+    ID              shift and go to state 137
 
 
 state 117
 
     (63) array -> ID ASSIGN LCORCH elements . RCORCH
 
-    RCORCH          shift and go to state 139
+    RCORCH          shift and go to state 138
 
 
 state 118
@@ -5686,16 +5650,15 @@ state 118
     (65) elements -> factor . COMMA elements
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -5704,7 +5667,7 @@ state 118
   ! shift/reduce conflict for GREATERT resolved as shift
   ! shift/reduce conflict for LESST resolved as shift
     RCORCH          reduce using rule 64 (elements -> factor .)
-    COMMA           shift and go to state 140
+    COMMA           shift and go to state 139
     TIMES           reduce using rule 47 (term -> factor .)
     DIVIDE          reduce using rule 47 (term -> factor .)
     EXPONENT        reduce using rule 47 (term -> factor .)
@@ -5734,7 +5697,7 @@ state 119
 
     (67) hash -> ID ASSIGN LBRACE hash_pairs . RBRACE
 
-    RBRACE          shift and go to state 141
+    RBRACE          shift and go to state 140
 
 
 state 120
@@ -5742,7 +5705,7 @@ state 120
     (68) hash_pairs -> STRING . COLON factor
     (69) hash_pairs -> STRING . COLON factor COMMA hash_pairs
 
-    COLON           shift and go to state 142
+    COLON           shift and go to state 141
 
 
 state 121
@@ -5753,7 +5716,7 @@ state 121
 
     ID              shift and go to state 92
 
-    args                           shift and go to state 143
+    args                           shift and go to state 142
 
 state 122
 
@@ -5784,58 +5747,6 @@ state 122
 
 state 123
 
-    (79) logic_expression -> factor logic_op factor logic_connector . logic_expression
-    (78) logic_expression -> factor logic_connector . factor
-    (77) logic_expression -> . factor logic_op factor
-    (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
-    (48) factor -> . INTEGER
-    (49) factor -> . FLOAT
-    (50) factor -> . STRING
-    (51) factor -> . BOOLEAN
-    (52) factor -> . ID
-    (53) factor -> . VAR_INST
-    (54) factor -> . TRUE
-    (55) factor -> . FALSE
-    (56) factor -> . NIL
-    (57) factor -> . LPAREN expression RPAREN
-    (58) factor -> . logic_expression
-    (59) factor -> . range_incl
-    (60) factor -> . range_excl
-    (40) expression -> . expression PLUS term
-    (41) expression -> . expression MINUS term
-    (42) expression -> . term
-    (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (72) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (74) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . term EXPONENT factor
-    (46) term -> . term MODULE factor
-    (47) term -> . factor
-
-    INTEGER         shift and go to state 63
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 27
-    BOOLEAN         shift and go to state 39
-    ID              shift and go to state 64
-    VAR_INST        shift and go to state 65
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
-    LPAREN          shift and go to state 66
-
-    factor                         shift and go to state 102
-    logic_expression               shift and go to state 144
-    expression                     shift and go to state 67
-    range_incl                     shift and go to state 68
-    range_excl                     shift and go to state 69
-    term                           shift and go to state 24
-
-state 124
-
     (75) condition -> IF logic_expression body END .
 
     ID              reduce using rule 75 (condition -> IF logic_expression body END .)
@@ -5861,7 +5772,7 @@ state 124
     ELSE            reduce using rule 75 (condition -> IF logic_expression body END .)
 
 
-state 125
+state 124
 
     (76) condition -> IF logic_expression body ELSE . body END
     (8) body -> . body sentence
@@ -5931,8 +5842,7 @@ state 125
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
@@ -5954,7 +5864,7 @@ state 125
     NIL             shift and go to state 42
 
     logic_expression               shift and go to state 29
-    body                           shift and go to state 145
+    body                           shift and go to state 143
     sentence                       shift and go to state 104
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
@@ -5977,7 +5887,7 @@ state 125
     term                           shift and go to state 24
     factor                         shift and go to state 26
 
-state 126
+state 125
 
     (8) body -> body sentence .
 
@@ -6003,7 +5913,7 @@ state 126
     NIL             reduce using rule 8 (body -> body sentence .)
 
 
-state 127
+state 126
 
     (70) while_loop -> WHILE logic_expression body END .
 
@@ -6030,7 +5940,7 @@ state 127
     ELSE            reduce using rule 70 (while_loop -> WHILE logic_expression body END .)
 
 
-state 128
+state 127
 
     (66) for_loop -> FOR ID IN range_incl . body END
     (8) body -> . body sentence
@@ -6100,8 +6010,7 @@ state 128
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
@@ -6123,7 +6032,7 @@ state 128
     NIL             shift and go to state 42
 
     range_incl                     shift and go to state 12
-    body                           shift and go to state 146
+    body                           shift and go to state 144
     sentence                       shift and go to state 104
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
@@ -6146,27 +6055,27 @@ state 128
     factor                         shift and go to state 26
     logic_expression               shift and go to state 29
 
-state 129
+state 128
 
     (71) range_incl -> LPAREN . INTEGER RANGE_INCL INTEGER RPAREN
 
-    INTEGER         shift and go to state 147
+    INTEGER         shift and go to state 145
 
 
-state 130
+state 129
 
     (72) range_incl -> INTEGER . RANGE_INCL INTEGER
 
     RANGE_INCL      shift and go to state 80
 
 
-state 131
+state 130
 
     (71) range_incl -> LPAREN INTEGER RANGE_INCL INTEGER . RPAREN
     (72) range_incl -> INTEGER RANGE_INCL INTEGER .
 
   ! shift/reduce conflict for RPAREN resolved as shift
-    RPAREN          shift and go to state 148
+    RPAREN          shift and go to state 146
     EQUALS          reduce using rule 72 (range_incl -> INTEGER RANGE_INCL INTEGER .)
     NEQUALS         reduce using rule 72 (range_incl -> INTEGER RANGE_INCL INTEGER .)
     GREATEREQ       reduce using rule 72 (range_incl -> INTEGER RANGE_INCL INTEGER .)
@@ -6185,13 +6094,13 @@ state 131
   ! RPAREN          [ reduce using rule 72 (range_incl -> INTEGER RANGE_INCL INTEGER .) ]
 
 
-state 132
+state 131
 
     (73) range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER . RPAREN
     (74) range_excl -> INTEGER RANGE_EXCL INTEGER .
 
   ! shift/reduce conflict for RPAREN resolved as shift
-    RPAREN          shift and go to state 149
+    RPAREN          shift and go to state 147
     EQUALS          reduce using rule 74 (range_excl -> INTEGER RANGE_EXCL INTEGER .)
     NEQUALS         reduce using rule 74 (range_excl -> INTEGER RANGE_EXCL INTEGER .)
     GREATEREQ       reduce using rule 74 (range_excl -> INTEGER RANGE_EXCL INTEGER .)
@@ -6210,7 +6119,7 @@ state 132
   ! RPAREN          [ reduce using rule 74 (range_excl -> INTEGER RANGE_EXCL INTEGER .) ]
 
 
-state 133
+state 132
 
     (4) function -> DEF ID body END .
 
@@ -6237,7 +6146,7 @@ state 133
     ELSE            reduce using rule 4 (function -> DEF ID body END .)
 
 
-state 134
+state 133
 
     (6) args -> ID .
     (7) args -> ID . COMMA args
@@ -6264,14 +6173,14 @@ state 134
   ! RPAREN          [ reduce using rule 52 (factor -> ID .) ]
 
 
-state 135
+state 134
 
     (5) function -> DEF ID LPAREN args . RPAREN body END
 
-    RPAREN          shift and go to state 150
+    RPAREN          shift and go to state 148
 
 
-state 136
+state 135
 
     (12) class_def -> CLASS ID body END .
 
@@ -6298,14 +6207,14 @@ state 136
     ELSE            reduce using rule 12 (class_def -> CLASS ID body END .)
 
 
-state 137
+state 136
 
     (39) method_chain -> method_chain DOT . ID
 
-    ID              shift and go to state 151
+    ID              shift and go to state 149
 
 
-state 138
+state 137
 
     (38) method_chain -> DOT ID .
 
@@ -6333,7 +6242,7 @@ state 138
     ELSE            reduce using rule 38 (method_chain -> DOT ID .)
 
 
-state 139
+state 138
 
     (63) array -> ID ASSIGN LCORCH elements RCORCH .
 
@@ -6360,7 +6269,7 @@ state 139
     ELSE            reduce using rule 63 (array -> ID ASSIGN LCORCH elements RCORCH .)
 
 
-state 140
+state 139
 
     (65) elements -> factor COMMA . elements
     (64) elements -> . factor
@@ -6380,8 +6289,7 @@ state 140
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -6407,14 +6315,14 @@ state 140
     LPAREN          shift and go to state 66
 
     factor                         shift and go to state 118
-    elements                       shift and go to state 152
+    elements                       shift and go to state 150
     expression                     shift and go to state 67
     logic_expression               shift and go to state 29
     range_incl                     shift and go to state 68
     range_excl                     shift and go to state 69
     term                           shift and go to state 24
 
-state 141
+state 140
 
     (67) hash -> ID ASSIGN LBRACE hash_pairs RBRACE .
 
@@ -6441,7 +6349,7 @@ state 141
     ELSE            reduce using rule 67 (hash -> ID ASSIGN LBRACE hash_pairs RBRACE .)
 
 
-state 142
+state 141
 
     (68) hash_pairs -> STRING COLON . factor
     (69) hash_pairs -> STRING COLON . factor COMMA hash_pairs
@@ -6460,8 +6368,7 @@ state 142
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
     (71) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
     (72) range_incl -> . INTEGER RANGE_INCL INTEGER
     (73) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
@@ -6486,146 +6393,21 @@ state 142
     NIL             shift and go to state 42
     LPAREN          shift and go to state 66
 
-    factor                         shift and go to state 153
+    factor                         shift and go to state 151
     expression                     shift and go to state 67
     logic_expression               shift and go to state 29
     range_incl                     shift and go to state 68
     range_excl                     shift and go to state 69
     term                           shift and go to state 24
 
-state 143
+state 142
 
     (7) args -> ID COMMA args .
 
     RPAREN          reduce using rule 7 (args -> ID COMMA args .)
 
 
-state 144
-
-    (79) logic_expression -> factor logic_op factor logic_connector logic_expression .
-    (58) factor -> logic_expression .
-
-  ! reduce/reduce conflict for TIMES resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for DIVIDE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for EXPONENT resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for MODULE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for PLUS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for MINUS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for EQUALS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for NEQUALS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for GREATEREQ resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for LESSEQ resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for GREATERT resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for LESST resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for ID resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for VAR_INST resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for PUTS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for IF resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for WHILE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for FOR resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for LPAREN resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for INTEGER resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for DEF resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for CLASS resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for RETURN resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for BREAK resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for FLOAT resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for STRING resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for BOOLEAN resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for TRUE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for FALSE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for NIL resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for $end resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for AND resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for OR resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for END resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for ELSE resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for COMMA resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for RCORCH resolved using rule 58 (factor -> logic_expression .)
-  ! reduce/reduce conflict for RBRACE resolved using rule 58 (factor -> logic_expression .)
-    TIMES           reduce using rule 58 (factor -> logic_expression .)
-    DIVIDE          reduce using rule 58 (factor -> logic_expression .)
-    EXPONENT        reduce using rule 58 (factor -> logic_expression .)
-    MODULE          reduce using rule 58 (factor -> logic_expression .)
-    PLUS            reduce using rule 58 (factor -> logic_expression .)
-    MINUS           reduce using rule 58 (factor -> logic_expression .)
-    EQUALS          reduce using rule 58 (factor -> logic_expression .)
-    NEQUALS         reduce using rule 58 (factor -> logic_expression .)
-    GREATEREQ       reduce using rule 58 (factor -> logic_expression .)
-    LESSEQ          reduce using rule 58 (factor -> logic_expression .)
-    GREATERT        reduce using rule 58 (factor -> logic_expression .)
-    LESST           reduce using rule 58 (factor -> logic_expression .)
-    ID              reduce using rule 58 (factor -> logic_expression .)
-    VAR_INST        reduce using rule 58 (factor -> logic_expression .)
-    PUTS            reduce using rule 58 (factor -> logic_expression .)
-    IF              reduce using rule 58 (factor -> logic_expression .)
-    WHILE           reduce using rule 58 (factor -> logic_expression .)
-    FOR             reduce using rule 58 (factor -> logic_expression .)
-    LPAREN          reduce using rule 58 (factor -> logic_expression .)
-    INTEGER         reduce using rule 58 (factor -> logic_expression .)
-    DEF             reduce using rule 58 (factor -> logic_expression .)
-    CLASS           reduce using rule 58 (factor -> logic_expression .)
-    RETURN          reduce using rule 58 (factor -> logic_expression .)
-    BREAK           reduce using rule 58 (factor -> logic_expression .)
-    FLOAT           reduce using rule 58 (factor -> logic_expression .)
-    STRING          reduce using rule 58 (factor -> logic_expression .)
-    BOOLEAN         reduce using rule 58 (factor -> logic_expression .)
-    TRUE            reduce using rule 58 (factor -> logic_expression .)
-    FALSE           reduce using rule 58 (factor -> logic_expression .)
-    NIL             reduce using rule 58 (factor -> logic_expression .)
-    $end            reduce using rule 58 (factor -> logic_expression .)
-    RPAREN          reduce using rule 58 (factor -> logic_expression .)
-    AND             reduce using rule 58 (factor -> logic_expression .)
-    OR              reduce using rule 58 (factor -> logic_expression .)
-    END             reduce using rule 58 (factor -> logic_expression .)
-    ELSE            reduce using rule 58 (factor -> logic_expression .)
-    COMMA           reduce using rule 58 (factor -> logic_expression .)
-    RCORCH          reduce using rule 58 (factor -> logic_expression .)
-    RBRACE          reduce using rule 58 (factor -> logic_expression .)
-
-  ! EQUALS          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! NEQUALS         [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! GREATEREQ       [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! LESSEQ          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! GREATERT        [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! LESST           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! AND             [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! OR              [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! TIMES           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! DIVIDE          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! EXPONENT        [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! MODULE          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! PLUS            [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! MINUS           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! ID              [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! VAR_INST        [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! PUTS            [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! IF              [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! WHILE           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! FOR             [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! LPAREN          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! INTEGER         [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! DEF             [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! CLASS           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! RETURN          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! BREAK           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! FLOAT           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! STRING          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! BOOLEAN         [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! TRUE            [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! FALSE           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! NIL             [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! $end            [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! END             [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! ELSE            [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! RPAREN          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! COMMA           [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! RCORCH          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-  ! RBRACE          [ reduce using rule 79 (logic_expression -> factor logic_op factor logic_connector logic_expression .) ]
-
-
-state 145
+state 143
 
     (76) condition -> IF logic_expression body ELSE body . END
     (8) body -> body . sentence
@@ -6694,10 +6476,9 @@ state 145
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 154
+    END             shift and go to state 152
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -6718,7 +6499,7 @@ state 145
     NIL             shift and go to state 42
 
     logic_expression               shift and go to state 29
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -6740,7 +6521,7 @@ state 145
     term                           shift and go to state 24
     factor                         shift and go to state 26
 
-state 146
+state 144
 
     (66) for_loop -> FOR ID IN range_incl body . END
     (8) body -> body . sentence
@@ -6809,10 +6590,9 @@ state 146
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 155
+    END             shift and go to state 153
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -6833,7 +6613,7 @@ state 146
     NIL             shift and go to state 42
 
     range_incl                     shift and go to state 12
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -6855,14 +6635,14 @@ state 146
     factor                         shift and go to state 26
     logic_expression               shift and go to state 29
 
-state 147
+state 145
 
     (71) range_incl -> LPAREN INTEGER . RANGE_INCL INTEGER RPAREN
 
-    RANGE_INCL      shift and go to state 156
+    RANGE_INCL      shift and go to state 154
 
 
-state 148
+state 146
 
     (71) range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .
 
@@ -6907,7 +6687,7 @@ state 148
     RBRACE          reduce using rule 71 (range_incl -> LPAREN INTEGER RANGE_INCL INTEGER RPAREN .)
 
 
-state 149
+state 147
 
     (73) range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .
 
@@ -6952,7 +6732,7 @@ state 149
     RBRACE          reduce using rule 73 (range_excl -> LPAREN INTEGER RANGE_EXCL INTEGER RPAREN .)
 
 
-state 150
+state 148
 
     (5) function -> DEF ID LPAREN args RPAREN . body END
     (8) body -> . body sentence
@@ -7022,8 +6802,7 @@ state 150
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
@@ -7044,7 +6823,7 @@ state 150
     FALSE           shift and go to state 41
     NIL             shift and go to state 42
 
-    body                           shift and go to state 157
+    body                           shift and go to state 155
     sentence                       shift and go to state 104
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
@@ -7068,7 +6847,7 @@ state 150
     factor                         shift and go to state 26
     logic_expression               shift and go to state 29
 
-state 151
+state 149
 
     (39) method_chain -> method_chain DOT ID .
 
@@ -7096,29 +6875,28 @@ state 151
     ELSE            reduce using rule 39 (method_chain -> method_chain DOT ID .)
 
 
-state 152
+state 150
 
     (65) elements -> factor COMMA elements .
 
     RCORCH          reduce using rule 65 (elements -> factor COMMA elements .)
 
 
-state 153
+state 151
 
     (68) hash_pairs -> STRING COLON factor .
     (69) hash_pairs -> STRING COLON factor . COMMA hash_pairs
     (77) logic_expression -> factor . logic_op factor
     (78) logic_expression -> factor . logic_connector factor
-    (79) logic_expression -> factor . logic_op factor logic_connector logic_expression
     (47) term -> factor .
-    (81) logic_op -> . EQUALS
-    (82) logic_op -> . NEQUALS
-    (83) logic_op -> . GREATEREQ
-    (84) logic_op -> . LESSEQ
-    (85) logic_op -> . GREATERT
-    (86) logic_op -> . LESST
-    (87) logic_connector -> . AND
-    (88) logic_connector -> . OR
+    (80) logic_op -> . EQUALS
+    (81) logic_op -> . NEQUALS
+    (82) logic_op -> . GREATEREQ
+    (83) logic_op -> . LESSEQ
+    (84) logic_op -> . GREATERT
+    (85) logic_op -> . LESST
+    (86) logic_connector -> . AND
+    (87) logic_connector -> . OR
 
   ! shift/reduce conflict for EQUALS resolved as shift
   ! shift/reduce conflict for NEQUALS resolved as shift
@@ -7127,7 +6905,7 @@ state 153
   ! shift/reduce conflict for GREATERT resolved as shift
   ! shift/reduce conflict for LESST resolved as shift
     RBRACE          reduce using rule 68 (hash_pairs -> STRING COLON factor .)
-    COMMA           shift and go to state 158
+    COMMA           shift and go to state 156
     TIMES           reduce using rule 47 (term -> factor .)
     DIVIDE          reduce using rule 47 (term -> factor .)
     EXPONENT        reduce using rule 47 (term -> factor .)
@@ -7153,7 +6931,7 @@ state 153
     logic_op                       shift and go to state 70
     logic_connector                shift and go to state 71
 
-state 154
+state 152
 
     (76) condition -> IF logic_expression body ELSE body END .
 
@@ -7180,7 +6958,7 @@ state 154
     ELSE            reduce using rule 76 (condition -> IF logic_expression body ELSE body END .)
 
 
-state 155
+state 153
 
     (66) for_loop -> FOR ID IN range_incl body END .
 
@@ -7207,14 +6985,14 @@ state 155
     ELSE            reduce using rule 66 (for_loop -> FOR ID IN range_incl body END .)
 
 
-state 156
+state 154
 
     (71) range_incl -> LPAREN INTEGER RANGE_INCL . INTEGER RPAREN
 
-    INTEGER         shift and go to state 159
+    INTEGER         shift and go to state 157
 
 
-state 157
+state 155
 
     (5) function -> DEF ID LPAREN args RPAREN body . END
     (8) body -> body . sentence
@@ -7283,10 +7061,9 @@ state 157
     (60) factor -> . range_excl
     (77) logic_expression -> . factor logic_op factor
     (78) logic_expression -> . factor logic_connector factor
-    (79) logic_expression -> . factor logic_op factor logic_connector logic_expression
-    (80) logic_expression -> . expression logic_op expression
+    (79) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 160
+    END             shift and go to state 158
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 25
@@ -7306,7 +7083,7 @@ state 157
     FALSE           shift and go to state 41
     NIL             shift and go to state 42
 
-    sentence                       shift and go to state 126
+    sentence                       shift and go to state 125
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -7329,7 +7106,7 @@ state 157
     factor                         shift and go to state 26
     logic_expression               shift and go to state 29
 
-state 158
+state 156
 
     (69) hash_pairs -> STRING COLON factor COMMA . hash_pairs
     (68) hash_pairs -> . STRING COLON factor
@@ -7337,16 +7114,16 @@ state 158
 
     STRING          shift and go to state 120
 
-    hash_pairs                     shift and go to state 161
+    hash_pairs                     shift and go to state 159
 
-state 159
+state 157
 
     (71) range_incl -> LPAREN INTEGER RANGE_INCL INTEGER . RPAREN
 
-    RPAREN          shift and go to state 148
+    RPAREN          shift and go to state 146
 
 
-state 160
+state 158
 
     (5) function -> DEF ID LPAREN args RPAREN body END .
 
@@ -7373,7 +7150,7 @@ state 160
     ELSE            reduce using rule 5 (function -> DEF ID LPAREN args RPAREN body END .)
 
 
-state 161
+state 159
 
     (69) hash_pairs -> STRING COLON factor COMMA hash_pairs .
 
@@ -7461,14 +7238,14 @@ WARNING: shift/reduce conflict for GREATERT in state 100 resolved as shift
 WARNING: shift/reduce conflict for LESST in state 100 resolved as shift
 WARNING: shift/reduce conflict for AND in state 100 resolved as shift
 WARNING: shift/reduce conflict for OR in state 100 resolved as shift
-WARNING: shift/reduce conflict for AND in state 101 resolved as shift
-WARNING: shift/reduce conflict for OR in state 101 resolved as shift
 WARNING: shift/reduce conflict for EQUALS in state 101 resolved as shift
 WARNING: shift/reduce conflict for NEQUALS in state 101 resolved as shift
 WARNING: shift/reduce conflict for GREATEREQ in state 101 resolved as shift
 WARNING: shift/reduce conflict for LESSEQ in state 101 resolved as shift
 WARNING: shift/reduce conflict for GREATERT in state 101 resolved as shift
 WARNING: shift/reduce conflict for LESST in state 101 resolved as shift
+WARNING: shift/reduce conflict for AND in state 101 resolved as shift
+WARNING: shift/reduce conflict for OR in state 101 resolved as shift
 WARNING: shift/reduce conflict for EQUALS in state 102 resolved as shift
 WARNING: shift/reduce conflict for NEQUALS in state 102 resolved as shift
 WARNING: shift/reduce conflict for GREATEREQ in state 102 resolved as shift
@@ -7483,14 +7260,14 @@ WARNING: shift/reduce conflict for GREATEREQ in state 118 resolved as shift
 WARNING: shift/reduce conflict for LESSEQ in state 118 resolved as shift
 WARNING: shift/reduce conflict for GREATERT in state 118 resolved as shift
 WARNING: shift/reduce conflict for LESST in state 118 resolved as shift
+WARNING: shift/reduce conflict for RPAREN in state 130 resolved as shift
 WARNING: shift/reduce conflict for RPAREN in state 131 resolved as shift
-WARNING: shift/reduce conflict for RPAREN in state 132 resolved as shift
-WARNING: shift/reduce conflict for EQUALS in state 153 resolved as shift
-WARNING: shift/reduce conflict for NEQUALS in state 153 resolved as shift
-WARNING: shift/reduce conflict for GREATEREQ in state 153 resolved as shift
-WARNING: shift/reduce conflict for LESSEQ in state 153 resolved as shift
-WARNING: shift/reduce conflict for GREATERT in state 153 resolved as shift
-WARNING: shift/reduce conflict for LESST in state 153 resolved as shift
+WARNING: shift/reduce conflict for EQUALS in state 151 resolved as shift
+WARNING: shift/reduce conflict for NEQUALS in state 151 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQ in state 151 resolved as shift
+WARNING: shift/reduce conflict for LESSEQ in state 151 resolved as shift
+WARNING: shift/reduce conflict for GREATERT in state 151 resolved as shift
+WARNING: shift/reduce conflict for LESST in state 151 resolved as shift
 WARNING: reduce/reduce conflict in state 12 resolved using rule (sentence -> range_incl)
 WARNING: rejected rule (factor -> range_incl) in state 12
 WARNING: reduce/reduce conflict in state 13 resolved using rule (sentence -> range_excl)
@@ -7515,9 +7292,6 @@ WARNING: reduce/reduce conflict in state 101 resolved using rule (term -> factor
 WARNING: rejected rule (logic_expression -> factor logic_op factor) in state 101
 WARNING: reduce/reduce conflict in state 102 resolved using rule (term -> factor)
 WARNING: rejected rule (logic_expression -> factor logic_connector factor) in state 102
-WARNING: reduce/reduce conflict in state 134 resolved using rule (args -> ID)
-WARNING: rejected rule (factor -> ID) in state 134
-WARNING: reduce/reduce conflict in state 144 resolved using rule (factor -> logic_expression)
-WARNING: rejected rule (logic_expression -> factor logic_op factor logic_connector logic_expression) in state 144
+WARNING: reduce/reduce conflict in state 133 resolved using rule (args -> ID)
+WARNING: rejected rule (factor -> ID) in state 133
 WARNING: Rule (input -> PUTS STRING) is never reduced
-WARNING: Rule (logic_expression -> factor logic_op factor logic_connector logic_expression) is never reduced
