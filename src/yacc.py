@@ -133,20 +133,24 @@ def p_return_stmt(p):
     
 def p_break_stmt(p):
     'break_stmt : BREAK'
+    #Luis Luna - Semantico: Chequeo de break usando contexto de bucles
     global loop_counter
     if loop_counter == 0:
         msg = f"Semantic error: 'break' used outside of a loop."
         print(msg)
         semantic_errors.append(msg)
+    #Luis Luna - Fin Semantico: Chequeo de break usando contexto de bucles
 
 #Genesis Pacheco
 def p_assignment(p):
     '''assignment : ID ASSIGN expression
                   | VAR_INST ASSIGN expression'''
+    # Luis Luna - Semantico: Chequeo de tipo en asignaciones
     name = p[1]
     value_type = p[3] 
     if value_type is not None:
         symbol_table["variables"][name] = value_type
+    # Luis Luna - Fin Semantico: Chequeo de tipo en asignaciones
 
 def p_assignment_compound(p):
     '''assignment : ID PLUS ASSIGN expression
@@ -240,7 +244,8 @@ def p_term_factor(p):
     'term : factor'
     p[0] = p[1]
 
-#Joel Orrala
+#Joel Orrala para la regla sintactica / Luis Luna para la regla semantica
+# Luis Luna - Semantico: Chequeo de tipo en asignaciones y uso de variables
 def p_factor_valor(p):
     '''factor : INTEGER
                 | FLOAT
@@ -261,6 +266,7 @@ def p_factor_valor(p):
         p[0] = "bool"
     elif p.slice[1].type == "NIL":
         p[0] = "nil"
+# Luis Luna - Fin Semantico: Chequeo de tipo en asignaciones y uso de variables
     else:
         nombre = p[1]
         if nombre not in symbol_table["variables"]:
@@ -314,12 +320,14 @@ def p_elements(p):
                 | factor COMMA elements'''
 #Luis Luna - Fin de la regla sintáctica para estructura de datos array
 
-def p_for_loop(p):  #Luis Luna
+#Luis Luna Regla sintactico y semantico: Estructura de control For / Chequeo de break usando contexto de bucles
+def p_for_loop(p):
     'for_loop : FOR ID IN range_incl body END'
     global loop_counter
     loop_counter += 1
     # The body is processed as usual
     loop_counter -= 1
+# Luis Luna
 
 #Joel Orrala - Estructura de datos tipo Hash
 def p_hash(p):
@@ -331,7 +339,8 @@ def p_hash_pairs(p):
 #Joel Orrala
 
 #Genesis Pacheco - Estructura de control While
-def p_while_loop(p):  #Luis Luna
+# Luis Luna - Semantico: Chequeo de break usando contexto de bucles
+def p_while_loop(p):  
     'while_loop : WHILE logic_expression body END'
     global loop_counter
     loop_counter += 1
@@ -436,9 +445,9 @@ def p_empty(p):
 #Joel Orrala
 
 # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "joelorrala"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba =  "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/algoritmos/algoritmo_joel.rb" # Cambiar al archivo Ruby de prueba
-log_dir = "/Users/joelorrala/Desktop/RubyCodeAnalyzer/src/logs"
+nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
+archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
+log_dir = r"C:\Github\RubyCodeAnalyzer\src\logs"
 os.makedirs(log_dir, exist_ok=True)
 
 with open(archivo_prueba, "r", encoding="utf-8") as f:

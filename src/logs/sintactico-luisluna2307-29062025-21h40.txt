@@ -1,0 +1,8 @@
+Syntax error at token 'to_i' (type TO_I) at line 12
+Syntax error at token 'to_f' (type TO_F) at line 13
+Syntax error at token 'to_s' (type TO_S) at line 14
+Syntax error at token 'to_i' (type TO_I) at line 16
+Syntax error at token 'end' (type END) at line 44
+Syntax error at token ',' (type COMMA) at line 51
+Syntax error at token 'puts' (type PUTS) at line 71
+Syntax error at token 'break' (type BREAK) at line 84

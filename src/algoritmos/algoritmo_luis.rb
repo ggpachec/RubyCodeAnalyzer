@@ -1,115 +1,108 @@
-# Prueba de variables y asignaciones
-edad = 28
-nombre = "Ana"
-activo = true
-temperatura = 21.7
-arreglo = [1, 2, 3, 4]
-persona = { "nombre": "Ana", "edad": 28 }
-rango_incl = (1..5)
-rango_excl = (1...5)
-@instancia = "Soy una variable de instancia"
+# Test algorithm for lexical, syntactic and semantic analysis
 
-# Impresión y entrada de datos
-puts "Ingrese su apellido:"
-apellido = gets.chomp
+# Variables and assignments
+x = 5
+y = 2.5
+z = "hello"
+flag = true
+undef_var = a + 3          # Semantic: 'a' is not defined
 
-# Expresiones aritméticas y booleanas
-resultado = (edad + 2) * 3 - 1
-es_adulto = edad >= 18 && activo
+# Type conversion
+num_str = "123"
+num_int = num_str.to_i     # OK
+num_float = num_str.to_f   # OK
+converted = x.to_s         # OK
 
-# Estructura de control if-else
-if edad >= 18
-    puts "Es mayor de edad"
-else
-    puts "Es menor de edad"
+invalid_conv = flag.to_i   # Semantic: 'to_i' not defined for bool
+
+# Arithmetic operations
+sum = x + y
+diff = x - y
+prod = x * 2
+div = y / 2
+power = x ** 2
+modulo = x % 2
+
+str_sum = z + x            # Semantic: can't add string and int
+
+# Compound assignment
+x += 1
+z += " world"              # Semantic: can't add string and int (in this context)
+
+# Arrays, hashes, ranges
+arr = [1, 2, 3]
+h = { "one": 1, "two": 2 }
+rng = (1..5)
+
+# Print and input
+puts "Enter value:"
+input_val = gets.chomp
+
+# Functions
+def my_sum(a, b)
+  return a + b
 end
 
-# Bucle while
-contador = 0
-while contador < 3
-    puts contador
-    contador = contador + 1
+def greet(name = "User")
+  puts "Hello, #{name}"
+  return 42              # Semantic: return type int, but should be string
 end
 
-# Bucle for con rango
-for i in 1..5
-    puts i
+val1 = my_sum(x, y)
+greet("Alice")
+
+# Class and method
+class Person
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def show
+    puts "Name: #{@name}, Age: #{@age}"
+  end
 end
 
-# Definición de función sin parámetros
-def saludar
-    puts "Hola!"
+p = Person.new("Tom", 20)
+p.show
+
+# Control structures
+if flag
+  puts "Flag is true"
 end
 
-# Definición de función con parámetros y return
-def sumar(a, b)
-    resultado = a + b
-    return resultado
+if z                 # Semantic: IF with string condition
+  puts "z is truthy"
 end
 
-# Llamada a función
-saludar()
-total = sumar(5, 3)
-
-# Definición de clase con método y propiedades
-class Persona
-    def initialize(nombre, edad)
-        @nombre = nombre
-        @edad = edad
-    end
-
-    def saludar
-        puts "Hola, soy #{@nombre} y tengo #{@edad} años"
-    end
+while x > 0
+  puts x
+  x -= 1
 end
 
-ana = Persona.new("Ana", 28)
-ana.saludar()
+while "loop"         # Semantic: WHILE with string condition
+  break              # OK, inside loop
+end
 
-# Comentarios de una línea y multilínea
-# Este es un comentario de una línea
+break                # Semantic: break outside loop
 
+for i in 1..3
+  puts i
+end
+
+# Logical operations
+result = flag && false
+result2 = flag || z     # Semantic: OR with non-bool operand
+
+# Comparison
+eq = x == z             # Semantic: comparison between int and string
+neq = arr != h          # Semantic: comparison between array and hash
+
+# Multi-line comment
 =begin
-Este es un comentario
-de varias líneas.
+This is a multi-line comment
 =end
 
-# --------------------
-# Errores SINTÁCTICOS INTENCIONALES para probar el parser:
-# 1. Bloque if sin end
-if activo
-    puts "Bloque if sin end"
-# Falta end aquí
+# End of test algorithm
 
-# 2. Bucle while mal cerrado
-while contador < 5
-    puts contador
-    contador += 1
-# Falta end aquí
-
-# 3. Llamada a función sin paréntesis (no permitido según tu gramática actual)
-saludar
-
-# 4. Array mal formado (falta corchete de cierre)
-numeros = [1, 2, 3
-
-# 5. Hash mal formado (falta llave de cierre)
-mascota = { "nombre": "Toby", "edad": 2
-
-# 6. Asignación sin expresión
-total =
-
-# 7. Paréntesis desbalanceados
-resultado = (5 + 2
-
-# 8. Uso incorrecto de else
-else
-    puts "Error de else sin if"
-end
-
-# 9. Llamada a función con coma de más
-sumar(4, 5,)
-
-# 10. Operador aritmético sin operando
-diferencia = 10 -
 
