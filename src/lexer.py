@@ -271,7 +271,8 @@ def analizar_lexico(codigo, usuario):
 
     # Carpeta de logs
     log_dir = os.path.join(os.path.dirname(__file__), "logs")
-    os.makedirs(log_dir, exist_ok=True)  # Asegurar que la carpeta logs exista
+    (os.
+     makedirs(log_dir, exist_ok=True))  # Asegurar que la carpeta logs exista
 
     with open(codigo, "r", encoding="utf-8") as f:
         data = f.read()

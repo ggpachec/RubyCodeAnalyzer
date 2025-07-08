@@ -443,47 +443,110 @@ def p_empty(p):
     pass
 
 #Joel Orrala
-
-# Joel Orrala - Inicio de bloque de generación de logs sintácticos
-nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
-archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
-log_dir = r"C:\Github\RubyCodeAnalyzer\src\logs"
-os.makedirs(log_dir, exist_ok=True)
-
-with open(archivo_prueba, "r", encoding="utf-8") as f:
-    data = f.read()
-now = datetime.now()
-fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-#log_filename = f"..\src\logs\sintactico-{nombre_usuario}-{fecha_hora}.txt"
-# Nombres de los archivos
-sintactico_log = os.path.join(log_dir, f"sintactico-{nombre_usuario}-{fecha_hora}.txt")
-semantico_log = os.path.join(log_dir, f"semantico-{nombre_usuario}-{fecha_hora}.txt")
+#
+# # Joel Orrala - Inicio de bloque de generación de logs sintácticos
+# nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
+# archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
+# log_dir = r"C:\Github\RubyCodeAnalyzer\src\logs"
+# os.makedirs(log_dir, exist_ok=True)
+#
+# with open(archivo_prueba, "r", encoding="utf-8") as f:
+#     data = f.read()
+# now = datetime.now()
+# fecha_hora = now.strftime("%d%m%Y-%Hh%M")
+# # Nombres de los archivos
+# sintactico_log = os.path.join(log_dir, f"sintactico-{nombre_usuario}-{fecha_hora}.txt")
+# semantico_log = os.path.join(log_dir, f"semantico-{nombre_usuario}-{fecha_hora}.txt")
 
 # Guardar errores sintácticos
 def p_error(p):
+    global sintactico_log
     with open(sintactico_log, "a", encoding="utf-8") as log:
         if p:
-            mensaje = f"Syntax error at token '{p.value}' (type {p.type}) at line {p.lineno}\n"
+            mensaje = f"Syntax error at token '{p.value}' (type '{p.type}') at line '{p.lineno}'\n"
             print(mensaje.strip())
             log.write(mensaje)
         else:
             mensaje = "Syntax error at EOF\n"
             print(mensaje.strip())
             log.write(mensaje)
-    print(f"\nErrores sintácticos de {nombre_usuario} guardados en: {sintactico_log}")
 
 # Build the parser
 parser = yacc.yacc(start='start')
-parser.parse(data)
+#parser.parse(data)
 
-# Genesis Pacheco - Guardar errores semánticos
-with open(semantico_log, "a", encoding="utf-8") as log:
-    if len(semantic_errors) == 0:
-        log.write("No semantic errors found.\n")
-    else:
-        for error in semantic_errors:
-            log.write(error + "\n")
-        print(f"\nErrores semánticos de {nombre_usuario} guardados en: {semantico_log}")
+def analizar_sintactico(archivo_rb: str, usuario: str):
+    global sintactico_log
+
+    log_dir = os.path.join(os.path.dirname(__file__), "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    now = datetime.now().strftime("%d%m%Y-%Hh%M")
+    sintactico_log = os.path.join(log_dir, f"sintactico-{usuario}-{now}.txt")
+
+    with open(archivo_rb, "r", encoding="utf-8") as f:
+        data = f.read()
+
+    parser.parse(data)
+
+    errores_sintacticos = []
+    if os.path.exists(sintactico_log):
+        with open(sintactico_log, "r", encoding="utf-8") as f:
+            for linea in f:
+                list_linea = linea.split("'")
+                errores_sintacticos.append(("ERROR SINTACTICO", list_linea[1], list_linea[3], list_linea[5]))
+
+    return errores_sintacticos
+
+
+def analizar_semantico(archivo_rb: str, usuario: str):
+    global semantic_errors, symbol_table, loop_counter, current_function
+
+    # Reiniciar contexto
+    semantic_errors = []
+    symbol_table = {
+        "variables": {},
+        "functions": {
+            "conversion": ["to_i", "to_f", "to_s"]
+        }
+    }
+    loop_counter = 0
+    current_function = None
+
+    log_dir = os.path.join(os.path.dirname(__file__), "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    now = datetime.now().strftime("%d%m%Y-%Hh%M")
+    semantico_log = os.path.join(log_dir, f"semantico-{usuario}-{now}.txt")
+
+    with open(archivo_rb, "r", encoding="utf-8") as f:
+        data = f.read()
+
+    parser.parse(data)
+
+    with open(semantico_log, "a", encoding="utf-8") as log:
+        if not semantic_errors:
+            log.write("No semantic errors found.\n")
+        else:
+            for error in semantic_errors:
+                log.write(error + "\n")
+
+    errores_semanticos = []
+    if os.path.exists(semantico_log):
+        with open(semantico_log, "r", encoding="utf-8") as f:
+            for linea in f:
+                if "Semantic error" in linea:
+                    errores_semanticos.append(("ERROR SEMANTICO", linea.strip()))
+
+    return errores_semanticos
+
+#
+# # Genesis Pacheco - Guardar errores semánticos
+# with open(semantico_log, "a", encoding="utf-8") as log:
+#     if len(semantic_errors) == 0:
+#         log.write("No semantic errors found.\n")
+#     else:
+#         for error in semantic_errors:
+#             log.write(error + "\n")
+#         print(f"\nErrores semánticos de {nombre_usuario} guardados en: {semantico_log}")
 
 # Joel Orrala - Fin de bloque de generación de logs sintácticos
 
