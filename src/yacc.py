@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 # Get the token map from the lexer.  This is required.
-from main import tokens
+from lexer import tokens
 
 #Agregar la tabla de simbolos
 symbol_table = {

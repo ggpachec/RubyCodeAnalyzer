@@ -1,227 +1,87 @@
-import ply.lex as lex
-import os
-from datetime import datetime
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
+from lexer import analizar_lexico
 
-reserved = {
-    'if' : 'IF',
-    'then' : 'THEN',
-    'else' : 'ELSE',
-    'while' : 'WHILE',
-    'for' : 'FOR',
-    'def' : 'DEF',
-    'class' : 'CLASS',
-    'return' : 'RETURN',
-    'true' : 'TRUE',
-    'false' : 'FALSE',
-    'puts' : 'PUTS',
-    'in' : 'IN',
-    'gets' : 'GETS',
-    "to_i" : "TO_I",
-    "to_i" : "TO_I",
-    "to_f" : "TO_F",
-    "to_s" : "TO_S",
-    # Luis Luna - Inicio de aporte de palabras reservadas
-    'nil': 'NIL',
-    'end' : 'END',
-    'and' : 'AND',
-    'or' : 'OR',
-    'not' : 'NOT',
-    'next' : 'NEXT',
-    'break' : 'BREAK',
-    'yield' : 'YIELD',
-    'module' : 'MODULE',
-    'do' : 'DO',
-    #Luis Luna - Fin de aporte de palabras reservadas
-}
+def cargar_archivo():
+    ruta = filedialog.askopenfilename(filetypes=[("Archivos Ruby", "*.rb")])
+    if ruta:
+        with open(ruta, "r", encoding="utf-8") as f:
+            contenido = f.read()
+            entrada_codigo.delete("1.0", tk.END)
+            entrada_codigo.insert(tk.END, contenido)
 
-# List of token names.   This is always required
-tokens = (
-    ## TIPOS DE DATOS
-    'INTEGER',
-    'FLOAT',
-    # Genesis Pacheco
-    'STRING',
-    'BOOLEAN',
-    'ID',
-    'VAR_INST',
-    # Genesis Pacheco
+def analizar():
+    codigo = entrada_codigo.get("1.0", tk.END).strip()
+    if not codigo:
+        messagebox.showwarning("Advertencia", "No hay código para analizar.")
+        return
 
-    ## OPERADORES ARITMETICOS Y DE ASIGNACION
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'EXPONENT',
+    usuario = campo_usuario.get().strip() or "Anonimo"
 
+    # Guardar código temporal en archivo para compatibilidad con tu lexer
+    archivo_temp = "codigo_temporal.rb"
+    with open(archivo_temp, "w", encoding="utf-8") as f:
+        f.write(codigo)
 
-    # Genesis Pacheco
-    'ASSIGN',
+    try:
+        tokens = analizar_lexico(archivo_temp, usuario)
+        mostrar_tokens(tokens)
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
 
-    ## OPERADORES LOGICOS Y DE COMPARACION
-    'AND_OP',
-    'OR_OP',
-    'NOT_OP',
-    'EQUALS',
-    'NEQUALS',
-    'LESST',
-    'GREATERT',
-    'LESSEQ',
-    'GREATEREQ',
-    # Genesis Pacheco
+def mostrar_tokens(tokens):
+    for row in tabla_tokens.get_children():
+        tabla_tokens.delete(row)
 
-    ## DELIMITADORES Y SIMBOLOS
-    'LPAREN',
-    'RPAREN',
-    'LCORCH',
-    'RCORCH',
-    # Luis Luna - Inicio de aporte de nuevos tokens
-    'LBRACE',
-    'RBRACE',
-    'SEMICOLON',
-    # Luis Luna - Fin de aporte de nuevos tokens
-    # Genesis Pacheco
-    'COMMA',
-    'COLON',
-    'DOT',
-    # Genesis Pacheco
-    # Joel Orrala
-    'RANGE_INCL',
-    'RANGE_EXCL'
-    # Joel Orrala
+    for tok in tokens:
+        tipo, valor, linea, pos = tok
+        tabla_tokens.insert("", tk.END, values=(tipo, valor, linea, pos))
 
-)+tuple(reserved.values())
+# Crear ventana
+ventana = tk.Tk()
+ventana.title("Analizador Léxico Ruby")
+ventana.geometry("900x600")
+
+# Campo usuario
+tk.Label(ventana, text="Nombre de usuario:").pack(pady=5)
+campo_usuario = tk.Entry(ventana, width=30)
+campo_usuario.pack()
+
+# Área de texto para código
+tk.Label(ventana, text="Código Ruby:").pack()
+entrada_codigo = tk.Text(ventana, height=15, width=100)
+entrada_codigo.pack(pady=5)
+
+# Botones
+frame_botones = tk.Frame(ventana)
+frame_botones.pack()
+
+tk.Button(frame_botones, text="📂 Cargar archivo", command=cargar_archivo).pack(side=tk.LEFT, padx=10)
+tk.Button(frame_botones, text="🧠 Analizar léxico", command=analizar).pack(side=tk.LEFT, padx=10)
+
+# Tabla de tokens
+tk.Label(ventana, text="Tokens léxicos:").pack(pady=5)
+columnas = ("Tipo", "Valor", "Línea", "Posición")
+tabla_tokens = ttk.Treeview(ventana, columns=columnas, show="headings", height=10)
+
+for col in columnas:
+    tabla_tokens.heading(col, text=col)
+    tabla_tokens.column(col, width=150)
+
+tabla_tokens.pack(pady=10)
+
+# Ejecutar la GUI
+ventana.mainloop()
 
 
+#PRUEBA PARA EJECUTAR ANALISIS LEXICO CON
+nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
+archivo_prueba = "../src/algoritmos/algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
 
-# Regular expression rules for simple tokens
-t_PLUS    = r'\+'
-t_MINUS   = r'-'
-t_TIMES   = r'\*'
-t_DIVIDE  = r'/'
-# Genesis Pacheco
-t_ASSIGN = r'='
-t_EQUALS = r'=='
-t_NEQUALS = r'!='
-t_LESST = r'<'
-t_GREATERT = r'>'
-t_LESSEQ = r'<='
-t_GREATEREQ = r'>='
-t_AND_OP = r'&&'
-t_OR_OP = r'\|\|'
-t_NOT_OP = r'!'
-t_COMMA = r','
-t_COLON = r':'
-t_DOT = r'\.'
-# Genesis Pacheco
-t_LPAREN  = r'\('
-t_RPAREN  = r'\)'
-t_MODULE = r'%'
-t_LCORCH = r'\['
-t_RCORCH = r'\]'
-# Luis Luna - Inicio de aporte de nuevas expresiones regulares para tokens simples
-t_EXPONENT = r'\*\*'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
-t_SEMICOLON = r';'
-# Luis Luna - Fin de aporte de nuevas expresiones regulares para tokens simples
+tokenss = analizar_lexico(archivo_prueba, nombre_usuario)
 
-# Joel Orrala
-t_RANGE_INCL = r'\.\.'
-t_RANGE_EXCL = r'\.\.\.'
-# Joel Orrala
-
-
-def t_FLOAT(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
-    return t
-
-# A regular expression rule with some action code
-def t_INTEGER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-# Joel Orrala - Corrección del token STRING para aceptar comillas simples o dobles
-def t_STRING(t):
-  r'(\"([^\\\"]|\\.)*\")|(\'([^\\\']|\\.)*\')'
-  t.value = t.value[1:-1]  # remover comillas
-  return t
-# Joel Orrala
-
-def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value,'ID')    # Check for reserved words
-    return t
-
-# Genesis Pacheco
-def t_VAR_INST(t):
-    r'\@[a-zA-Z_][a-zA-Z_0-9]*'
-    return t
-# Genesis Pacheco
-
-# Luis Luna - Inicio de aporte de nueva expresion regular para COMENTARIOS
-def t_COMMENT(t):
-    r'\#.*'
-    pass
-# Luis Luna - Fin de aporte de nueva expresion regular para COMENTARIOS
-
-# Joel Orrala - Comentario multilínea (=begin ... =end)
-def t_MULTILINE_COMMENT(t):
-  r'=begin(.|\n)*?=end'
-  pass  # se ignora
-# Joel Orrala
-
-# Define a rule so we can track line numbers
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-# A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t'
-
-# Joel Orrala - Errores personalizados
-def t_error(t):
-    if t.value[0].isdigit():
-        print(f"[LEXICAL ERROR] Identificador no puede comenzar con número: '{t.value}' en línea {t.lineno}")
-    elif t.value[0] in ['"', "'"]:
-        print(f"[LEXICAL ERROR] String no cerrado correctamente o comillas desbalanceadas en línea {t.lineno}")
-    else:
-        print(f"[LEXICAL ERROR] Carácter ilegal '{t.value[0]}' en línea {t.lineno}")
-    t.lexer.skip(1)
-# Joel Orrala 
-
-# Build the lexer
-lexer = lex.lex()
-
-
-# Joel Orrala - Inicio de bloque de generación de logs
-
-""" nombre_usuario = "luisluna2307"  # cambiar por cada usuario Git
-archivo_prueba = r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # cambiar por el archivo de cada uno
-
-
-os.makedirs("logs", exist_ok=True) # Asegurar que la carpeta logs exista
-
-
-with open(archivo_prueba, "r", encoding="utf-8") as f:
-   data = f.read()
-
-
-now = datetime.now()
-fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
-log_filename = f"src/logs/lexico-{nombre_usuario}-{fecha_hora}.txt"
-
-# Procesar análisis léxico y guardar log
-with open(log_filename, "w", encoding="utf-8") as log_file:
-   lexer.input(data)
-   while True:
-       tok = lexer.token()
-       if not tok:
-           break
-       print(tok)
-       log_file.write(str(tok) + '\n')
-
-
-print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}") """
-# Joel Orrala - Fin de bloque de generación de logs
+# Imprime tokens en consola
+print("\n📌 Lista de tokens encontrados:")
+for t in tokenss:
+    tipo, valor, linea, pos = t
+    print(f"{tipo}\t{valor}\tLínea {linea}\tPos {pos}")
