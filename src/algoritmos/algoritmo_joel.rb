@@ -79,7 +79,4 @@ est1.presentar
 # Error léxico: comillas mal cerradas
 mensaje = "Este string no se cierra  # ERROR léxico
 
-# Error sintáctico: palabra reservada mal escrita
-retrn 20  # ERROR sintáctico: 'return' mal escrito
-
 # Fin del algoritmo
