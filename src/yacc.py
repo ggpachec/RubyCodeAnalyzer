@@ -29,11 +29,19 @@ def p_sentences(p):
 def p_function(p):
     '''function : DEF ID body END
                 | DEF ID LPAREN args_opt RPAREN body END'''
-    #Joel Orrala - regla semántica de retorno de funciones
-    global current_function
-    current_function = p[2]
-    symbol_table["functions"][p[2]] = None  # Inicialmente None, luego se puede actualizar
-    current_function = None
+    #Joel Orrala - Regla semántica de verificación de argumentos en llamadas a funciones
+    function_name = p[2]
+    if len(p) == 5:  # DEF ID body END
+        param_count = 0
+    else:  # DEF ID ( args_opt ) body END
+        if p[4] is None:
+            param_count = 0
+        elif isinstance(p[4], list):
+            param_count = len(p[4])
+        else:
+            param_count = 1
+    symbol_table["functions"][function_name] = {"param_count": param_count}
+
 
 #Luis Luna
 def p_arg(p):
@@ -50,11 +58,18 @@ def p_arg(p):
 def p_args(p):
     '''args : arg
             | arg COMMA args'''
+     #Joel Orrala - Regla semántica de verificación de argumentos en llamadas a funciones
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[3]
 
     
 def p_args_opt(p):
     '''args_opt : args
                 | empty'''
+    #Joel Orrala - Regla semántica de verificación de argumentos
+    p[0] = p[1]
 
 def p_body(p):
     '''body : body sentence
@@ -119,17 +134,10 @@ def p_methods(p):
 
 # Genesis Pacheco - Fin Regla semantica Conversion de Tipos
 
-  #Joel Orrala - regla semántica de retorno de funciones
+  #Joel Orrala 
 def p_return_stmt(p):
     'return_stmt : RETURN factor'
-    global current_function
-    expected = symbol_table["functions"].get(current_function)
-    if expected and expected != p[2]:
-        msg = f"Semantic error: Return type {p[2]} does not match expected {expected} in function {current_function}"
-        print(msg)
-        semantic_errors.append(msg)
-    else:
-        symbol_table["functions"][current_function] = p[2]
+    pass
     
 def p_break_stmt(p):
     'break_stmt : BREAK'
@@ -305,7 +313,21 @@ def p_function_call_empty(p):
 # Joel Orrala - Llamada a función con argumentos
 def p_function_call_args(p):
     'function_call_args : ID LPAREN args RPAREN'
-    #p[0] = ('func_call', p[1], p[3])
+    #Joel Orrala - Regla semántica de verificación de argumentos en llamadas a funciones
+    func_name = p[1]
+    arg_list = p[3]
+
+    if func_name in symbol_table["functions"]:
+        expected_count = symbol_table["functions"][func_name]["param_count"]
+        actual_count = len(arg_list)
+        if expected_count != actual_count:
+            msg = f"Semantic error: Function '{func_name}' expects {expected_count} arguments, but {actual_count} were given."
+            print(msg)
+            semantic_errors.append(msg)
+    else:
+        msg = f"Semantic error: Function '{func_name}' is not defined."
+        print(msg)
+        semantic_errors.append(msg)
 
 # Joel Orrala - Llamada a función con punto
 def p_method_call_with_dot(p):
