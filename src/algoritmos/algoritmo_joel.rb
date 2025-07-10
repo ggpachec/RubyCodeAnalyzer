@@ -80,10 +80,10 @@ def saludar(nombre)
 end
 
 # ✅ Llamada correcta
-saludar("Joel")
+hola = saludar("Joel")
 
 # ❌ Llamada incorrecta (faltan argumentos)
-saludar()  # ❌ ERROR SEMÁNTICO: argumentos insuficientes
+hola_error = saludar()  # ❌ ERROR SEMÁNTICO: argumentos insuficientes
 
 # ----------------------------------------
 # FUNCIONES CON VERIFICACIÓN DE ARGUMENTOS

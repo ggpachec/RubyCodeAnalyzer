@@ -324,7 +324,20 @@ def p_factor_function_call_empty(p):
 # Joel Orrala - Llamada a función sin argumentos
 def p_function_call_empty(p):
     'function_call_empty : ID LPAREN RPAREN'
-    #p[0] = ('func_call', p[1], [])
+    func_name = p[1]
+
+    if func_name in symbol_table["functions"]:
+        expected_count = symbol_table["functions"][func_name]["param_count"]
+        if expected_count != 0:
+            msg = f"Semantic error: Function '{func_name}' expects {expected_count} arguments, but 0 were given."
+            print(msg)
+            semantic_errors.append(msg)
+    else:
+        msg = f"Semantic error: Function '{func_name}' is not defined."
+        print(msg)
+        semantic_errors.append(msg)
+
+    p[0] = "function"   # <---- PARA PROPAGAR TIPO
 
 # Joel Orrala - Llamada a función con argumentos
 def p_function_call_args(p):
@@ -344,6 +357,7 @@ def p_function_call_args(p):
         msg = f"Semantic error: Function '{func_name}' is not defined."
         print(msg)
         semantic_errors.append(msg)
+    p[0] = "function"
 
 # Joel Orrala - Llamada a función con punto
 def p_method_call_with_dot(p):
