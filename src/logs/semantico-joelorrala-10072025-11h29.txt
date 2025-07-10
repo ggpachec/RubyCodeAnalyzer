@@ -1,0 +1,16 @@
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'b' used without being defined.
+Semantic error: Cannot apply '/' between None and None
+Semantic error: Function 'dividir' is not defined.
+Semantic error: Function 'dividir' is not defined.
+Semantic error: 'break' used outside of a loop.
+Semantic error: Method presentar was not recognized.
+Semantic error: Cannot apply '+' between str and int
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'b' used without being defined.
+Semantic error: Cannot apply '/' between None and None
+Semantic error: Function 'dividir' is not defined.
+Semantic error: Function 'dividir' is not defined.
+Semantic error: 'break' used outside of a loop.
+Semantic error: Method presentar was not recognized.
+Semantic error: Cannot apply '+' between str and int

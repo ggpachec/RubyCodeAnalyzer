@@ -156,8 +156,14 @@ def p_assignment(p):
     # Luis Luna - Semantico: Chequeo de tipo en asignaciones
     name = p[1]
     value_type = p[3] 
-    if value_type is not None:
+    if name in symbol_table["functions"]:
+        msg = f"Semantic error: Cannot assign value to function '{name}'."
+        print(msg)
+        semantic_errors.append(msg)
+    else:
         symbol_table["variables"][name] = value_type
+#    if value_type is not None:
+#        symbol_table["variables"][name] = value_type
     # Luis Luna - Fin Semantico: Chequeo de tipo en asignaciones
 
 def p_assignment_compound(p):
@@ -277,12 +283,15 @@ def p_factor_valor(p):
 # Luis Luna - Fin Semantico: Chequeo de tipo en asignaciones y uso de variables
     else:
         nombre = p[1]
-        if nombre not in symbol_table["variables"]:
+        if nombre in symbol_table["variables"]:
+            p[0] = symbol_table["variables"][nombre]
+        elif nombre in symbol_table["functions"]:
+            p[0] = "function"
+        
+        else:
             msg = f"Semantic error: Variable '{nombre}' used without being defined."
             print(msg)
             semantic_errors.append(msg)
-        else:
-            p[0] = symbol_table["variables"][nombre]
 #Joel Orrala           
 
 
@@ -304,6 +313,13 @@ def p_factor_range_incl(p):
 def p_factor_range_excl(p):
     'factor : range_excl'
 
+def p_factor_function_call_args(p):
+    'factor : function_call_args'
+    p[0] = p[1]
+
+def p_factor_function_call_empty(p):
+    'factor : function_call_empty'
+    p[0] = p[1]
 
 # Joel Orrala - Llamada a función sin argumentos
 def p_function_call_empty(p):
