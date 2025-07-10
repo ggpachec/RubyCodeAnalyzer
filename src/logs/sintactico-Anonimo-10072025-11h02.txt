@@ -1,6 +1,0 @@
-Syntax error at token 'Ana' (type 'STRING') at line '142'
-Syntax error at token 'end' (type 'END') at line '198'
-Syntax error at token ',' (type 'COMMA') at line '201'
-Syntax error at token 'Ana' (type 'STRING') at line '257'
-Syntax error at token 'end' (type 'END') at line '313'
-Syntax error at token ',' (type 'COMMA') at line '316'

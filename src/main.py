@@ -132,15 +132,3 @@ for col in tabla_semantico_columnas:
 
 # ------------------ EJECUCIÓN PRINCIPAL ------------------ #
 ventana.mainloop()
-
-#PRUEBA PARA EJECUTAR ANALISIS LEXICO CON LA RUTA
-nombre_usuario = "ggpachec"  # cambiar por cada usuario Git
-archivo_prueba = "../src/algoritmos/algoritmo_genesis.rb"  # cambiar por el archivo de cada uno
-
-tokenss = analizar_lexico(archivo_prueba, nombre_usuario)
-
-# Imprime tokens en consola
-print("\n📌 Lista de tokens encontrados:")
-for t in tokenss:
-    tipo, valor, linea, pos = t
-    print(f"{tipo}\t{valor}\tLínea {linea}\tPos {pos}")

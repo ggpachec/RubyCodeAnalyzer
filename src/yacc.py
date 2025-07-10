@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import os
 from datetime import datetime
+import re
 
 # Get the token map from the lexer.  This is required.
 from lexer import tokens
@@ -15,6 +16,7 @@ symbol_table = {
 semantic_errors = []
 loop_counter = 0
 current_function = None  # Para manejo futuro de contexto de función
+function_scope = {}
 
 # Joel Orrala: Regla inicial del parser
 def p_start(p):
@@ -33,14 +35,23 @@ def p_function(p):
     function_name = p[2]
     if len(p) == 5:  # DEF ID body END
         param_count = 0
+        params = []
     else:  # DEF ID ( args_opt ) body END
         if p[4] is None:
             param_count = 0
+            params = []
         elif isinstance(p[4], list):
             param_count = len(p[4])
+            params = p[4]
         else:
             param_count = 1
+            params = [p[4]]
     symbol_table["functions"][function_name] = {"param_count": param_count}
+    # Guardar parámetros en function_scope
+    global function_scope
+    function_scope = {}
+    for param in params:
+        function_scope[param] = "int" 
 
 
 #Luis Luna
@@ -285,13 +296,15 @@ def p_factor_valor(p):
         nombre = p[1]
         if nombre in symbol_table["variables"]:
             p[0] = symbol_table["variables"][nombre]
+        elif nombre in function_scope:    # Verificar parámetros de funciones
+            p[0] = function_scope[nombre]
         elif nombre in symbol_table["functions"]:
             p[0] = "function"
-        
         else:
             msg = f"Semantic error: Variable '{nombre}' used without being defined."
             print(msg)
             semantic_errors.append(msg)
+            p[0] = "error" 
 #Joel Orrala           
 
 
@@ -527,6 +540,18 @@ def p_error(p):
 parser = yacc.yacc(start='start')
 #parser.parse(data)
 
+def preprocesar_funciones(archivo_rb):
+    with open(archivo_rb, "r", encoding="utf-8") as f:
+        data = f.read()
+    # Buscar definiciones de funciones
+    funciones = re.findall(r'def\s+(\w+)\s*(?:\((.*?)\))?', data)
+    for nombre, parametros in funciones:
+        if parametros.strip() == '':
+            param_count = 0
+        else:
+            param_count = len([p.strip() for p in parametros.split(',') if p.strip()])
+        symbol_table["functions"][nombre] = {"param_count": param_count}
+        
 def analizar_sintactico(archivo_rb: str, usuario: str):
     global sintactico_log
 
@@ -551,7 +576,7 @@ def analizar_sintactico(archivo_rb: str, usuario: str):
 
 
 def analizar_semantico(archivo_rb: str, usuario: str):
-    global semantic_errors, symbol_table, loop_counter, current_function
+    global semantic_errors, symbol_table, loop_counter, current_function, function_scope
 
     # Reiniciar contexto
     semantic_errors = []
@@ -563,6 +588,9 @@ def analizar_semantico(archivo_rb: str, usuario: str):
     }
     loop_counter = 0
     current_function = None
+    function_scope = {}
+
+    preprocesar_funciones(archivo_rb)
 
     log_dir = os.path.join(os.path.dirname(__file__), "logs")
     os.makedirs(log_dir, exist_ok=True)
