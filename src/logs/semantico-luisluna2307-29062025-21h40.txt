@@ -1,0 +1,17 @@
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Cannot apply '+' between None and int
+Semantic error: Cannot apply '+' between str and int
+Semantic error: Cannot apply assignment with str
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'b' used without being defined.
+Semantic error: Cannot apply '+' between None and None
+Semantic error: Variable 'my_sum' used without being defined.
+Semantic error: Variable 'name' used without being defined.
+Semantic error: Variable 'age' used without being defined.
+Semantic error: The variable p has not been defined.
+Semantic error: 'break' used outside of a loop.
+Semantic error: Variable 'i' used without being defined.
+Semantic error: Logical connector requires boolean operands. Got 'bool' and 'str'
+Semantic error: Cannot compare int with str
+Semantic error: Variable 'arr' used without being defined.
+Semantic error: Variable 'h' used without being defined.

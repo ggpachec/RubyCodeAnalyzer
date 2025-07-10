@@ -1,0 +1,16 @@
+Semantic error: Cannot apply '+' between str and int
+Semantic error: Cannot apply '/' between int and str
+Semantic error: Cannot compare str with int
+Semantic error: Return type int does not match expected str in function None
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'b' used without being defined.
+Semantic error: Cannot apply '*' between None and None
+Semantic error: Variable 'multiplicar' used without being defined.
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'b' used without being defined.
+Semantic error: Cannot apply '*' between None and None
+Semantic error: Variable 'marca' used without being defined.
+Semantic error: Variable 'modelo' used without being defined.
+Semantic error: Variable 'descripcion' used without being defined.
+Semantic error: Variable 'Vehiculo' used without being defined.
+Semantic error: Variable 'to_str' used without being defined.
