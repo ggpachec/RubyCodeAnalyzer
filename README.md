@@ -9,6 +9,6 @@ El sistema reconoce los componentes básicos del código Ruby, valida la estruct
 
 - **Analizador Sintáctico:** Valida que la secuencia de tokens forme una estructura válida del lenguaje Ruby (asignaciones, estructuras de control, funciones, clases, arrays, hashes, etc.).
 
-- **Analizador Semántico:** Detecta errores de lógica y tipos, como uso de variables no definidas, asignaciones incompatibles, uso incorrecto de break, conversiones de tipo inválidas, y condiciones no booleanas.
+- **Analizador Semántico:** Detecta errores de lógica y tipos, como uso de variables no definidas, asignaciones incompatibles, uso incorrecto de break, conversiones de tipo inválidas, valida el número de parámetros al llamar una función, verifica la compatibilidad entre operaciones aritméticas y condiciones no booleanas.
 
 - **Generación de Logs:** Los tokens, errores sintácticos y errores semánticos se almacenan en archivos de log para facilitar la depuración y evaluación.
