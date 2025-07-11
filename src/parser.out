@@ -34,8 +34,8 @@ Rule 15    args -> arg
 Rule 16    args -> arg COMMA args
 Rule 17    args_opt -> args
 Rule 18    args_opt -> empty
-Rule 19    body -> body sentence
-Rule 20    body -> sentence
+Rule 19    body -> sentence
+Rule 20    body -> sentence body
 Rule 21    print -> PUTS factor
 Rule 22    print -> PUTS STRING
 Rule 23    class_def -> CLASS ID body END
@@ -195,7 +195,7 @@ args                 : 16 17 79
 args_opt             : 5 80
 array                : 31
 assignment           : 24
-body                 : 4 5 19 23 84 88 93 94 94
+body                 : 4 5 20 23 84 88 93 94 94
 break_stmt           : 38
 class_def            : 36
 condition            : 28
@@ -3803,8 +3803,8 @@ state 85
     (93) condition -> IF logic_expression . body END
     (94) condition -> IF logic_expression . body ELSE body END
     (73) factor -> logic_expression .
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -4018,8 +4018,8 @@ state 88
 
     (88) while_loop -> WHILE logic_expression . body END
     (73) factor -> logic_expression .
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -4178,8 +4178,8 @@ state 92
 
     (4) function -> DEF ID . body END
     (5) function -> DEF ID . LPAREN args_opt RPAREN body END
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -4300,8 +4300,8 @@ state 92
 state 93
 
     (23) class_def -> CLASS ID . body END
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -6021,7 +6021,17 @@ state 130
 
     (93) condition -> IF logic_expression body . END
     (94) condition -> IF logic_expression body . ELSE body END
-    (19) body -> body . sentence
+
+    END             shift and go to state 156
+    ELSE            shift and go to state 157
+
+
+state 131
+
+    (19) body -> sentence .
+    (20) body -> sentence . body
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -6096,8 +6106,8 @@ state 130
     (96) logic_expression -> . factor logic_connector factor
     (97) logic_expression -> . expression logic_op expression
 
-    END             shift and go to state 156
-    ELSE            shift and go to state 157
+    END             reduce using rule 19 (body -> sentence .)
+    ELSE            reduce using rule 19 (body -> sentence .)
     ID              shift and go to state 22
     VAR_INST        shift and go to state 23
     PUTS            shift and go to state 26
@@ -6117,8 +6127,8 @@ state 130
     FALSE           shift and go to state 41
     NIL             shift and go to state 42
 
-    logic_expression               shift and go to state 30
-    sentence                       shift and go to state 158
+    sentence                       shift and go to state 131
+    body                           shift and go to state 158
     assignment                     shift and go to state 4
     expression                     shift and go to state 5
     print                          shift and go to state 6
@@ -6139,153 +6149,14 @@ state 130
     methods                        shift and go to state 21
     term                           shift and go to state 24
     factor                         shift and go to state 27
-
-state 131
-
-    (20) body -> sentence .
-
-    END             reduce using rule 20 (body -> sentence .)
-    ELSE            reduce using rule 20 (body -> sentence .)
-    ID              reduce using rule 20 (body -> sentence .)
-    VAR_INST        reduce using rule 20 (body -> sentence .)
-    PUTS            reduce using rule 20 (body -> sentence .)
-    IF              reduce using rule 20 (body -> sentence .)
-    WHILE           reduce using rule 20 (body -> sentence .)
-    FOR             reduce using rule 20 (body -> sentence .)
-    LPAREN          reduce using rule 20 (body -> sentence .)
-    INTEGER         reduce using rule 20 (body -> sentence .)
-    DEF             reduce using rule 20 (body -> sentence .)
-    CLASS           reduce using rule 20 (body -> sentence .)
-    RETURN          reduce using rule 20 (body -> sentence .)
-    BREAK           reduce using rule 20 (body -> sentence .)
-    FLOAT           reduce using rule 20 (body -> sentence .)
-    STRING          reduce using rule 20 (body -> sentence .)
-    BOOLEAN         reduce using rule 20 (body -> sentence .)
-    TRUE            reduce using rule 20 (body -> sentence .)
-    FALSE           reduce using rule 20 (body -> sentence .)
-    NIL             reduce using rule 20 (body -> sentence .)
-
+    logic_expression               shift and go to state 30
 
 state 132
 
     (88) while_loop -> WHILE logic_expression body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 159
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    logic_expression               shift and go to state 30
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_incl                     shift and go to state 12
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
 
 state 133
 
@@ -6395,123 +6266,9 @@ state 135
 state 136
 
     (4) function -> DEF ID body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 163
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_incl                     shift and go to state 12
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
-    logic_expression               shift and go to state 30
 
 state 137
 
@@ -6595,123 +6352,9 @@ state 137
 state 138
 
     (23) class_def -> CLASS ID body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 175
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_incl                     shift and go to state 12
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
-    logic_expression               shift and go to state 30
 
 state 139
 
@@ -7259,8 +6902,8 @@ state 156
 state 157
 
     (94) condition -> IF logic_expression body ELSE . body END
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -7380,28 +7023,10 @@ state 157
 
 state 158
 
-    (19) body -> body sentence .
+    (20) body -> sentence body .
 
-    END             reduce using rule 19 (body -> body sentence .)
-    ELSE            reduce using rule 19 (body -> body sentence .)
-    ID              reduce using rule 19 (body -> body sentence .)
-    VAR_INST        reduce using rule 19 (body -> body sentence .)
-    PUTS            reduce using rule 19 (body -> body sentence .)
-    IF              reduce using rule 19 (body -> body sentence .)
-    WHILE           reduce using rule 19 (body -> body sentence .)
-    FOR             reduce using rule 19 (body -> body sentence .)
-    LPAREN          reduce using rule 19 (body -> body sentence .)
-    INTEGER         reduce using rule 19 (body -> body sentence .)
-    DEF             reduce using rule 19 (body -> body sentence .)
-    CLASS           reduce using rule 19 (body -> body sentence .)
-    RETURN          reduce using rule 19 (body -> body sentence .)
-    BREAK           reduce using rule 19 (body -> body sentence .)
-    FLOAT           reduce using rule 19 (body -> body sentence .)
-    STRING          reduce using rule 19 (body -> body sentence .)
-    BOOLEAN         reduce using rule 19 (body -> body sentence .)
-    TRUE            reduce using rule 19 (body -> body sentence .)
-    FALSE           reduce using rule 19 (body -> body sentence .)
-    NIL             reduce using rule 19 (body -> body sentence .)
+    END             reduce using rule 20 (body -> sentence body .)
+    ELSE            reduce using rule 20 (body -> sentence body .)
 
 
 state 159
@@ -7434,8 +7059,8 @@ state 159
 state 160
 
     (84) for_loop -> FOR ID IN range_incl . body END
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -8223,244 +7848,16 @@ state 186
 state 187
 
     (94) condition -> IF logic_expression body ELSE body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 195
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    logic_expression               shift and go to state 30
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_incl                     shift and go to state 12
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
 
 state 188
 
     (84) for_loop -> FOR ID IN range_incl body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 196
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    range_incl                     shift and go to state 12
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
-    logic_expression               shift and go to state 30
 
 state 189
 
@@ -8472,8 +7869,8 @@ state 189
 state 190
 
     (5) function -> DEF ID LPAREN args_opt RPAREN . body END
-    (19) body -> . body sentence
-    (20) body -> . sentence
+    (19) body -> . sentence
+    (20) body -> . sentence body
     (24) sentence -> . assignment
     (25) sentence -> . expression
     (26) sentence -> . print
@@ -8790,123 +8187,9 @@ state 197
 state 198
 
     (5) function -> DEF ID LPAREN args_opt RPAREN body . END
-    (19) body -> body . sentence
-    (24) sentence -> . assignment
-    (25) sentence -> . expression
-    (26) sentence -> . print
-    (27) sentence -> . input
-    (28) sentence -> . condition
-    (29) sentence -> . while_loop
-    (30) sentence -> . for_loop
-    (31) sentence -> . array
-    (32) sentence -> . range_incl
-    (33) sentence -> . range_excl
-    (34) sentence -> . hash
-    (35) sentence -> . function
-    (36) sentence -> . class_def
-    (37) sentence -> . return_stmt
-    (38) sentence -> . break_stmt
-    (39) sentence -> . function_call_empty
-    (40) sentence -> . function_call_args
-    (41) sentence -> . methods
-    (45) assignment -> . ID ASSIGN expression
-    (46) assignment -> . VAR_INST ASSIGN expression
-    (47) assignment -> . ID PLUS ASSIGN expression
-    (48) assignment -> . ID MINUS ASSIGN expression
-    (49) assignment -> . ID TIMES ASSIGN expression
-    (50) assignment -> . ID DIVIDE ASSIGN expression
-    (55) expression -> . expression PLUS term
-    (56) expression -> . expression MINUS term
-    (57) expression -> . term
-    (80) expression -> . ID DOT ID LPAREN args_opt RPAREN
-    (21) print -> . PUTS factor
-    (22) print -> . PUTS STRING
-    (51) input -> . PUTS STRING
-    (52) input -> . ID ASSIGN GETS method_chain
-    (93) condition -> . IF logic_expression body END
-    (94) condition -> . IF logic_expression body ELSE body END
-    (88) while_loop -> . WHILE logic_expression body END
-    (84) for_loop -> . FOR ID IN range_incl body END
-    (81) array -> . ID ASSIGN LCORCH elements RCORCH
-    (89) range_incl -> . LPAREN INTEGER RANGE_INCL INTEGER RPAREN
-    (90) range_incl -> . INTEGER RANGE_INCL INTEGER
-    (91) range_excl -> . LPAREN INTEGER RANGE_EXCL INTEGER RPAREN
-    (92) range_excl -> . INTEGER RANGE_EXCL INTEGER
-    (85) hash -> . ID ASSIGN LBRACE hash_pairs RBRACE
-    (4) function -> . DEF ID body END
-    (5) function -> . DEF ID LPAREN args_opt RPAREN body END
-    (23) class_def -> . CLASS ID body END
-    (43) return_stmt -> . RETURN factor
-    (44) break_stmt -> . BREAK
-    (78) function_call_empty -> . ID LPAREN RPAREN
-    (79) function_call_args -> . ID LPAREN args RPAREN
-    (42) methods -> . ID DOT ID
-    (58) term -> . term TIMES factor
-    (59) term -> . term DIVIDE factor
-    (60) term -> . term EXPONENT factor
-    (61) term -> . term MODULE factor
-    (62) term -> . factor
-    (63) factor -> . INTEGER
-    (64) factor -> . FLOAT
-    (65) factor -> . STRING
-    (66) factor -> . BOOLEAN
-    (67) factor -> . ID
-    (68) factor -> . VAR_INST
-    (69) factor -> . TRUE
-    (70) factor -> . FALSE
-    (71) factor -> . NIL
-    (72) factor -> . LPAREN expression RPAREN
-    (73) factor -> . logic_expression
-    (74) factor -> . range_incl
-    (75) factor -> . range_excl
-    (76) factor -> . function_call_args
-    (77) factor -> . function_call_empty
-    (95) logic_expression -> . factor logic_op factor
-    (96) logic_expression -> . factor logic_connector factor
-    (97) logic_expression -> . expression logic_op expression
 
     END             shift and go to state 201
-    ID              shift and go to state 22
-    VAR_INST        shift and go to state 23
-    PUTS            shift and go to state 26
-    IF              shift and go to state 29
-    WHILE           shift and go to state 31
-    FOR             shift and go to state 32
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 33
-    DEF             shift and go to state 34
-    CLASS           shift and go to state 35
-    RETURN          shift and go to state 36
-    BREAK           shift and go to state 37
-    FLOAT           shift and go to state 38
-    STRING          shift and go to state 28
-    BOOLEAN         shift and go to state 39
-    TRUE            shift and go to state 40
-    FALSE           shift and go to state 41
-    NIL             shift and go to state 42
 
-    sentence                       shift and go to state 158
-    assignment                     shift and go to state 4
-    expression                     shift and go to state 5
-    print                          shift and go to state 6
-    input                          shift and go to state 7
-    condition                      shift and go to state 8
-    while_loop                     shift and go to state 9
-    for_loop                       shift and go to state 10
-    array                          shift and go to state 11
-    range_incl                     shift and go to state 12
-    range_excl                     shift and go to state 13
-    hash                           shift and go to state 14
-    function                       shift and go to state 15
-    class_def                      shift and go to state 16
-    return_stmt                    shift and go to state 17
-    break_stmt                     shift and go to state 18
-    function_call_empty            shift and go to state 19
-    function_call_args             shift and go to state 20
-    methods                        shift and go to state 21
-    term                           shift and go to state 24
-    factor                         shift and go to state 27
-    logic_expression               shift and go to state 30
 
 state 199
 

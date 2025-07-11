@@ -84,8 +84,8 @@ def p_args_opt(p):
     p[0] = p[1]
 
 def p_body(p):
-    '''body : body sentence
-            | sentence'''
+    '''body : sentence
+            | sentence body'''
 
 def p_print(p):
     '''print : PUTS factor

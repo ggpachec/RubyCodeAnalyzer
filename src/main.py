@@ -155,12 +155,29 @@ frame_botones.pack(pady=10)
 def crear_tabla(titulo, columnas):
     frame = tk.Frame(scrollable_frame, bg="#0f0f0f")
     tk.Label(frame, text=titulo, font=("Helvetica", 14, "bold"), fg="#d0d0ff", bg="#0f0f0f").pack()
-    tabla = ttk.Treeview(frame, columns=columnas, show="headings", height=7)
+
+    contenedor = tk.Frame(frame)
+    contenedor.pack()
+
+
+    scrollbar = tk.Scrollbar(contenedor, orient="vertical")
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    tabla = ttk.Treeview(contenedor, columns=columnas, show="headings", height=7, yscrollcommand=scrollbar.set)
+    tabla.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     for col in columnas:
         tabla.heading(col, text=col)
         tabla.column(col, width=150)
-    tabla.pack(fill=tk.BOTH, expand=True)
-    frame.pack(pady=5)
+    scrollbar.config(command=tabla.yview)
+
+    # Vincular el scroll del mouse
+    def scroll_tabla(event, tree):
+        tree.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+    tabla.bind("<Enter>", lambda e: tabla.bind("<MouseWheel>", lambda ev: scroll_tabla(ev, tabla)))
+    tabla.bind("<Leave>", lambda e: tabla.unbind("<MouseWheel>"))
+
+    frame.pack(pady=5, fill="x")
     return tabla
 
 # ------------------ ESTILO DE TABLAS ------------------ #

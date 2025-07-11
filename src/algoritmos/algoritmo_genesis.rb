@@ -1,4 +1,3 @@
-
 #CASO DE PRUEBA- GENESIS PACHECO
 
 =begin
@@ -11,10 +10,10 @@ organizados por secciones.
 nombre = "María"                 # ✅ Simple
 edad_correcta = 10               # ✅ Numérica
 resultado = edad_correcta + 5    # ✅ Con expresión
-Edad = 10                        # ❌ Error léxico: nombre de variable con mayúscula (se interpreta como constante)
+Edad = 10                        #
 edad = "10"+5                    # ❌ Error semántico: String asignado a una variable usada como número
-2variable = "dato"               # ❌ Error léxico: no puede empezar con número
-_1nombres = "Inválido"           # ❌ Error léxico: comienza con guion bajo y número
+2variable = "dato"
+_1nombres = "Inválido"
 
 
 ## SECCION 2: TIPOS DE DATOS
@@ -25,12 +24,11 @@ decimal = 3.1415                 # ✅ Float
 texto = "Hola mundo"             # ✅ String
 activo = true                    # ✅ Boolean
 nulo = nil                       # ✅ Nil
-booleano = "true"                # ❌ Error Semántico: cadena no es valor booleano
 
 # Tipos Estructurados
 # Hash
-usuario = { "nombre" => "Ana", "edad" => 28 }   # ✅ Hash correcto
-persona = { nombre => "Luis", edad => 30 }      # ❌ Error semántico: claves no definidas
+usuario = { "nombre" : "Ana", "edad" : 28 }   # ✅ Hash correcto
+persona = { nombre : "Luis", edad : 30 }      # ❌ Error sintáctico : nombre no es String
 
 # Array
 numeros_primos = [2, 3, 5, 7, 11, 13]           # ✅ Array
@@ -123,12 +121,12 @@ end
 
 
 # Función con parámetros
-def multiplicar(a, b)                # ✅ Función correctamente declarada
+def multiplicar1(a, b)                # ✅ Función correctamente declarada
   a * b
 end
-result = multiplicar(5, 2)
+result = multiplicar1(5, 2)
 
-def multiplicar(a, b)                # ❌ Error sintáctico: Declaración incompleta, falta `end`
+def multiplicar2(a, b)                # ❌ Error sintáctico: Declaración incompleta, falta `end`
   a * b
 
 
