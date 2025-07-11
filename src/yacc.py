@@ -444,12 +444,6 @@ def p_condition(p):
         print(msg)
         semantic_errors.append(msg)
 
-
-# def p_logic_expression(p):
-#     '''logic_expression : factor logic_op factor
-#                         | factor logic_connector factor
-#                         | factor logic_op factor logic_connector logic_expression'''
-
 def p_logic_expression_comparison(p):
     'logic_expression : factor logic_op factor'
     # Comparaciones simples (a > b, a == b)
@@ -509,20 +503,6 @@ def p_empty(p):
     pass
 
 #Joel Orrala
-#
-# # Joel Orrala - Inicio de bloque de generación de logs sintácticos
-# nombre_usuario = "luisluna2307"  # Cambiar por el nombre de cada usuario Git
-# archivo_prueba =  r"C:\Github\RubyCodeAnalyzer\src\algoritmos\algoritmo_luis.rb" # Cambiar al archivo Ruby de prueba
-# log_dir = r"C:\Github\RubyCodeAnalyzer\src\logs"
-# os.makedirs(log_dir, exist_ok=True)
-#
-# with open(archivo_prueba, "r", encoding="utf-8") as f:
-#     data = f.read()
-# now = datetime.now()
-# fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-# # Nombres de los archivos
-# sintactico_log = os.path.join(log_dir, f"sintactico-{nombre_usuario}-{fecha_hora}.txt")
-# semantico_log = os.path.join(log_dir, f"semantico-{nombre_usuario}-{fecha_hora}.txt")
 
 # Guardar errores sintácticos
 def p_error(p):
@@ -624,40 +604,8 @@ def analizar_semantico(archivo_rb: str, usuario: str):
 
     return errores_semanticos
 
-#
-# # Genesis Pacheco - Guardar errores semánticos
-# with open(semantico_log, "a", encoding="utf-8") as log:
-#     if len(semantic_errors) == 0:
-#         log.write("No semantic errors found.\n")
-#     else:
-#         for error in semantic_errors:
-#             log.write(error + "\n")
-#         print(f"\nErrores semánticos de {nombre_usuario} guardados en: {semantico_log}")
-
-# Joel Orrala - Fin de bloque de generación de logs sintácticos
 
 # Impresiones de validacion
 print(len(semantic_errors))
 print(semantic_errors)
 print(symbol_table)
-
-
-#ELIMINAR ESTE P_ERROR AL ELIMINAR EL WHILE DE DEBAJO
-#def p_error(p):
-#    if p:
-#        print(f"yacc: Syntax error at line {p.lineno}, token={p.type}")
-#    else:
-#        print("yacc: Parse error in input. EOF")
-
-
-# Build the parser
-#parser = yacc.yacc(start='start')
-#
-#while True:
-#   try:
-#       s = input('calc > ')
-#   except EOFError:
-#       break
-#   if not s: continue
-#   result = parser.parse(s)
-#   print(result)

@@ -1,126 +1,127 @@
 =begin
-  Algoritmo de prueba actualizado - Joel Orrala
-  Cubre:
-  ✅ Variables y tipos
-  ✅ Operadores aritméticos y lógicos
-  ✅ Estructuras de control (if-else)
-  ✅ Estructura de datos Hash
-  ✅ Funciones con verificación de argumentos
-  ✅ Clases
-  ✅ Errores léxicos, sintácticos y semánticos
+  Algoritmo de prueba robusto - Joel Orrala
+  Este algoritmo permite validar el funcionamiento del analizador léxico, sintáctico y semántico
+  desarrollado, cubriendo variables, tipos, operadores aritméticos y lógicos, estructura de control if-else,
+  estructura de datos Hash, funciones con verificación de argumentos, clases y errores intencionales.
 =end
 
 # ----------------------------------------
 # VARIABLES VÁLIDAS
 nombre = "Joel"
 edad = 22
-salario = 1000.50
+salario = 1200.75
 activo = true
 nulo = nil
 
-# Operaciones con variables válidas
-bono = 200
+# Operaciones con variables
+bono = 300
 salario_total = salario + bono
-
-# ----------------------------------------
-# VARIABLES INVÁLIDAS (Errores léxicos)
-1variable = 10          # ❌ ERROR LÉXICO: inicia con número
-@variable_local = 30    # ❌ ERROR LÉXICO: variable de instancia 
-$incorrecto = "test"    # ❌ ERROR LÉXICO: variable global 
+descuento = 100.25
+salario_neto = salario_total - descuento
 
 # ----------------------------------------
 # ESTRUCTURA DE DATOS HASH
 # ✅ Hash válido
-persona = { "nombre": "Ana", "edad": 25, "activo": true }
+producto = { "nombre": "Laptop", "precio": 950.0, "stock": 15 }
 
-# ❌ Hash inválido (falta dos puntos)
-persona_mal = { "nombre" "Ana", "edad": 25 }  # ❌ ERROR SINTÁCTICO
+# ❌ Hash inválido (error sintáctico)
+producto_mal = { "nombre" "Laptop", "precio": 950.0 }  # ❌ ERROR SINTÁCTICO
 
 # ----------------------------------------
 # OPERACIONES ARITMÉTICAS Y LÓGICAS
-suma = 10 + 5
-resta = 20 - 4
-multiplicacion = 3 * 7
-division = 14 / 2
-potencia = 2 ** 3
-modulo = 10 % 3
+suma = 15 + 5
+resta = 30 - 8
+multiplicacion = 4 * 6
+division = 20 / 4
+potencia = 3 ** 3
+modulo = 17 % 4
 
-es_mayor = suma > resta
-es_igual = suma == 15
-combinacion = (suma > 5) && (division < 10)
+mayor = suma > resta
+igual = division == 5
+condicion_compuesta = (suma > 10) && (resta < 30)
 
 # ----------------------------------------
 # ESTRUCTURA DE CONTROL IF-ELSE
 # ✅ Correcta
-if suma >= 15
-  puts "Suma alta"
+if salario_neto >= 1000
+  puts "Salario aceptable"
 else
-  puts "Suma baja"
+  puts "Salario bajo"
 end
 
-# ❌ Incorrecta (Error sintáctico: falta 'end')
-if suma >= 15
-  puts "Este bloque no tiene 'end', provocando un error sintáctico"  # ❌ ERROR SINTÁCTICO
+# ❌ Incorrecta (Error sintáctico: falta condición en if)
+if
+  puts "Esto generará un error sintáctico por falta de condición"  # ❌ ERROR SINTÁCTICO
+end
 
 # ----------------------------------------
 # ESTRUCTURA DE CONTROL WHILE
-contador = 0
-
-# ✅ Correcta
-while contador < 3
-  puts "Iteración #{contador}"
-  contador += 1
+i = 0
+while i < 2
+  puts "Ciclo while #{i}"
+  i += 1
 end
 
 # ----------------------------------------
 # FUNCIONES
 # ✅ Declaración de función válida
-def saludar(nombre)
-  puts "Hola, #{nombre}"
+def saludar(usuario)
+  puts "¡Bienvenido, #{usuario}!"
 end
 
 # ✅ Llamada correcta
-hola = saludar("Joel")
+saludar("Joel")
 
 # ❌ Llamada incorrecta (faltan argumentos)
-hola_error = saludar()  # ❌ ERROR SEMÁNTICO: argumentos insuficientes
+saludar()  # ❌ ERROR SEMÁNTICO
 
 # ----------------------------------------
 # FUNCIONES CON VERIFICACIÓN DE ARGUMENTOS
-# ✅ Definición con dos parámetros
-def dividir(a, b)
-  return a / b
+# ✅ Definición
+def restar(a, b)
+  return a - b
 end
 
-# ✅ Llamada con dos argumentos
-resultado = dividir(10, 2)
+# ✅ Llamada correcta
+resultado_resta = restar(15, 5)
 
-# ❌ Llamada con un argumento
-resultado_error = dividir(10)  # ❌ ERROR SEMÁNTICO: argumentos insuficientes
+# ❌ Llamada incorrecta
+resultado_error = restar(10)  # ❌ ERROR SEMÁNTICO
 
 # ----------------------------------------
 # CLASE
-class Estudiante
-  def initialize(nombre, edad)
+class Curso
+  def initialize(nombre, duracion)
     @nombre = nombre
-    @edad = edad
+    @duracion = duracion
   end
 
-  def presentar
-    puts "Soy #{@nombre} y tengo #{@edad} años"
+  def mostrar
+    puts "Curso: #{@nombre}, duración: #{@duracion} meses"
   end
 
   def error_break
-    break  # ❌ ERROR SEMÁNTICO: 'break' fuera de un bucle
+    break  # ❌ ERROR SEMÁNTICO
   end
 end
 
-# Instanciación y uso correcto
-est1 = Estudiante.new("Carla", 21)
-est1.presentar
+curso1 = Curso.new("Ruby", 3)
+curso1.mostrar
 
 # ----------------------------------------
 # ERROR SEMÁNTICO: suma entre string y número
-total = "500" + 20  # ❌ ERROR SEMÁNTICO: tipos incompatibles en suma
+total_pago = "300" + 50  # ❌ ERROR SEMÁNTICO
+
+# ----------------------------------------
+# OTRAS OPERACIONES PARA PROBAR COMPATIBILIDAD
+# ✅ Correctas
+num1 = 8
+num2 = 2
+suma_correcta = num1 + num2
+division_correcta = num1 / num2
+potencia_correcta = num1 ** num2
+
+# ❌ Incorrecta: operación entre tipos incompatibles
+resultado_invalido = true + 5  # ❌ ERROR SEMÁNTICO
 
 # Fin del algoritmo
