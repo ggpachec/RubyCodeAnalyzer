@@ -1,0 +1,8 @@
+Syntax error' at token 'nombre' (type 'ID') at line '31' (pos '866')
+Syntax error' at token 'puts' (type 'PUTS') at line '97' (pos '2851')
+Syntax error' at token 'objeto' (type 'ID') at line '146' (pos '3853')
+Syntax error' at token '.' (type 'DOT') at line '149' (pos '3997')
+Syntax error' at token 'nombre' (type 'ID') at line '183' (pos '866')
+Syntax error' at token 'puts' (type 'PUTS') at line '249' (pos '2851')
+Syntax error' at token 'objeto' (type 'ID') at line '298' (pos '3853')
+Syntax error' at token '.' (type 'DOT') at line '301' (pos '3997')

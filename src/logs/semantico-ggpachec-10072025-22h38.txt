@@ -1,0 +1,13 @@
+Semantic error: Cannot apply '+' between str and int
+Semantic error: Cannot apply '/' between int and str
+Semantic error: Cannot compare str with int
+Semantic error: Logical connector requires boolean operands. Got 'str' and 'bool'
+Semantic error: Cannot apply assignment with str
+Semantic error: Logical connector requires boolean operands. Got 'bool' and 'str'
+Semantic error: Function 'saludo' expects 1 arguments, but 0 were given.
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'a' used without being defined.
+Semantic error: Variable 'marca' used without being defined.
+Semantic error: Variable 'modelo' used without being defined.
+Semantic error: Function 'Vehiculo' is not defined.
+Semantic error: Variable 'to_str' used without being defined.
