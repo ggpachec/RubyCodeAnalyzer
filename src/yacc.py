@@ -5,6 +5,7 @@ import re
 
 # Get the token map from the lexer.  This is required.
 from lexer import tokens
+from lexer import lexer
 
 #Agregar la tabla de simbolos
 symbol_table = {
@@ -528,7 +529,7 @@ def p_error(p):
     global sintactico_log
     with open(sintactico_log, "a", encoding="utf-8") as log:
         if p:
-            mensaje = f"Syntax error at token '{p.value}' (type '{p.type}') at line '{p.lineno}'\n"
+            mensaje = f"Syntax error' at token '{p.value}' (type '{p.type}') at line '{p.lineno}' (pos '{p.lexpos}')\n"
             print(mensaje.strip())
             log.write(mensaje)
         else:
@@ -563,14 +564,15 @@ def analizar_sintactico(archivo_rb: str, usuario: str):
     with open(archivo_rb, "r", encoding="utf-8") as f:
         data = f.read()
 
-    parser.parse(data)
+    lexer.lineno = 1
+    parser.parse(data, lexer=lexer)
 
     errores_sintacticos = []
     if os.path.exists(sintactico_log):
         with open(sintactico_log, "r", encoding="utf-8") as f:
             for linea in f:
                 list_linea = linea.split("'")
-                errores_sintacticos.append(("ERROR SINTACTICO", list_linea[1], list_linea[3], list_linea[5]))
+                errores_sintacticos.append((list_linea[0], list_linea[2], list_linea[4], list_linea[6]))
 
     return errores_sintacticos
 
@@ -614,7 +616,8 @@ def analizar_semantico(archivo_rb: str, usuario: str):
         with open(semantico_log, "r", encoding="utf-8") as f:
             for linea in f:
                 if "Semantic error" in linea:
-                    errores_semanticos.append(("ERROR SEMANTICO", linea.strip()))
+                    list_linea = linea.split(":")
+                    errores_semanticos.append((list_linea[0], list_linea[1]))
 
     return errores_semanticos
 

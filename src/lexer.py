@@ -169,6 +169,7 @@ def t_COMMENT(t):
 # Joel Orrala - Comentario multilínea (=begin ... =end)
 def t_MULTILINE_COMMENT(t):
   r'=begin(.|\n)*?=end'
+  t.lexer.lineno += t.value.count('\n')
   pass  # se ignora
 # Joel Orrala
 
@@ -265,7 +266,7 @@ print(f"\nTokens de {nombre_usuario} guardados en: {log_filename}") """
 
 
 
-
+lexer = lex.lex()
 # Función principal para análisis léxico (interfaz, log)
 def analizar_lexico(codigo, usuario):
 
@@ -277,7 +278,6 @@ def analizar_lexico(codigo, usuario):
     with open(codigo, "r", encoding="utf-8") as f:
         data = f.read()
 
-    lexer = lex.lex()
     lexer.input(data)
     tokens = []
 
