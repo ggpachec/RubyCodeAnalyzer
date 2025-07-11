@@ -93,7 +93,7 @@ else
   puts "Indice de Masa Corporal Normal - Bajo."
 end
 
-if "hola"                          # ❌ Error semántico: la condición no es booleana
+if "hola"                          # ❌ Error sintáctico: "hola" es string y no es parte de IF
   puts "Activo"
 end
 
@@ -105,7 +105,7 @@ def saludo(nombre = "Usuario")       # ✅ Función correctamente declarada
   puts "Hola, #{nombre}"
 end
 
-saludo()
+saludo()                             # ❌ Error semántico: espera 1 argumento
 saludo("Genesis")
 
 
@@ -115,19 +115,16 @@ def obtener_nombre                # ✅ Función correctamente declarada
 end
 puts "El nombre es #{obtener_nombre()}"
 
-def obtener_nombre()                 # ❌ Error semántico: debería devolver un String
-  return 42
-end
 
 
 # Función con parámetros
-def multiplicar1(a, b)                # ✅ Función correctamente declarada
-  a * b
+def imprimir(a)                # ✅ Función correctamente declarada
+  puts a
 end
-result = multiplicar1(5, 2)
+result = imprimir(5)
 
-def multiplicar2(a, b)                # ❌ Error sintáctico: Declaración incompleta, falta `end`
-  a * b
+def imprimir(a)                # ❌ Error sintáctico: Declaración incompleta, falta `end`
+  puts a
 
 
 ## SECCION 7: CLASES Y OBJETOS

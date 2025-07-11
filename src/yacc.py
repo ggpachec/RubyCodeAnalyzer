@@ -563,7 +563,9 @@ def analizar_sintactico(archivo_rb: str, usuario: str):
 
     with open(archivo_rb, "r", encoding="utf-8") as f:
         data = f.read()
-
+    # Limpiar el log antes del análisis
+    with open(sintactico_log, "w", encoding="utf-8") as f:
+        f.write("")  # Borra contenido previo
     lexer.lineno = 1
     parser.parse(data, lexer=lexer)
 
@@ -601,7 +603,8 @@ def analizar_semantico(archivo_rb: str, usuario: str):
 
     with open(archivo_rb, "r", encoding="utf-8") as f:
         data = f.read()
-
+    with open(semantico_log, "w", encoding="utf-8") as f:
+        f.write("")  # Borra contenido previo
     parser.parse(data)
 
     with open(semantico_log, "a", encoding="utf-8") as log:
